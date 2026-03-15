@@ -1,7 +1,7 @@
 ---
 layout: fopl
 title: Bookstore
-permalink: /home
+permalink: /bookstore
 description: Friends of the Poway Library Bookstore - Unique gently used books, magazines, DVDs, CDs, puzzles and more.
 ---
 
@@ -401,11 +401,11 @@ description: Friends of the Poway Library Bookstore - Unique gently used books, 
       />
     </div>
     <ul class="fopl-nav-links">
-      <li><a href="/bookstore/home">Home</a></li>
-      <li><a href="/bookstore/history">History</a></li>
-      <li class="active"><a href="/home">Bookstore</a></li>
-      <li><a href="/bookstore/newsletters">Newsletters</a></li>
-      <li><a href="/bookstore/contact">Contact Us</a></li>
+      <li><a href="/home">Home</a></li>
+      <li><a href="/history">History</a></li>
+      <li class="active"><a href="/bookstore">Bookstore</a></li>
+      <li><a href="/news">Newsletters</a></li>
+      <li><a href="/contact">Contact Us</a></li>
     </ul>
   </nav>
 
