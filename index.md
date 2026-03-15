@@ -8,6 +8,8 @@ sprite: /images/mario_animation.png
 permalink: /
 ---
 
+<script>window.location.replace('{{ site.baseurl }}/home');</script>
+
 <!-- ================= LIQUID SETUP ================= -->
 
 {% assign sprite_file = site.baseurl | append: page.sprite %}
