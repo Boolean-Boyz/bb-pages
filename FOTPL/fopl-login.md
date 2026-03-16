@@ -1,7 +1,7 @@
 ---
 layout: fopl
 title: Sign In — Friends of the Poway Library
-permalink: /fopl-login
+permalink: /login
 description: Sign in or create an account for the Friends of the Poway Library.
 ---
 
@@ -194,7 +194,7 @@ description: Sign in or create an account for the Friends of the Poway Library.
     <li><a href="/bookstore">Bookstore</a></li>
     <li><a href="/news">Newsletters</a></li>
     <li><a href="/contact">Contact Us</a></li>
-    <li id="nav-auth-item"><a href="/fopl-login" id="nav-auth-link">Sign In</a>
+    <li id="nav-auth-item"><a href="/login" id="nav-auth-link">Sign In</a>
       <ul class="fopl-nav-dropdown" id="nav-auth-dropdown">
         <li><a href="/profile">Profile</a></li>
         <li><a href="#" id="nav-signout-btn">Sign Out</a></li>

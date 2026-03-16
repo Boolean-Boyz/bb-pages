@@ -111,7 +111,7 @@ description: The history of the Friends of the Poway Library organization.
     <li><a href="/bookstore">Bookstore</a></li>
     <li><a href="/news">Newsletters</a></li>
     <li><a href="/contact">Contact Us</a></li>
-    <li id="nav-auth-item"><a href="/fopl-login" id="nav-auth-link">Sign In</a>
+    <li id="nav-auth-item"><a href="/login" id="nav-auth-link">Sign In</a>
       <ul class="fopl-nav-dropdown" id="nav-auth-dropdown">
         <li><a href="/profile">Profile</a></li>
         <li><a href="#" id="nav-signout-btn">Sign Out</a></li>
