@@ -73,6 +73,25 @@ description: Friends of the Poway Library Bookstore - Unique gently used books, 
     background-color: rgba(255,255,255,0.12);
   }
 
+  /* ── Nav dropdown ── */
+  .fopl-nav-has-dropdown { position: relative; }
+  .fopl-nav-dropdown {
+    display: none; position: absolute; top: 100%; right: 0;
+    background: #fff; border-radius: 4px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    list-style: none; margin: 0; padding: 6px 0;
+    min-width: 140px; z-index: 1000;
+  }
+  .fopl-nav-dropdown.open { display: block; }
+  .fopl-nav-dropdown li a {
+    display: block; padding: 10px 18px; color: #023b0f;
+    font-family: 'Cabin', sans-serif; font-size: 0.88rem;
+    font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.04em; text-decoration: none; white-space: nowrap;
+    background: none;
+  }
+  .fopl-nav-dropdown li a:hover { background: #f4f8f4 !important; }
+
   /* ── Hero / heading ── */
   .fopl-hero {
     background-color: #023b0f;
@@ -406,6 +425,12 @@ description: Friends of the Poway Library Bookstore - Unique gently used books, 
       <li class="active"><a href="/bookstore">Bookstore</a></li>
       <li><a href="/news">Newsletters</a></li>
       <li><a href="/contact">Contact Us</a></li>
+      <li id="nav-auth-item"><a href="/fopl-login" id="nav-auth-link">Sign In</a>
+        <ul class="fopl-nav-dropdown" id="nav-auth-dropdown">
+          <li><a href="/profile">Profile</a></li>
+          <li><a href="#" id="nav-signout-btn">Sign Out</a></li>
+        </ul>
+      </li>
     </ul>
   </nav>
 
@@ -540,7 +565,7 @@ description: Friends of the Poway Library Bookstore - Unique gently used books, 
 <script>
 {
   // ── Bookstore hours (fetched from backend API) ──────────────────────────────
-  const BACKEND_URL = 'http://127.0.0.1:8887';
+  const BACKEND_URL = 'http://127.0.0.1:8587';
 
   async function loadHours() {
     const el = document.getElementById('fopl-hours');
@@ -596,5 +621,27 @@ description: Friends of the Poway Library Bookstore - Unique gently used books, 
   window.submitBookRequest = submitBookRequest;
 
   loadHours();
+
+  // ── Auth nav dropdown ──
+  const foplUser = JSON.parse(localStorage.getItem('fopl_user') || 'null');
+  const authItem = document.getElementById('nav-auth-item');
+  const authLink = document.getElementById('nav-auth-link');
+  const dropdown = document.getElementById('nav-auth-dropdown');
+  const signoutBtn = document.getElementById('nav-signout-btn');
+  if (foplUser && authLink) {
+    authItem.classList.add('fopl-nav-has-dropdown');
+    authLink.textContent = foplUser.name.split(' ')[0];
+    authLink.href = '#';
+    authLink.onclick = (e) => { e.preventDefault(); dropdown.classList.toggle('open'); };
+    document.addEventListener('click', (e) => {
+      if (!authItem.contains(e.target)) dropdown.classList.remove('open');
+    });
+    signoutBtn.onclick = async (e) => {
+      e.preventDefault();
+      await fetch('http://127.0.0.1:8587/api/fopl/login', { method: 'DELETE', credentials: 'include' }).catch(() => {});
+      localStorage.removeItem('fopl_user');
+      window.location.href = '/home';
+    };
+  }
 }
 </script>
