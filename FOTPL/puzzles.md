@@ -150,6 +150,14 @@ description: Play word games and puzzles from the Friends of the Poway Library.
     <a class="play-btn" href="/word-scramble">Play Now</a>
   </div>
 
+  <div class="game-card">
+    <div class="game-card-icon">🛒</div>
+    <span class="game-card-badge">Live</span>
+    <h2>Library Shelf Run</h2>
+    <p>Control the cart, collect misplaced books, and shelve each one in the right call-number zone.</p>
+    <a class="play-btn" href="/library-shelf-run">Play Now</a>
+  </div>
+
 </div>
 
 <div class="fopl-footer">
