@@ -66,6 +66,12 @@ description: Play daily Book Trivia from the Friends of the Poway Library.
     font-size: 1.14rem; line-height: 1.45; color: #173117; margin: 0 0 14px;
     font-weight: 700; font-family: 'Cabin', sans-serif;
   }
+  .trivia-progress {
+    margin: 0 0 8px;
+    color: #4f5d4f;
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
   .trivia-options {
     display: grid; gap: 10px;
   }
@@ -85,6 +91,21 @@ description: Play daily Book Trivia from the Friends of the Poway Library.
     border: 1px solid #cadfca; display: none;
   }
   .trivia-feedback.show { display: block; }
+  .trivia-next {
+    margin-top: 12px;
+    border: none;
+    background: #023b0f;
+    color: #fff;
+    border-radius: 6px;
+    padding: 10px 16px;
+    cursor: pointer;
+    font-family: 'Cabin', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: none;
+  }
+  .trivia-next.show { display: inline-block; }
 
   .stats-row {
     display: grid; grid-template-columns: repeat(4, minmax(0,1fr));
@@ -132,18 +153,20 @@ description: Play daily Book Trivia from the Friends of the Poway Library.
 <div class="game-wrap">
   <div class="game-header">
     <div class="game-title">Book Trivia</div>
-    <a class="game-btn-link" href="/puzzles" title="All Puzzles">🎮</a>
+    <a class="game-btn-link" href="/puzzles" title="All Puzzles">All Games</a>
   </div>
 
   <div class="trivia-card">
     <div class="trivia-date" id="trivia-date"></div>
+    <p class="trivia-progress" id="trivia-progress"></p>
     <h2 class="trivia-question" id="trivia-question"></h2>
     <div class="trivia-options" id="trivia-options"></div>
     <div class="trivia-feedback" id="trivia-feedback"></div>
+    <button type="button" class="trivia-next" id="trivia-next">Next Question</button>
 
     <div class="stats-row">
-      <div class="stat-box"><div class="stat-num" id="stat-played">0</div><div class="stat-label">Played</div></div>
-      <div class="stat-box"><div class="stat-num" id="stat-win">0%</div><div class="stat-label">Correct %</div></div>
+      <div class="stat-box"><div class="stat-num" id="stat-played">0</div><div class="stat-label">Rounds</div></div>
+      <div class="stat-box"><div class="stat-num" id="stat-win">0%</div><div class="stat-label">Accuracy</div></div>
       <div class="stat-box"><div class="stat-num" id="stat-streak">0</div><div class="stat-label">Streak</div></div>
       <div class="stat-box"><div class="stat-num" id="stat-max">0</div><div class="stat-label">Best Streak</div></div>
     </div>
@@ -158,8 +181,9 @@ description: Play daily Book Trivia from the Friends of the Poway Library.
 <script>
 {
 const BACKEND = 'http://127.0.0.1:8587';
+const ROUND_SIZE = 5;
 const DATE_KEY = 'fopl_book_trivia_day';
-const ANSWER_KEY = 'fopl_book_trivia_answer';
+const STATE_KEY = 'fopl_book_trivia_state';
 const STATS_KEY = 'fopl_book_trivia_stats';
 
 const QUESTIONS = [
@@ -214,9 +238,18 @@ function getDayId() {
   return String(Math.floor((today - epoch) / 86400000));
 }
 
-function getTodayQuestion() {
+function getDailyRoundIndexes() {
   const day = Number(getDayId());
-  return QUESTIONS[day % QUESTIONS.length];
+  const order = [...Array(QUESTIONS.length).keys()];
+  let seed = day * 7919 + 1237;
+  for (let i = order.length - 1; i > 0; i--) {
+    seed = (seed * 48271) % 2147483647;
+    const j = seed % (i + 1);
+    const t = order[i];
+    order[i] = order[j];
+    order[j] = t;
+  }
+  return order.slice(0, Math.min(ROUND_SIZE, QUESTIONS.length));
 }
 
 function getDateLabel() {
@@ -224,7 +257,7 @@ function getDateLabel() {
 }
 
 function loadStats() {
-  return JSON.parse(localStorage.getItem(STATS_KEY) || '{"played":0,"correct":0,"streak":0,"maxStreak":0}');
+  return JSON.parse(localStorage.getItem(STATS_KEY) || '{"played":0,"correct":0,"total":0,"streak":0,"maxStreak":0}');
 }
 
 function saveStats(stats) {
@@ -232,7 +265,7 @@ function saveStats(stats) {
 }
 
 function syncStatsView(stats) {
-  const pct = stats.played ? Math.round((stats.correct / stats.played) * 100) : 0;
+  const pct = stats.total ? Math.round((stats.correct / stats.total) * 100) : 0;
   document.getElementById('stat-played').textContent = String(stats.played);
   document.getElementById('stat-win').textContent = `${pct}%`;
   document.getElementById('stat-streak').textContent = String(stats.streak);
@@ -266,19 +299,45 @@ function showFeedback(correct, fact) {
   el.textContent = correct ? `Correct! ${fact}` : `Not quite. ${fact}`;
 }
 
-function applyPriorAnswer(savedAnswer, answer, fact) {
-  if (savedAnswer === null) return;
-  lockChoices(savedAnswer, answer);
-  showFeedback(savedAnswer === answer, fact);
+function setFeedback(message) {
+  const el = document.getElementById('trivia-feedback');
+  el.classList.add('show');
+  el.textContent = message;
 }
 
-function renderQuestion() {
-  const q = getTodayQuestion();
-  const dayId = getDayId();
+function clearFeedback() {
+  const el = document.getElementById('trivia-feedback');
+  el.classList.remove('show');
+  el.textContent = '';
+}
+
+function loadDayState(dayId, idxs) {
+  if (localStorage.getItem(DATE_KEY) !== dayId) {
+    return { index: 0, score: 0, answered: [], finished: false, counted: false, idxs };
+  }
+  const saved = JSON.parse(localStorage.getItem(STATE_KEY) || 'null');
+  if (!saved || !Array.isArray(saved.idxs) || saved.idxs.join(',') !== idxs.join(',')) {
+    return { index: 0, score: 0, answered: [], finished: false, counted: false, idxs };
+  }
+  return saved;
+}
+
+function saveDayState(state) {
+  localStorage.setItem(DATE_KEY, getDayId());
+  localStorage.setItem(STATE_KEY, JSON.stringify(state));
+}
+
+function renderRound(state) {
   const optionsWrap = document.getElementById('trivia-options');
+  const nextBtn = document.getElementById('trivia-next');
+  const qIndex = state.idxs[state.index];
+  const q = QUESTIONS[qIndex];
 
   document.getElementById('trivia-date').textContent = `Daily Trivia • ${getDateLabel()}`;
+  document.getElementById('trivia-progress').textContent = `Question ${state.index + 1} of ${state.idxs.length} • Score ${state.score}`;
   document.getElementById('trivia-question').textContent = q.question;
+  clearFeedback();
+  nextBtn.classList.remove('show');
 
   optionsWrap.innerHTML = '';
   q.options.forEach((text, idx) => {
@@ -286,36 +345,79 @@ function renderQuestion() {
     btn.className = 'trivia-option';
     btn.type = 'button';
     btn.textContent = text;
-    btn.addEventListener('click', async () => {
-      const already = localStorage.getItem(DATE_KEY) === dayId;
-      if (already) return;
+    btn.addEventListener('click', () => {
+      if (state.finished) return;
+      if (state.answered[state.index] !== undefined) return;
 
       const correct = idx === q.answer;
-      localStorage.setItem(DATE_KEY, dayId);
-      localStorage.setItem(ANSWER_KEY, String(idx));
+      state.answered[state.index] = idx;
+      if (correct) state.score += 1;
 
       lockChoices(idx, q.answer);
       showFeedback(correct, q.fact);
-
-      const stats = loadStats();
-      stats.played += 1;
-      if (correct) {
-        stats.correct += 1;
-        stats.streak += 1;
-        stats.maxStreak = Math.max(stats.maxStreak, stats.streak);
-      } else {
-        stats.streak = 0;
-      }
-      saveStats(stats);
-      syncStatsView(stats);
-      await postResult(correct);
+      nextBtn.classList.add('show');
+      saveDayState(state);
     });
     optionsWrap.appendChild(btn);
   });
 
-  const answeredToday = localStorage.getItem(DATE_KEY) === dayId;
-  const saved = answeredToday ? Number(localStorage.getItem(ANSWER_KEY)) : null;
-  applyPriorAnswer(Number.isFinite(saved) ? saved : null, q.answer, q.fact);
+  const prior = state.answered[state.index];
+  if (prior !== undefined) {
+    lockChoices(prior, q.answer);
+    showFeedback(prior === q.answer, q.fact);
+    nextBtn.classList.add('show');
+  }
+}
+
+async function finishRound(state) {
+  state.finished = true;
+
+  if (!state.counted) {
+    const stats = loadStats();
+    stats.played += 1;
+    stats.correct += state.score;
+    stats.total += state.idxs.length;
+    if (state.score >= Math.ceil(state.idxs.length * 0.6)) {
+      stats.streak += 1;
+      stats.maxStreak = Math.max(stats.maxStreak, stats.streak);
+    } else {
+      stats.streak = 0;
+    }
+    saveStats(stats);
+    syncStatsView(stats);
+    await postResult(state.score === state.idxs.length);
+    state.counted = true;
+  }
+
+  saveDayState(state);
+  document.getElementById('trivia-progress').textContent = `Final Score ${state.score} / ${state.idxs.length}`;
+  document.getElementById('trivia-question').textContent = 'Daily round complete. Come back tomorrow for a fresh set of questions.';
+  document.getElementById('trivia-options').innerHTML = '';
+  setFeedback(state.score === state.idxs.length ? 'Perfect score. Excellent work.' : `Nice run. You got ${state.score} correct.`);
+  document.getElementById('trivia-next').classList.remove('show');
+}
+
+function runTrivia() {
+  const dayId = getDayId();
+  const idxs = getDailyRoundIndexes();
+  const state = loadDayState(dayId, idxs);
+  const nextBtn = document.getElementById('trivia-next');
+
+  if (state.finished || state.index >= state.idxs.length) {
+    finishRound(state);
+    return;
+  }
+
+  renderRound(state);
+  nextBtn.onclick = () => {
+    state.index += 1;
+    if (state.index >= state.idxs.length) {
+      finishRound(state);
+      return;
+    }
+    saveDayState(state);
+    renderRound(state);
+  };
 }
 
 const foplUser = JSON.parse(localStorage.getItem('fopl_user') || 'null');
@@ -340,6 +442,6 @@ if (foplUser && authLink) {
 }
 
 syncStatsView(loadStats());
-renderQuestion();
+runTrivia();
 }
 </script>

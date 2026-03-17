@@ -31,6 +31,15 @@ description: Friends of the Poway Library — supporting literacy, community pro
   }
   .fopl-nav-links li a:hover,
   .fopl-nav-links li.active a { background: rgba(255,255,255,0.12); }
+  .fopl-nav-links li.games-invite a {
+    background: #f0c341;
+    color: #1e2a1f;
+    animation: gamesGlow 2s ease-in-out infinite;
+  }
+  @keyframes gamesGlow {
+    0%, 100% { box-shadow: inset 0 0 0 rgba(0,0,0,0); }
+    50% { box-shadow: inset 0 0 0 999px rgba(255,255,255,0.18); }
+  }
 
   /* ── Nav dropdown ── */
   .fopl-nav-has-dropdown { position: relative; }
@@ -91,6 +100,11 @@ description: Friends of the Poway Library — supporting literacy, community pro
   .fopl-hero-btn.primary:hover { background: #e8f5e9; }
   .fopl-hero-btn.outline { background: transparent; color: #fff; border: 2px solid #fff; }
   .fopl-hero-btn.outline:hover { background: rgba(255,255,255,0.12); }
+  .fopl-hero-btn.games {
+    background: #f0c341;
+    color: #1f2a1f;
+  }
+  .fopl-hero-btn.games:hover { background: #f5d777; }
 
   /* ── Cards ── */
   .fopl-cards {
@@ -108,7 +122,21 @@ description: Friends of the Poway Library — supporting literacy, community pro
     border-top: 4px solid #023b0f;
     text-align: center;
   }
-  .fopl-card-icon { font-size: 2.4rem; margin-bottom: 14px; }
+  .fopl-card-icon {
+    width: 52px; height: 52px;
+    margin: 0 auto 14px;
+    border-radius: 50%;
+    background: #e8f5e9;
+    color: #023b0f;
+    font-family: 'Cabin', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
   .fopl-card h3 {
     font-family: 'Cabin', sans-serif;
     font-size: 1.1rem;
@@ -186,7 +214,7 @@ description: Friends of the Poway Library — supporting literacy, community pro
     <li><a href="/history">History</a></li>
     <li><a href="/bookstore">Bookstore</a></li>
     <li><a href="/news">Newsletters</a></li>
-    <li><a href="/puzzles">Puzzles</a></li>
+    <li class="games-invite"><a href="/puzzles">Puzzles</a></li>
     <li><a href="/contact">Contact Us</a></li>
     <li id="nav-auth-item"><a href="/login" id="nav-auth-link">Sign In</a>
       <ul class="fopl-nav-dropdown" id="nav-auth-dropdown">
@@ -207,31 +235,32 @@ description: Friends of the Poway Library — supporting literacy, community pro
   <div class="fopl-hero-btns">
     <a class="fopl-hero-btn primary" href="/bookstore">Visit Our Bookstore</a>
     <a class="fopl-hero-btn outline" href="/contact">Get Involved</a>
+    <a class="fopl-hero-btn games" href="/puzzles">Play Games</a>
   </div>
 </div>
 
 <!-- Feature cards -->
 <div class="fopl-cards">
   <div class="fopl-card">
-    <div class="fopl-card-icon">📚</div>
+    <div class="fopl-card-icon">Books</div>
     <h3>Bookstore</h3>
     <p>Gently used books, magazines, DVDs, puzzles and more — all at great prices.</p>
     <a href="/bookstore">Browse the Store</a>
   </div>
   <div class="fopl-card">
-    <div class="fopl-card-icon">📰</div>
+    <div class="fopl-card-icon">News</div>
     <h3>Newsletters</h3>
     <p>Stay up to date with our latest news, events, and library updates.</p>
     <a href="/news">Read Newsletters</a>
   </div>
   <div class="fopl-card">
-    <div class="fopl-card-icon">🤝</div>
+    <div class="fopl-card-icon">Help</div>
     <h3>Volunteer</h3>
     <p>Help sort donations, staff the bookstore, and support your community.</p>
     <a href="/contact">Join Us</a>
   </div>
   <div class="fopl-card">
-    <div class="fopl-card-icon">📍</div>
+    <div class="fopl-card-icon">Visit</div>
     <h3>Visit Us</h3>
     <p>13137 Poway Rd, Poway CA 92064<br>Call: <a href="tel:8585132862">858-513-2862</a></p>
     <a href="/contact">Get Directions</a>

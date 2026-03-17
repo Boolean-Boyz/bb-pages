@@ -62,7 +62,20 @@ description: Play word games and puzzles from the Friends of the Poway Library.
     display: flex; flex-direction: column; gap: 12px;
   }
   .game-card.coming-soon { border-top-color: #bbb; opacity: 0.7; }
-  .game-card-icon { font-size: 2.2rem; }
+  .game-card-icon {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: #e8f5e9;
+    color: #023b0f;
+    font-family: 'Cabin', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
   .game-card h2 {
     font-family: 'Cabin', sans-serif; font-size: 1.15rem; font-weight: 700;
     color: #023b0f; text-transform: uppercase; letter-spacing: 0.04em;
@@ -127,7 +140,7 @@ description: Play word games and puzzles from the Friends of the Poway Library.
 <div class="fopl-games">
 
   <div class="game-card">
-    <div class="game-card-icon">🟩</div>
+    <div class="game-card-icon">WDL</div>
     <span class="game-card-badge">Live</span>
     <h2>Wordle</h2>
     <p>Guess the 5-letter word in 6 tries. A new word every day. Track your streak and guess distribution.</p>
@@ -135,7 +148,7 @@ description: Play word games and puzzles from the Friends of the Poway Library.
   </div>
 
   <div class="game-card">
-    <div class="game-card-icon">📚</div>
+    <div class="game-card-icon">TRV</div>
     <span class="game-card-badge">Live</span>
     <h2>Book Trivia</h2>
     <p>How well do you know classic literature? Test your knowledge with daily book trivia questions.</p>
@@ -143,7 +156,7 @@ description: Play word games and puzzles from the Friends of the Poway Library.
   </div>
 
   <div class="game-card">
-    <div class="game-card-icon">🔤</div>
+    <div class="game-card-icon">SCR</div>
     <span class="game-card-badge">Live</span>
     <h2>Word Scramble</h2>
     <p>Unscramble a new word each day. Earn bonus points for finding it fast.</p>
@@ -151,7 +164,7 @@ description: Play word games and puzzles from the Friends of the Poway Library.
   </div>
 
   <div class="game-card">
-    <div class="game-card-icon">🛒</div>
+    <div class="game-card-icon">RUN</div>
     <span class="game-card-badge">Live</span>
     <h2>Library Shelf Run</h2>
     <p>Control the cart, collect misplaced books, and shelve each one in the right call-number zone.</p>
