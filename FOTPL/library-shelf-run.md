@@ -163,7 +163,7 @@ description: Play Library Shelf Run and sort misplaced books by call number.
 <div class="run-wrap">
   <div class="run-header">
     <div class="run-title">Library Shelf Run</div>
-    <a class="run-btn-link" href="/puzzles" title="All Puzzles">🎮</a>
+    <a class="run-btn-link" href="/puzzles" title="All Puzzles">All Games</a>
   </div>
 
   <div class="run-card">

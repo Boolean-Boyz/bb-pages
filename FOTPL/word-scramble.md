@@ -142,7 +142,7 @@ description: Play daily Word Scramble from the Friends of the Poway Library.
 <div class="scramble-wrap">
   <div class="scramble-header">
     <div class="scramble-title">Word Scramble</div>
-    <a class="scramble-btn-link" href="/puzzles" title="All Puzzles">🎮</a>
+    <a class="scramble-btn-link" href="/puzzles" title="All Puzzles">All Games</a>
   </div>
 
   <div class="scramble-card">
