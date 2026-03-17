@@ -134,20 +134,20 @@ description: Play word games and puzzles from the Friends of the Poway Library.
     <a class="play-btn" href="/wordle">Play Now</a>
   </div>
 
-  <div class="game-card coming-soon">
+  <div class="game-card">
     <div class="game-card-icon">📚</div>
-    <span class="game-card-badge soon">Coming Soon</span>
+    <span class="game-card-badge">Live</span>
     <h2>Book Trivia</h2>
     <p>How well do you know classic literature? Test your knowledge with daily book trivia questions.</p>
-    <div class="disabled-btn">Coming Soon</div>
+    <a class="play-btn" href="/book-trivia">Play Now</a>
   </div>
 
-  <div class="game-card coming-soon">
+  <div class="game-card">
     <div class="game-card-icon">🔤</div>
-    <span class="game-card-badge soon">Coming Soon</span>
+    <span class="game-card-badge">Live</span>
     <h2>Word Scramble</h2>
     <p>Unscramble a new word each day. Earn bonus points for finding it fast.</p>
-    <div class="disabled-btn">Coming Soon</div>
+    <a class="play-btn" href="/word-scramble">Play Now</a>
   </div>
 
 </div>
