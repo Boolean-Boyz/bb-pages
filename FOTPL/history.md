@@ -110,6 +110,7 @@ description: The history of the Friends of the Poway Library organization.
     <li class="active"><a href="/history">History</a></li>
     <li><a href="/bookstore">Bookstore</a></li>
     <li><a href="/news">Newsletters</a></li>
+    <li><a href="/puzzles">Puzzles</a></li>
     <li><a href="/contact">Contact Us</a></li>
     <li id="nav-auth-item"><a href="/login" id="nav-auth-link">Sign In</a>
       <ul class="fopl-nav-dropdown" id="nav-auth-dropdown">

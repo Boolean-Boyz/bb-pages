@@ -424,6 +424,7 @@ description: Friends of the Poway Library Bookstore - Unique gently used books, 
       <li><a href="/history">History</a></li>
       <li class="active"><a href="/bookstore">Bookstore</a></li>
       <li><a href="/news">Newsletters</a></li>
+      <li><a href="/puzzles">Puzzles</a></li>
       <li><a href="/contact">Contact Us</a></li>
       <li id="nav-auth-item"><a href="/login" id="nav-auth-link">Sign In</a>
         <ul class="fopl-nav-dropdown" id="nav-auth-dropdown">
