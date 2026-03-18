@@ -1,7 +1,7 @@
 ---
 layout: profile
 title: Your Profile
-permalink: /profile
+permalink: /ocs/profile
 active_tab: profile
 ---
 
