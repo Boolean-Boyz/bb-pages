@@ -142,8 +142,8 @@ description: Play word games and puzzles from the Friends of the Poway Library.
   <div class="game-card">
     <div class="game-card-icon">WDL</div>
     <span class="game-card-badge">Live</span>
-    <h2>Wordle</h2>
-    <p>Guess the 5-letter word in 6 tries. A new word every day. Track your streak and guess distribution.</p>
+    <h2>Shelfle</h2>
+    <p>Guess the 5-letter word in 6 tries, with one Catalog Hint to reveal a letter position.</p>
     <a class="play-btn" href="/wordle">Play Now</a>
   </div>
 

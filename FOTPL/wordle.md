@@ -1,8 +1,8 @@
 ---
 layout: fopl
-title: Wordle — Friends of the Poway Library
+title: Shelfle — Friends of the Poway Library
 permalink: /wordle
-description: Play the daily FOPL Wordle. Guess the 5-letter word in 6 tries.
+description: Play the daily FOPL Shelfle. Guess the 5-letter word in 6 tries and use one Catalog Hint.
 ---
 
 <style>
@@ -54,10 +54,43 @@ description: Play the daily FOPL Wordle. Guess the 5-letter word in 6 tries.
     font-family: 'Cabin', sans-serif; font-size: 1.5rem; font-weight: 700;
     text-transform: uppercase; letter-spacing: 0.08em; color: #023b0f;
   }
+  .wordle-subtitle {
+    font-size: 0.84rem;
+    color: #567456;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 700;
+  }
   .wordle-header-btns { display: flex; gap: 8px; }
   .wordle-icon-btn {
-    background: none; border: none; cursor: pointer; font-size: 1.4rem;
-    color: #023b0f; padding: 4px; line-height: 1;
+    background: #edf5ee;
+    border: 1px solid #c9d8cb;
+    cursor: pointer;
+    font-size: 0.75rem;
+    color: #023b0f;
+    padding: 6px 10px;
+    line-height: 1;
+    border-radius: 4px;
+    text-decoration: none;
+    font-family: 'Cabin', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .wordle-icon-btn:disabled {
+    opacity: 0.55;
+    cursor: default;
+  }
+  .wordle-hint-bar {
+    width: 100%;
+    max-width: 500px;
+    background: #eef6ee;
+    border: 1px solid #d2e3d4;
+    border-radius: 6px;
+    color: #275129;
+    font-size: 0.88rem;
+    padding: 9px 12px;
+    margin-bottom: 10px;
   }
 
   /* ── Toast ── */
@@ -221,13 +254,18 @@ description: Play the daily FOPL Wordle. Guess the 5-letter word in 6 tries.
 <!-- Game -->
 <div class="wordle-page">
   <div class="wordle-header">
-    <span class="wordle-title">Wordle</span>
+    <div>
+      <div class="wordle-title">Shelfle</div>
+      <div class="wordle-subtitle">Library Word Game</div>
+    </div>
     <div class="wordle-header-btns">
-      <button class="wordle-icon-btn" title="Stats" onclick="openStats()">📊</button>
-      <a class="wordle-icon-btn" href="/puzzles" title="All Puzzles" style="text-decoration:none;">🎮</a>
+      <button class="wordle-icon-btn" title="Catalog Hint" id="hint-btn" onclick="useCatalogHint()">Hint</button>
+      <button class="wordle-icon-btn" title="Stats" onclick="openStats()">Stats</button>
+      <a class="wordle-icon-btn" href="/puzzles" title="All Puzzles">Games</a>
     </div>
   </div>
 
+  <div class="wordle-hint-bar" id="hint-bar">Catalog hint available: reveal one exact letter position.</div>
   <div class="wordle-board" id="board"></div>
   <div class="wordle-keyboard" id="keyboard"></div>
 </div>
@@ -317,6 +355,8 @@ let currentRow  = 0;
 let gameOver    = false;
 let letterStates= {};     // best revealed state per letter
 let stats       = null;   // stats from backend
+let hintUsed    = false;
+let hintPos     = -1;
 
 // ── Helpers ──
 function getWordOfDay() {
@@ -506,18 +546,44 @@ function showToast(msg, duration = 1200) {
   }, duration);
 }
 
+function applyCatalogHint() {
+  if (hintPos < 0 || hintPos >= WORD_LENGTH) return;
+  const hintBar = document.getElementById('hint-bar');
+  const hintBtn = document.getElementById('hint-btn');
+  hintBar.textContent = `Catalog hint: Letter ${hintPos + 1} is ${target[hintPos]}.`;
+  hintBtn.disabled = true;
+}
+
+function useCatalogHint() {
+  if (gameOver) return;
+  if (hintUsed) {
+    showToast('Hint already used');
+    return;
+  }
+  hintPos = Math.floor(Math.random() * WORD_LENGTH);
+  hintUsed = true;
+  applyCatalogHint();
+  showToast('Catalog hint revealed');
+  saveLocal();
+}
+
 // ── Local storage ──
 function saveLocal() {
-  localStorage.setItem('fopl_wordle_date',    new Date().toDateString());
-  localStorage.setItem('fopl_wordle_guesses', JSON.stringify(guesses));
-  localStorage.setItem('fopl_wordle_state',
+  localStorage.setItem('fopl_shelfle_date',    new Date().toDateString());
+  localStorage.setItem('fopl_shelfle_guesses', JSON.stringify(guesses));
+  localStorage.setItem('fopl_shelfle_state',
     gameOver ? (guesses.includes(target) ? 'won' : 'lost') : 'playing');
+  localStorage.setItem('fopl_shelfle_hint_used', hintUsed ? '1' : '0');
+  localStorage.setItem('fopl_shelfle_hint_pos', String(hintPos));
 }
 
 function loadLocal() {
-  if (localStorage.getItem('fopl_wordle_date') !== new Date().toDateString()) return;
-  const saved = JSON.parse(localStorage.getItem('fopl_wordle_guesses') || '[]');
-  const state = localStorage.getItem('fopl_wordle_state') || 'playing';
+  if (localStorage.getItem('fopl_shelfle_date') !== new Date().toDateString()) return;
+  const saved = JSON.parse(localStorage.getItem('fopl_shelfle_guesses') || '[]');
+  const state = localStorage.getItem('fopl_shelfle_state') || 'playing';
+  hintUsed = localStorage.getItem('fopl_shelfle_hint_used') === '1';
+  hintPos = Number(localStorage.getItem('fopl_shelfle_hint_pos') || '-1');
+  if (hintUsed) applyCatalogHint();
   saved.forEach((word, r) => {
     const result = evaluate(word);
     reveal(r, word, result, false);
@@ -536,7 +602,7 @@ async function fetchStats() {
   const user = JSON.parse(localStorage.getItem('fopl_user') || 'null');
   if (!user) return null;
   try {
-    const res = await fetch(`${BACKEND}/api/fopl/puzzle/stats?game=wordle`, { credentials: 'include' });
+    const res = await fetch(`${BACKEND}/api/fopl/puzzle/stats?game=shelfle`, { credentials: 'include' });
     if (res.ok) return await res.json();
   } catch {}
   return null;
@@ -549,7 +615,7 @@ async function postResult(won, numGuesses) {
     const res = await fetch(`${BACKEND}/api/fopl/puzzle/stats`, {
       method: 'POST', credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ game: 'wordle', won, guesses: won ? numGuesses : null }),
+      body: JSON.stringify({ game: 'shelfle', won, guesses: won ? numGuesses : null }),
     });
     if (res.ok) stats = await res.json();
   } catch {}
@@ -570,7 +636,7 @@ function openStats(outcome) {
   const body    = document.getElementById('modal-body');
   const user    = JSON.parse(localStorage.getItem('fopl_user') || 'null');
 
-  if (outcome === 'won') title.textContent = '🎉 You Got It!';
+  if (outcome === 'won') title.textContent = 'You Got It!';
   else if (outcome === 'lost') title.textContent = 'Nice Try!';
   else title.textContent = 'Statistics';
 
@@ -608,7 +674,7 @@ function openStats(outcome) {
   }
 
   if (gameOver) {
-    html += `<button class="wordle-share-btn" onclick="shareResult()">Share 📋</button>`;
+    html += `<button class="wordle-share-btn" onclick="shareResult()">Share Results</button>`;
   }
 
   body.innerHTML = html;
@@ -624,7 +690,7 @@ function shareResult() {
   const date   = new Date().toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'});
   const won    = guesses.includes(target);
   const count  = won ? guesses.length : 'X';
-  let text     = `FOPL Wordle ${date} ${count}/6\n\n`;
+  let text     = `FOPL Shelfle ${date} ${count}/6\n\n`;
   guesses.forEach(word => {
     const result = evaluate(word);
     text += result.map(s => s === 'correct' ? '🟩' : s === 'present' ? '🟨' : '⬜').join('') + '\n';
@@ -674,5 +740,6 @@ loadLocal();
 window.openStats  = openStats;
 window.closeStats = closeStats;
 window.shareResult= shareResult;
+window.useCatalogHint = useCatalogHint;
 }
 </script>
