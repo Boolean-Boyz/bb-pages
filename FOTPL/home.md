@@ -212,6 +212,7 @@ description: Friends of the Poway Library — supporting literacy, community pro
   <ul class="fopl-nav-links">
     <li class="active"><a href="/home">Home</a></li>
     <li><a href="/history">History</a></li>
+    <li><a href="/catalog">Catalog</a></li>
     <li><a href="/bookstore">Bookstore</a></li>
     <li><a href="/news">Newsletters</a></li>
     <li class="games-invite"><a href="/puzzles">Puzzles</a></li>

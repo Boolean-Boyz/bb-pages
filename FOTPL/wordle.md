@@ -226,6 +226,7 @@ description: Play the daily FOPL Shelfle. Guess the 5-letter word in 6 tries and
   <ul class="fopl-nav-links">
     <li><a href="/home">Home</a></li>
     <li><a href="/history">History</a></li>
+    <li><a href="/catalog">Catalog</a></li>
     <li><a href="/bookstore">Bookstore</a></li>
     <li><a href="/news">Newsletters</a></li>
     <li class="active"><a href="/puzzles">Puzzles</a></li>
