@@ -32,13 +32,22 @@ description: Friends of the Poway Library — supporting literacy, community pro
   .fopl-nav-links li a:hover,
   .fopl-nav-links li.active a { background: rgba(255,255,255,0.12); }
   .fopl-nav-links li.games-invite a {
-    background: #f0c341;
-    color: #1e2a1f;
-    animation: gamesGlow 2s ease-in-out infinite;
+    background: rgba(255,255,255,0.12);
+    color: #fff;
   }
-  @keyframes gamesGlow {
-    0%, 100% { box-shadow: inset 0 0 0 rgba(0,0,0,0); }
-    50% { box-shadow: inset 0 0 0 999px rgba(255,255,255,0.18); }
+
+  /* ── Auth nav pill ── */
+  #nav-auth-item a#nav-auth-link {
+    background: rgba(255,255,255,0.15);
+    border: 1.5px solid rgba(255,255,255,0.45);
+    border-radius: 20px;
+    padding: 8px 18px;
+    margin: 8px 0;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+  }
+  #nav-auth-item a#nav-auth-link:hover {
+    background: rgba(255,255,255,0.28);
   }
 
   /* ── Nav dropdown ── */
@@ -101,10 +110,11 @@ description: Friends of the Poway Library — supporting literacy, community pro
   .fopl-hero-btn.outline { background: transparent; color: #fff; border: 2px solid #fff; }
   .fopl-hero-btn.outline:hover { background: rgba(255,255,255,0.12); }
   .fopl-hero-btn.games {
-    background: #f0c341;
-    color: #1f2a1f;
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    border: 2px solid #fff;
   }
-  .fopl-hero-btn.games:hover { background: #f5d777; }
+  .fopl-hero-btn.games:hover { background: rgba(255,255,255,0.25); }
 
   /* ── Cards ── */
   .fopl-cards {

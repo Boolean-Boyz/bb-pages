@@ -57,6 +57,20 @@ description: Sign in or create an account for the Friends of the Poway Library.
   }
   .fopl-nav-dropdown li a:hover { background: #f4f8f4 !important; }
 
+  /* ── Auth nav pill ── */
+  #nav-auth-item a#nav-auth-link {
+    background: rgba(255,255,255,0.15);
+    border: 1.5px solid rgba(255,255,255,0.45);
+    border-radius: 20px;
+    padding: 8px 18px;
+    margin: 8px 0;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+  }
+  #nav-auth-item a#nav-auth-link:hover {
+    background: rgba(255,255,255,0.28);
+  }
+
   /* ── Card ── */
   .fopl-auth-wrap {
     flex: 1;
