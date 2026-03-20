@@ -53,14 +53,43 @@ description: Play word games and puzzles from the Friends of the Poway Library.
   }
 
   .fopl-hero {
-    background: #023b0f; color: #fff; text-align: center; padding: 52px 24px 44px;
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(1100px 340px at 8% -20%, rgba(255,255,255,0.14), rgba(255,255,255,0) 60%),
+      radial-gradient(900px 260px at 92% 0%, rgba(255,255,255,0.11), rgba(255,255,255,0) 55%),
+      #023b0f;
+    color: #fff;
+    text-align: center;
+    padding: 58px 24px 50px;
+  }
+  .fopl-hero::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: rgba(255,255,255,0.25);
+  }
+  .hero-kicker {
+    display: inline-block;
+    margin-bottom: 10px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.4);
+    background: rgba(255,255,255,0.12);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
   }
   .fopl-hero h1 {
     font-family: 'Cabin', sans-serif; font-size: 2.2rem; font-weight: 700;
     margin: 0 0 10px; letter-spacing: 0.04em; color: #fff; border: none;
     text-transform: uppercase;
   }
-  .fopl-hero p { font-size: 1.05rem; opacity: 0.85; margin: 0; }
+  .fopl-hero p { font-size: 1.05rem; opacity: 0.88; margin: 0; }
 
   .fopl-overall {
     max-width: 1100px;
@@ -88,6 +117,7 @@ description: Play word games and puzzles from the Friends of the Poway Library.
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 10px;
+    margin-bottom: 12px;
   }
   .overall-stat {
     background: #f1f7f1;
@@ -111,6 +141,35 @@ description: Play word games and puzzles from the Friends of the Poway Library.
     color: #687468;
     font-weight: 700;
   }
+  .overall-progress {
+    border: 1px solid #dbe7db;
+    background: #f7fbf7;
+    border-radius: 7px;
+    padding: 10px;
+  }
+  .overall-progress-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.78rem;
+    color: #476047;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+  }
+  .overall-progress-track {
+    height: 10px;
+    border-radius: 999px;
+    background: #dce9dc;
+    overflow: hidden;
+  }
+  .overall-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #1f7a32, #58a86a);
+    transition: width 0.45s ease;
+  }
 
   .fopl-games {
     display: grid;
@@ -124,7 +183,9 @@ description: Play word games and puzzles from the Friends of the Poway Library.
     border-top: 4px solid #023b0f;
     padding: 28px 24px 24px;
     display: flex; flex-direction: column; gap: 12px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
+  .game-card:hover { transform: translateY(-4px); box-shadow: 0 8px 22px rgba(2,59,15,0.16); }
   .game-card.coming-soon { border-top-color: #bbb; opacity: 0.7; }
   .game-card-icon {
     width: 52px; height: 52px;
@@ -146,6 +207,22 @@ description: Play word games and puzzles from the Friends of the Poway Library.
     margin: 0; border: none;
   }
   .game-card p { font-size: 0.95rem; color: #555; line-height: 1.6; margin: 0; }
+  .game-meta {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .game-chip {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 700;
+    border-radius: 999px;
+    padding: 3px 8px;
+    background: #f1f7f1;
+    color: #2b4b2e;
+    border: 1px solid #d7e5d8;
+  }
   .game-card-badge {
     display: inline-block; font-size: 0.72rem; font-weight: 700;
     text-transform: uppercase; letter-spacing: 0.06em; padding: 3px 10px;
@@ -173,6 +250,20 @@ description: Play word games and puzzles from the Friends of the Poway Library.
     text-align: center; padding: 22px; font-size: 0.85rem; margin-top: 16px;
   }
   .fopl-footer a { color: rgba(255,255,255,0.85); text-decoration: none; }
+
+  @media (max-width: 820px) {
+    .fopl-overall, .fopl-games { padding-left: 16px; padding-right: 16px; }
+    .overall-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  @media (max-width: 620px) {
+    .fopl-nav { padding: 0 12px; }
+    .fopl-nav-links li a { padding: 14px 10px; font-size: 0.82rem; }
+    .fopl-logo-wrap img { height: 78px; }
+    .fopl-hero h1 { font-size: 1.75rem; }
+    .fopl-hero p { font-size: 0.95rem; }
+    .fopl-games { padding-top: 26px; gap: 16px; }
+  }
 </style>
 
 <nav class="fopl-nav">
@@ -198,6 +289,7 @@ description: Play word games and puzzles from the Friends of the Poway Library.
 </nav>
 
 <div class="fopl-hero">
+  <span class="hero-kicker">Poway Library Game Hub</span>
   <h1>Puzzles &amp; Games</h1>
   <p>Challenge your mind. Track your streaks. Beat your high scores.</p>
 </div>
@@ -211,6 +303,15 @@ description: Play word games and puzzles from the Friends of the Poway Library.
       <div class="overall-stat"><div class="overall-stat-num" id="overall-sessions">0</div><div class="overall-stat-lbl">Sessions</div></div>
       <div class="overall-stat"><div class="overall-stat-num" id="overall-wins">0%</div><div class="overall-stat-lbl">Win Rate</div></div>
     </div>
+    <div class="overall-progress">
+      <div class="overall-progress-top">
+        <span id="overall-next-label">Progress To Level 2</span>
+        <span id="overall-next-xp">0 / 500 XP</span>
+      </div>
+      <div class="overall-progress-track">
+        <div class="overall-progress-fill" id="overall-progress-fill"></div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -221,6 +322,11 @@ description: Play word games and puzzles from the Friends of the Poway Library.
     <span class="game-card-badge">Live</span>
     <h2>PinShelf</h2>
     <p>A clue-based daily challenge inspired by Pinpoint. Guess the hidden library word as clues unlock.</p>
+    <div class="game-meta">
+      <span class="game-chip">Daily</span>
+      <span class="game-chip">Word</span>
+      <span class="game-chip">Logic</span>
+    </div>
     <a class="play-btn" href="/wordle">Play Now</a>
   </div>
 
@@ -229,6 +335,11 @@ description: Play word games and puzzles from the Friends of the Poway Library.
     <span class="game-card-badge">Live</span>
     <h2>Book Trivia</h2>
     <p>How well do you know classic literature? Test your knowledge with daily book trivia questions.</p>
+    <div class="game-meta">
+      <span class="game-chip">Daily</span>
+      <span class="game-chip">Quiz</span>
+      <span class="game-chip">Classics</span>
+    </div>
     <a class="play-btn" href="/book-trivia">Play Now</a>
   </div>
 
@@ -237,6 +348,11 @@ description: Play word games and puzzles from the Friends of the Poway Library.
     <span class="game-card-badge">Live</span>
     <h2>Word Scramble</h2>
     <p>Unscramble a new word each day. Earn bonus points for finding it fast.</p>
+    <div class="game-meta">
+      <span class="game-chip">Speed</span>
+      <span class="game-chip">Word</span>
+      <span class="game-chip">Daily</span>
+    </div>
     <a class="play-btn" href="/word-scramble">Play Now</a>
   </div>
 
@@ -245,6 +361,11 @@ description: Play word games and puzzles from the Friends of the Poway Library.
     <span class="game-card-badge">Live</span>
     <h2>Library Shelf Run</h2>
     <p>Control the cart, collect misplaced books, and shelve each one in the right call-number zone.</p>
+    <div class="game-meta">
+      <span class="game-chip">Arcade</span>
+      <span class="game-chip">Sorting</span>
+      <span class="game-chip">Keyboard</span>
+    </div>
     <a class="play-btn" href="/library-shelf-run">Play Now</a>
   </div>
 
@@ -263,10 +384,16 @@ description: Play word games and puzzles from the Friends of the Poway Library.
   const xp = Number(overall.xp || 0);
   const winPct = sessions ? Math.round((wins / sessions) * 100) : 0;
   const level = Math.floor(xp / 500) + 1;
+  const xpInLevel = xp % 500;
+  const xpNext = 500;
+  const progressPct = Math.max(0, Math.min(100, Math.round((xpInLevel / xpNext) * 100)));
   document.getElementById('overall-level').textContent = String(level);
   document.getElementById('overall-xp').textContent = String(xp);
   document.getElementById('overall-sessions').textContent = String(sessions);
   document.getElementById('overall-wins').textContent = `${winPct}%`;
+  document.getElementById('overall-next-label').textContent = `Progress To Level ${level + 1}`;
+  document.getElementById('overall-next-xp').textContent = `${xpInLevel} / ${xpNext} XP`;
+  document.getElementById('overall-progress-fill').style.width = `${progressPct}%`;
 
   const foplUser = JSON.parse(localStorage.getItem('fopl_user') || 'null');
   const authItem = document.getElementById('nav-auth-item');
