@@ -90,7 +90,7 @@ description: Play word games and puzzles from the Friends of the Poway Library.
     margin: 0 0 10px; letter-spacing: 0.04em; color: #fff; border: none;
     text-transform: uppercase;
   }
-  
+
   .fopl-hero p { font-size: 1.05rem; opacity: 0.88; margin: 0; }
 
   .fopl-overall {
@@ -203,6 +203,7 @@ description: Play word games and puzzles from the Friends of the Poway Library.
     align-items: center;
     justify-content: center;
   }
+  
   .game-card h2 {
     font-family: 'Cabin', sans-serif; font-size: 1.15rem; font-weight: 700;
     color: #023b0f; text-transform: uppercase; letter-spacing: 0.04em;
