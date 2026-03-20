@@ -301,6 +301,7 @@ let score = 0;
 let isRunning = false;
 let startTime = 0;
 let timerId = null;
+let roundComplete = false;
 
 function randomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -308,6 +309,17 @@ function randomInt(min, max) {
 
 function clone(arr) {
   return JSON.parse(JSON.stringify(arr));
+}
+
+function shuffle(arr) {
+  const out = arr.slice();
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = randomInt(0, i);
+    const tmp = out[i];
+    out[i] = out[j];
+    out[j] = tmp;
+  }
+  return out;
 }
 
 function formatTime(ms) {
@@ -344,7 +356,7 @@ function updateTimer() {
 }
 
 function startTimer() {
-  if (isRunning) return;
+  if (isRunning || roundComplete) return;
   isRunning = true;
   startTime = Date.now();
   timerId = setInterval(updateTimer, 250);
@@ -413,10 +425,14 @@ function generateBooks() {
   }
 
   const zoneIds = ['fiction', 'history', 'science', 'fiction'];
+  const usedCalls = { fiction: new Set(), history: new Set(), science: new Set() };
   books = selected.map((pos, i) => {
     const zoneId = zoneIds[i % zoneIds.length];
-    const options = clone(callPool[zoneId]);
-    const call = options[randomInt(0, options.length - 1)];
+    const options = clone(callPool[zoneId]).filter((item) => !usedCalls[zoneId].has(item));
+    const call = options.length
+      ? options[randomInt(0, options.length - 1)]
+      : callPool[zoneId][randomInt(0, callPool[zoneId].length - 1)];
+    usedCalls[zoneId].add(call);
     return {
       id: `book-${i + 1}`,
       x: pos.x,
@@ -426,7 +442,7 @@ function generateBooks() {
       sorted: false
     };
   });
-  taskOrder = books.map((b) => b.id);
+  taskOrder = shuffle(books.map((b) => b.id));
   taskIndex = 0;
 }
 
@@ -514,6 +530,11 @@ function dropIfOnZone() {
 }
 
 function movePlayer(dx, dy) {
+  if (roundComplete) {
+    setStatus('Round complete. Press New Round to play again.');
+    return;
+  }
+
   const nx = player.x + dx;
   const ny = player.y + dy;
   if (nx < 0 || nx >= COLS || ny < 0 || ny >= ROWS) return;
@@ -565,6 +586,7 @@ function maybeSaveBest(timeMs, moveCount) {
 
 async function finishRound() {
   stopTimer();
+  roundComplete = true;
   const timeMs = Date.now() - startTime;
   const timeBonus = Math.max(0, 180 - Math.floor(timeMs / 1000));
   score += timeBonus;
@@ -577,6 +599,7 @@ async function finishRound() {
 
 function resetRound() {
   stopTimer();
+  roundComplete = false;
   player = { x: 4, y: 6 };
   books = [];
   taskOrder = [];
@@ -598,10 +621,19 @@ function bindControls() {
   document.addEventListener('keydown', (e) => {
     if (e.ctrlKey || e.metaKey || e.altKey) return;
     const key = e.key.toLowerCase();
-    if (['arrowup', 'w'].includes(key)) movePlayer(0, -1);
-    else if (['arrowdown', 's'].includes(key)) movePlayer(0, 1);
-    else if (['arrowleft', 'a'].includes(key)) movePlayer(-1, 0);
-    else if (['arrowright', 'd'].includes(key)) movePlayer(1, 0);
+    if (['arrowup', 'w'].includes(key)) {
+      e.preventDefault();
+      movePlayer(0, -1);
+    } else if (['arrowdown', 's'].includes(key)) {
+      e.preventDefault();
+      movePlayer(0, 1);
+    } else if (['arrowleft', 'a'].includes(key)) {
+      e.preventDefault();
+      movePlayer(-1, 0);
+    } else if (['arrowright', 'd'].includes(key)) {
+      e.preventDefault();
+      movePlayer(1, 0);
+    }
   });
 
   document.getElementById('new-round-btn').addEventListener('click', () => {
