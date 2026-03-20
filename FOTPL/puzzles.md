@@ -48,6 +48,7 @@ description: Play word games and puzzles from the Friends of the Poway Library.
     font-size: 0.85rem;
     letter-spacing: 0.05em;
   }
+  
   #nav-auth-item a#nav-auth-link:hover {
     background: rgba(255,255,255,0.28);
   }
