@@ -48,7 +48,7 @@ description: Play word games and puzzles from the Friends of the Poway Library.
     font-size: 0.85rem;
     letter-spacing: 0.05em;
   }
-  
+
   #nav-auth-item a#nav-auth-link:hover {
     background: rgba(255,255,255,0.28);
   }
@@ -90,6 +90,7 @@ description: Play word games and puzzles from the Friends of the Poway Library.
     margin: 0 0 10px; letter-spacing: 0.04em; color: #fff; border: none;
     text-transform: uppercase;
   }
+  
   .fopl-hero p { font-size: 1.05rem; opacity: 0.88; margin: 0; }
 
   .fopl-overall {
