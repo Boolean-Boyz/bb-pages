@@ -1,8 +1,8 @@
 ---
 layout: fopl
-title: Shelfle — Friends of the Poway Library
+title: PinShelf — Friends of the Poway Library
 permalink: /wordle
-description: Play the daily FOPL Shelfle. Guess the 5-letter word in 6 tries and use one Catalog Hint.
+description: Play the daily PinShelf clue game from Friends of the Poway Library.
 ---
 
 <style>
@@ -10,7 +10,6 @@ description: Play the daily FOPL Shelfle. Guess the 5-letter word in 6 tries and
   *, *::before, *::after { box-sizing: border-box; }
   body { margin: 0; font-family: 'Lato', sans-serif; background: #f4f8f4; }
 
-  /* ── Nav ── */
   .fopl-nav {
     background: #023b0f; display: flex; align-items: center;
     justify-content: space-between; padding: 0 30px; flex-wrap: wrap;
@@ -53,168 +52,242 @@ description: Play the daily FOPL Shelfle. Guess the 5-letter word in 6 tries and
     background: rgba(255,255,255,0.28);
   }
 
-  /* ── Game wrapper ── */
-  .wordle-page {
-    display: flex; flex-direction: column; align-items: center;
-    min-height: calc(100vh - 90px); padding: 12px 16px 40px;
+  .pin-wrap {
+    max-width: 860px; margin: 0 auto; padding: 20px 16px 44px;
+    min-height: calc(100vh - 90px);
+  }
+  .pin-header {
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid #d8dfd8; padding-bottom: 10px; margin-bottom: 16px;
+  }
+  .pin-title {
+    font-family: 'Cabin', sans-serif; font-size: 1.45rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.07em; color: #023b0f;
+  }
+  .pin-subtitle {
+    margin-top: 4px; color: #587258; font-size: 0.86rem;
+    text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700;
+  }
+  .pin-btn-link {
+    text-decoration: none; color: #023b0f; font-size: 0.78rem;
+    border: 1px solid #cad8cc; background: #eff6f0; border-radius: 4px;
+    padding: 8px 10px; font-family: 'Cabin', sans-serif;
+    text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700;
   }
 
-  /* ── Header ── */
-  .wordle-header {
-    width: 100%; max-width: 500px; display: flex; align-items: center;
-    justify-content: space-between; border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-bottom: 12px;
+  .pin-card {
+    background: #fff; border-top: 4px solid #023b0f; border-radius: 8px;
+    box-shadow: 0 2px 12px rgba(2,59,15,0.09); padding: 24px;
+    position: relative;
+    overflow: hidden;
   }
-  .wordle-title {
-    font-family: 'Cabin', sans-serif; font-size: 1.5rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.08em; color: #023b0f;
-  }
-  .wordle-subtitle {
-    font-size: 0.84rem;
-    color: #567456;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    font-weight: 700;
-  }
-  .wordle-header-btns { display: flex; gap: 8px; }
-  .wordle-icon-btn {
-    background: #edf5ee;
-    border: 1px solid #c9d8cb;
-    cursor: pointer;
-    font-size: 0.75rem;
-    color: #023b0f;
-    padding: 6px 10px;
-    line-height: 1;
-    border-radius: 4px;
-    text-decoration: none;
-    font-family: 'Cabin', sans-serif;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-  .wordle-icon-btn:disabled {
-    opacity: 0.55;
-    cursor: default;
-  }
-  .wordle-hint-bar {
-    width: 100%;
-    max-width: 500px;
-    background: #eef6ee;
-    border: 1px solid #d2e3d4;
-    border-radius: 6px;
-    color: #275129;
-    font-size: 0.88rem;
-    padding: 9px 12px;
-    margin-bottom: 10px;
-  }
-
-  /* ── Toast ── */
-  .wordle-toast-wrap {
-    position: fixed; top: 110px; left: 50%; transform: translateX(-50%);
-    z-index: 999; display: flex; flex-direction: column; align-items: center; gap: 8px;
+  .pin-card::before {
+    content: '';
+    position: absolute;
+    top: -120px;
+    right: -80px;
+    width: 260px;
+    height: 260px;
+    background: radial-gradient(circle, rgba(3,85,28,0.14) 0%, rgba(3,85,28,0) 70%);
     pointer-events: none;
   }
-  .wordle-toast {
-    background: #333; color: #fff; padding: 10px 20px; border-radius: 4px;
-    font-family: 'Cabin', sans-serif; font-weight: 700; font-size: 0.92rem;
-    text-transform: uppercase; letter-spacing: 0.04em;
-    animation: toastIn 0.15s ease; pointer-events: none;
+  .pin-date {
+    font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.06em;
+    color: #6b756b; margin-bottom: 12px; font-weight: 700;
   }
-  @keyframes toastIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+  .pin-mode-row {
+    margin: 0 0 12px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .pin-mode-chip {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    font-weight: 700;
+    border-radius: 999px;
+    padding: 5px 10px;
+    border: 1px solid #bfd1bf;
+    background: #f1f7f1;
+    color: #2f5133;
+  }
+  .pin-mode-chip.practice {
+    background: #fff6e8;
+    border-color: #e9cf9c;
+    color: #6d4b14;
+  }
+  .pin-mode-note {
+    margin: 0;
+    font-size: 0.84rem;
+    color: #5d695e;
+    font-weight: 700;
+  }
+  .pin-actions {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .pin-btn.secondary {
+    background: #f6faf6;
+    color: #1f3d22;
+    border: 1px solid #c7d6c8;
+  }
+  .pin-session {
+    margin-top: 12px;
+    background: #f8fbf8;
+    border: 1px solid #dbe7db;
+    border-radius: 7px;
+    padding: 10px 12px;
+    font-size: 0.84rem;
+    color: #4e5d50;
+    font-weight: 700;
+  }
 
-  /* ── Board ── */
-  .wordle-board {
-    display: grid; grid-template-rows: repeat(6, 62px); gap: 5px;
-    margin: 8px auto 16px; width: 330px;
+  .pin-hud {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 10px;
+    margin-bottom: 14px;
   }
-  .wordle-row { display: grid; grid-template-columns: repeat(5, 62px); gap: 5px; }
-  .wordle-tile {
-    width: 62px; height: 62px; border: 2px solid #d3d6da;
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Cabin', sans-serif; font-size: 2rem; font-weight: 700;
-    text-transform: uppercase; user-select: none; color: #333;
-    transition: border-color 0.05s;
+  .pin-hud-box {
+    border: 1px solid #dce8dc; background: #f1f7f1; border-radius: 7px;
+    text-align: center; padding: 9px;
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
   }
-  .wordle-tile[data-filled] { border-color: #888; }
-  .wordle-tile[data-state="correct"] { background: #023b0f; color: #fff; border-color: #023b0f; }
-  .wordle-tile[data-state="present"] { background: #b59a00; color: #fff; border-color: #b59a00; }
-  .wordle-tile[data-state="absent"]  { background: #787c7e; color: #fff; border-color: #787c7e; }
+  .pin-hud-box.pulse {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(2,59,15,0.18);
+  }
+  .pin-hud-label {
+    font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em;
+    color: #6b756b; font-weight: 700;
+  }
+  .pin-hud-value {
+    font-family: 'Cabin', sans-serif; font-size: 1.24rem; font-weight: 700;
+    color: #023b0f; line-height: 1.1;
+  }
 
-  @keyframes tilePop   { 0%,100%{transform:scale(1)} 50%{transform:scale(1.12)} }
-  @keyframes tileShake { 0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-5px)} 40%,80%{transform:translateX(5px)} }
-  @keyframes tileFlip  { 0%{transform:scaleY(1)} 50%{transform:scaleY(0)} 100%{transform:scaleY(1)} }
-  @keyframes tileBounce{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(-18px)} }
-  .pop    { animation: tilePop 0.1s; }
-  .shake  { animation: tileShake 0.4s; }
-  .flip   { animation: tileFlip 0.5s ease; }
-  .bounce { animation: tileBounce 0.5s ease; }
+  .pin-clues {
+    border: 1px solid #d8e5d8; border-radius: 8px; background: #f8fbf8;
+    padding: 14px; margin-bottom: 14px;
+  }
+  .pin-clues h3 {
+    margin: 0 0 8px; border: none; color: #335833;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    font-family: 'Cabin', sans-serif; font-size: 0.82rem;
+  }
+  .pin-clues ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .pin-clues li {
+    margin-bottom: 8px;
+    color: #2c3b2c;
+    font-size: 0.96rem;
+    border: 1px solid #d4e3d6;
+    border-radius: 7px;
+    background: #ffffff;
+    padding: 9px 10px;
+    opacity: 0;
+    transform: translateY(10px) scale(0.99);
+    animation: clueIn 0.35s ease forwards;
+  }
+  .pin-clues li.newly-revealed {
+    animation: clueIn 0.35s ease forwards, cluePulse 0.75s ease;
+  }
 
-  /* ── Keyboard ── */
-  .wordle-keyboard { width: 100%; max-width: 500px; margin: 0 auto; }
-  .wordle-key-row { display: flex; justify-content: center; gap: 6px; margin-bottom: 8px; }
-  .wordle-key {
-    height: 58px; min-width: 43px; padding: 0 6px; border: none; border-radius: 4px;
-    background: #d3d6da; font-family: 'Cabin', sans-serif; font-weight: 700;
-    font-size: 0.85rem; text-transform: uppercase; cursor: pointer;
-    transition: background 0.15s; user-select: none; color: #333;
-    display: flex; align-items: center; justify-content: center;
+  @keyframes clueIn {
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
   }
-  .wordle-key.wide { min-width: 64px; font-size: 0.78rem; }
-  .wordle-key[data-state="correct"] { background: #023b0f; color: #fff; }
-  .wordle-key[data-state="present"] { background: #b59a00; color: #fff; }
-  .wordle-key[data-state="absent"]  { background: #787c7e; color: #fff; }
 
-  /* ── Stats modal ── */
-  .wordle-overlay {
-    display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45);
-    z-index: 500; align-items: center; justify-content: center;
+  @keyframes cluePulse {
+    0%, 100% { box-shadow: 0 0 0 rgba(2,59,15,0); }
+    50% { box-shadow: 0 0 0 6px rgba(2,59,15,0.12); }
   }
-  .wordle-overlay.open { display: flex; }
-  .wordle-modal {
-    background: #fff; border-radius: 8px; padding: 28px 32px; width: 90%; max-width: 420px;
-    text-align: center; position: relative; max-height: 90vh; overflow-y: auto;
+
+  .pin-guess {
+    display: flex; gap: 10px; flex-wrap: wrap;
   }
-  .wordle-modal h2 {
-    font-family: 'Cabin', sans-serif; font-size: 1.1rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.06em; color: #023b0f;
-    margin: 0 0 20px; border: none;
+  .pin-input {
+    flex: 1; min-width: 220px;
+    border: 1px solid #b8c8b8; border-radius: 6px;
+    padding: 12px; font-size: 1rem; text-transform: uppercase;
   }
-  .wordle-modal-close {
-    position: absolute; top: 12px; right: 16px; background: none; border: none;
-    font-size: 1.5rem; cursor: pointer; color: #666; line-height: 1;
+  .pin-btn {
+    border: none; background: #023b0f; color: #fff; border-radius: 6px;
+    padding: 12px 14px; cursor: pointer; font-family: 'Cabin', sans-serif;
+    font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+    font-size: 0.8rem;
   }
-  .wordle-stats-row {
-    display: flex; justify-content: center; gap: 20px; margin-bottom: 20px;
+  .pin-btn.alt { background: #365d3a; }
+  .pin-btn:disabled { opacity: 0.55; cursor: default; }
+  .pin-btn.alt:not(:disabled) {
+    animation: softInvite 2.2s ease-in-out infinite;
   }
-  .wordle-stat-item { display: flex; flex-direction: column; align-items: center; gap: 2px; }
-  .wordle-stat-num {
-    font-family: 'Cabin', sans-serif; font-size: 2rem; font-weight: 700; color: #023b0f; line-height: 1;
+
+  @keyframes softInvite {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(54,93,58,0); }
+    50% { box-shadow: 0 0 0 5px rgba(54,93,58,0.16); }
   }
-  .wordle-stat-lbl { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #666; }
-  .wordle-dist { margin: 0 0 20px; text-align: left; }
-  .wordle-dist h3 {
-    font-family: 'Cabin', sans-serif; font-size: 0.82rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.06em; color: #555; margin: 0 0 10px; border: none;
+
+  .pin-feedback {
+    margin-top: 12px; padding: 10px 12px; border-radius: 6px;
+    background: #eef6ee; color: #1f4a20; font-size: 0.95rem;
+    border: 1px solid #cadfca; min-height: 42px;
+    transition: transform 0.22s ease, background 0.22s ease, border-color 0.22s ease;
   }
-  .wordle-dist-row { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; font-size: 0.88rem; }
-  .wordle-dist-num { font-weight: 700; min-width: 12px; color: #333; }
-  .wordle-dist-bar-wrap { flex: 1; background: #eee; border-radius: 2px; height: 20px; }
-  .wordle-dist-bar {
-    height: 100%; min-width: 24px; background: #787c7e; border-radius: 2px;
-    display: flex; align-items: center; justify-content: flex-end;
-    padding-right: 6px; font-size: 0.8rem; font-weight: 700; color: #fff;
-    transition: width 0.4s ease;
+  .pin-feedback.pop {
+    transform: translateY(-1px);
   }
-  .wordle-dist-bar.current { background: #023b0f; }
-  .wordle-login-note { font-size: 0.88rem; color: #888; margin: 0 0 16px; }
-  .wordle-share-btn {
-    width: 100%; padding: 12px; background: #023b0f; color: #fff; border: none;
-    border-radius: 4px; font-family: 'Cabin', sans-serif; font-weight: 700;
-    font-size: 0.92rem; text-transform: uppercase; letter-spacing: 0.05em;
-    cursor: pointer; margin-bottom: 8px; transition: background 0.2s;
+  .pin-feedback.good {
+    background: #def3e1;
+    border-color: #82b78a;
   }
-  .wordle-share-btn:hover { background: #045218; }
-  .wordle-answer { font-size: 1rem; color: #555; margin: 0 0 16px; }
-  .wordle-answer strong { color: #023b0f; text-transform: uppercase; }
+  .pin-feedback.bad {
+    background: #fae6e6;
+    border-color: #d29b9b;
+  }
+
+  .pin-history {
+    margin-top: 14px;
+    border: 1px solid #d8e5d8; border-radius: 8px; background: #fbfdfb;
+    padding: 12px;
+  }
+  .pin-history h3 {
+    margin: 0 0 8px; border: none; color: #335833;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    font-family: 'Cabin', sans-serif; font-size: 0.82rem;
+  }
+  .pin-history ul {
+    margin: 0; padding-left: 18px;
+  }
+  .pin-history li {
+    margin-bottom: 4px; color: #394739; font-size: 0.92rem;
+  }
+
+  .stats-row {
+    display: grid; grid-template-columns: repeat(4, minmax(0,1fr));
+    gap: 10px; margin-top: 18px;
+  }
+  .stat-box {
+    background: #f1f7f1; border-radius: 7px; padding: 10px;
+    border: 1px solid #dce8dc; text-align: center;
+  }
+  .stat-num {
+    font-family: 'Cabin', sans-serif; font-size: 1.35rem; font-weight: 700;
+    color: #023b0f; line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.72rem; color: #6a736a; text-transform: uppercase;
+    letter-spacing: 0.06em; margin-top: 4px; font-weight: 700;
+  }
 
   .fopl-footer {
     background: #023b0f; color: rgba(255,255,255,0.7);
@@ -222,16 +295,12 @@ description: Play the daily FOPL Shelfle. Guess the 5-letter word in 6 tries and
   }
   .fopl-footer a { color: rgba(255,255,255,0.85); text-decoration: none; }
 
-  @media (max-width: 400px) {
-    .wordle-board { width: 280px; grid-template-rows: repeat(6, 52px); }
-    .wordle-row   { grid-template-columns: repeat(5, 52px); }
-    .wordle-tile  { width: 52px; height: 52px; font-size: 1.7rem; }
-    .wordle-key   { height: 50px; min-width: 32px; font-size: 0.75rem; }
-    .wordle-key.wide { min-width: 52px; }
+  @media (max-width: 560px) {
+    .pin-hud { grid-template-columns: repeat(1, minmax(0,1fr)); }
+    .stats-row { grid-template-columns: repeat(2, minmax(0,1fr)); }
   }
 </style>
 
-<!-- Nav -->
 <nav class="fopl-nav">
   <div class="fopl-logo-wrap">
     <img src="https://img1.wsimg.com/isteam/ip/1261387c-c13d-44e7-b4b8-53ebdce2bc66/fopllogo1B.jpg"
@@ -254,35 +323,58 @@ description: Play the daily FOPL Shelfle. Guess the 5-letter word in 6 tries and
   </ul>
 </nav>
 
-<!-- Toast container -->
-<div class="wordle-toast-wrap" id="toast-wrap"></div>
-
-<!-- Stats / end-game modal -->
-<div class="wordle-overlay" id="stats-overlay">
-  <div class="wordle-modal">
-    <button class="wordle-modal-close" onclick="closeStats()">✕</button>
-    <h2 id="modal-title">Statistics</h2>
-    <div id="modal-body"></div>
-  </div>
-</div>
-
-<!-- Game -->
-<div class="wordle-page">
-  <div class="wordle-header">
+<div class="pin-wrap">
+  <div class="pin-header">
     <div>
-      <div class="wordle-title">Shelfle</div>
-      <div class="wordle-subtitle">Library Word Game</div>
+      <div class="pin-title">PinShelf</div>
+      <div class="pin-subtitle">Daily Clue Deduction Game</div>
     </div>
-    <div class="wordle-header-btns">
-      <button class="wordle-icon-btn" title="Catalog Hint" id="hint-btn" onclick="useCatalogHint()">Hint</button>
-      <button class="wordle-icon-btn" title="Stats" onclick="openStats()">Stats</button>
-      <a class="wordle-icon-btn" href="/puzzles" title="All Puzzles">Games</a>
-    </div>
+    <a class="pin-btn-link" href="/puzzles" title="All Puzzles">All Games</a>
   </div>
 
-  <div class="wordle-hint-bar" id="hint-bar">Catalog hint available: reveal one exact letter position.</div>
-  <div class="wordle-board" id="board"></div>
-  <div class="wordle-keyboard" id="keyboard"></div>
+  <div class="pin-card">
+    <div class="pin-date" id="pin-date"></div>
+    <div class="pin-mode-row">
+      <span class="pin-mode-chip" id="pin-mode-chip">Daily</span>
+      <p class="pin-mode-note" id="pin-mode-note">Daily round counts toward streak and leaderboard stats (when signed in).</p>
+    </div>
+
+    <div class="pin-hud">
+      <div class="pin-hud-box"><div class="pin-hud-label">Score</div><div class="pin-hud-value" id="pin-score">100</div></div>
+      <div class="pin-hud-box"><div class="pin-hud-label">Attempts</div><div class="pin-hud-value" id="pin-attempts">0 / 5</div></div>
+      <div class="pin-hud-box"><div class="pin-hud-label">Answer Length</div><div class="pin-hud-value" id="pin-length">0</div></div>
+    </div>
+
+    <div class="pin-clues">
+      <h3>Available Clues</h3>
+      <ul id="pin-clue-list"></ul>
+    </div>
+
+    <form class="pin-guess" id="pin-form">
+      <input id="pin-input" class="pin-input" maxlength="16" autocomplete="off" placeholder="Type your guess" />
+      <button class="pin-btn" type="submit">Submit Guess</button>
+      <button class="pin-btn alt" id="pin-reveal" type="button">Reveal Clue</button>
+    </form>
+    <div class="pin-actions">
+      <button class="pin-btn secondary" id="pin-practice" type="button">Practice Round (No Daily Count)</button>
+      <button class="pin-btn secondary" id="pin-daily" type="button">Back To Daily Round</button>
+    </div>
+
+    <div class="pin-feedback" id="pin-feedback">Use the clues to identify the hidden word.</div>
+    <div class="pin-session" id="pin-session">Practice rounds this visit: 0</div>
+
+    <div class="pin-history">
+      <h3>Guess History</h3>
+      <ul id="pin-history-list"></ul>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-box"><div class="stat-num" id="stat-played">0</div><div class="stat-label">Played</div></div>
+      <div class="stat-box"><div class="stat-num" id="stat-win">0%</div><div class="stat-label">Solved %</div></div>
+      <div class="stat-box"><div class="stat-num" id="stat-streak">0</div><div class="stat-label">Streak</div></div>
+      <div class="stat-box"><div class="stat-num" id="stat-max">0</div><div class="stat-label">Best Streak</div></div>
+    </div>
+  </div>
 </div>
 
 <div class="fopl-footer">
@@ -293,436 +385,426 @@ description: Play the daily FOPL Shelfle. Guess the 5-letter word in 6 tries and
 <script>
 {
 const BACKEND = 'http://127.0.0.1:8587';
-const WORD_LENGTH = 5;
-const MAX_GUESSES = 6;
+const MAX_ATTEMPTS = 5;
+const DATE_KEY = 'fopl_pinshelf_day';
+const STATE_KEY = 'fopl_pinshelf_state';
+const STATS_KEY = 'fopl_pinshelf_stats';
 
-const WORDS = [
-  'abide','about','above','abuse','actor','acute','admit','adopt','adult','after',
-  'again','agent','agree','ahead','alarm','album','alert','alike','alive','allow',
-  'alone','along','alter','angel','anger','angle','ankle','apple','apply','arena',
-  'argue','arise','armor','aside','asset','avoid','awake','aware','awful','badge',
-  'basic','beach','beard','beast','began','begin','below','bench','birth','black',
-  'blade','blame','blank','bleed','blend','bless','blind','block','blood','bloom',
-  'blunt','board','boost','bound','brain','brave','bread','break','breed','brick',
-  'bride','brief','bring','broad','broke','brown','brush','build','built','bunch',
-  'burst','cabin','cable','candy','carry','catch','cause','chain','chair','chaos',
-  'charm','chart','chase','cheap','check','chess','chest','chief','child','choir',
-  'civil','claim','class','clean','clear','click','climb','clock','close','cloud',
-  'coach','coast','count','court','cover','crack','craft','crash','crawl','crazy',
-  'cream','crime','cross','crowd','crown','crush','curve','cycle','daily','dance',
-  'death','delta','dense','depth','dirty','doubt','draft','drain','drama','drawn',
-  'dread','dream','dress','drink','drive','drone','drove','drown','dwarf','eagle',
-  'early','earth','eight','elite','empty','enemy','enjoy','enter','entry','equal',
-  'error','essay','event','every','exact','excel','exist','extra','fable','faith',
-  'false','fancy','fatal','fault','feast','fence','fever','fiber','field','fifth',
-  'fifty','fight','final','first','fixed','flame','flash','fleet','flesh','float',
-  'floor','flour','fluid','focus','force','forge','forth','forum','found','frame',
-  'frank','fraud','fresh','front','frost','fruit','fully','funny','ghost','giant',
-  'given','glass','globe','gloom','glove','going','grace','grade','grain','grand',
-  'grant','graph','grasp','grass','grave','great','greed','green','greet','grief',
-  'grill','grind','groan','groom','gross','group','grove','grown','guard','guest',
-  'guide','guild','guilt','gusto','habit','happy','harsh','heart','heavy','hence',
-  'hinge','honey','horse','hotel','hound','house','human','humor','hurry','image',
-  'imply','inner','input','ivory','jewel','joint','joker','judge','juice','juicy',
-  'karma','knife','knock','known','label','lance','large','laser','later','laugh',
-  'layer','learn','leave','legal','level','light','linen','liver','local','lodge',
-  'logic','loose','lover','lower','lucky','lunch','magic','major','maker','manor',
-  'maple','march','match','mayor','media','mercy','merge','merit','metal','meter',
-  'might','minor','mixed','model','money','month','moral','motor','mount','mouse',
-  'mouth','movie','music','naive','nerve','never','night','noise','north','novel',
-  'nurse','occur','ocean','offer','often','olive','orbit','order','outer','owner',
-  'ozone','paint','panel','panic','paper','party','pasta','patch','pause','peace',
-  'pearl','phase','phone','piano','pilot','pinch','pitch','pixel','pizza','place',
-  'plain','plane','plank','plant','plate','power','press','price','pride','prime',
-  'print','prior','prize','probe','proud','prove','pulse','punch','queen','quest',
-  'quick','quiet','quota','quote','radar','raise','rally','ranch','range','rapid',
-  'ratio','reach','ready','realm','rebel','reign','relay','rider','ridge','rifle',
-  'right','rival','river','robot','rocky','rough','round','route','royal','ruler',
-  'rural','rusty','saint','sauce','scale','scene','scope','score','scout','screw',
-  'sense','serve','seven','shade','shake','shall','shame','shape','share','shark',
-  'sharp','sheep','shelf','shell','shift','shine','shirt','shock','shoot','shore',
-  'short','shout','sight','since','sixth','sixty','skill','skull','slate','slave',
-  'sleep','slice','slide','slope','small','smart','smell','smile','smoke','snake',
-  'solar','solid','solve','sorry','south','space','spare','spark','spawn','speak',
-  'speed','spend','spice','spine','spite','split','spoke','spoon','sport','spray',
-  'stack','staff','stage','stain','stamp','stand','stare','start','state','steak',
-  'steal','steam','steel','steep','steer','stern','stick','stiff','still','stock',
-  'stone','stood','store','storm','story','stove','strap','straw','stray','strip',
-  'stuck','study','stuff','style','sugar','super','surge','swear','sweep','sweet',
-  'swift','swipe','swirl','sword','table','taste','teach','teeth','thank','theme',
-  'there','thick','thing','think','third','thorn','those','three','threw','throw',
-  'thumb','tiger','tight','timer','tired','title','today','token','total','touch',
-  'tough','tower','toxic','trace','track','trade','trail','train','trait','trash',
-  'treat','trend','trial','tribe','trick','tried','troop','truck','truly','trunk',
-  'trust','truth','twice','twist','uncle','under','union','unite','until','upper',
-  'upset','urban','usage','usual','utter','valid','value','vapor','vault','video',
-  'viral','visit','vital','vivid','vocal','voice','voter','waste','watch','water',
-  'weave','wedge','weird','whale','wheat','wheel','where','which','while','white',
-  'whole','whose','women','world','worry','worse','worst','worth','would','wound',
-  'wrath','wrist','wrote','yacht','yield','young','youth','zebra'
+const PUZZLES = [
+  {
+    answer: 'CATALOG',
+    clues: [
+      'Library records are organized with this.',
+      'You search this before finding a shelf.',
+      'It can be digital or card-based.',
+      'It starts with C and has 7 letters.'
+    ]
+  },
+  {
+    answer: 'ARCHIVE',
+    clues: [
+      'A collection kept for long-term preservation.',
+      'Researchers often request materials from one.',
+      'It stores documents, photos, and records.',
+      'It starts with A and has 7 letters.'
+    ]
+  },
+  {
+    answer: 'BIBLIO',
+    clues: [
+      'A root related to books.',
+      'It appears in words like bibliography.',
+      'It starts with B and has 6 letters.',
+      'It ends with O.'
+    ]
+  },
+  {
+    answer: 'FICTION',
+    clues: [
+      'A common section in most libraries.',
+      'Stories in this category are invented.',
+      'It starts with F and has 7 letters.',
+      'Mystery and fantasy are examples in this category.'
+    ]
+  },
+  {
+    answer: 'READING',
+    clues: [
+      'Core purpose of visiting a library.',
+      'A quiet room might be dedicated to this activity.',
+      'It starts with R and has 7 letters.',
+      'People often do this with books and magazines.'
+    ]
+  },
+  {
+    answer: 'SHELF',
+    clues: [
+      'Books rest on this in rows.',
+      'Libraries have many of these.',
+      'It starts with S and has 5 letters.',
+      'It ends with F.'
+    ]
+  }
 ];
 
-// ── Game state ──
-let target      = '';
-let guesses     = [];     // committed words
-let currentGuess= [];     // letters typed so far
-let currentRow  = 0;
-let gameOver    = false;
-let letterStates= {};     // best revealed state per letter
-let stats       = null;   // stats from backend
-let hintUsed    = false;
-let hintPos     = -1;
+let puzzle = null;
+let state = null;
+let dailyPuzzle = null;
+let dailyState = null;
+let practicePuzzle = null;
+let practiceState = null;
+let mode = 'daily';
+let practiceRoundsThisVisit = 0;
+let renderedClueIndex = 0;
+let displayedScore = 100;
 
-// ── Helpers ──
-function getWordOfDay() {
+function getDayId() {
   const epoch = new Date('2024-01-01T00:00:00');
-  const today = new Date(); today.setHours(0,0,0,0);
-  const days  = Math.floor((today - epoch) / 86400000);
-  return WORDS[days % WORDS.length].toUpperCase();
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return String(Math.floor((today - epoch) / 86400000));
 }
 
-function getTile(row, col) {
-  return document.querySelector(`#row-${row} .tile-${col}`);
+function getTodayPuzzle() {
+  const day = Number(getDayId());
+  return PUZZLES[day % PUZZLES.length];
 }
 
-function getKey(letter) {
-  return document.querySelector(`.wordle-key[data-key="${letter}"]`);
+function getPracticePuzzle() {
+  const candidate = PUZZLES[Math.floor(Math.random() * PUZZLES.length)];
+  if (!dailyPuzzle || PUZZLES.length < 2) return candidate;
+  if (candidate.answer !== dailyPuzzle.answer) return candidate;
+  const nextIndex = (PUZZLES.findIndex((p) => p.answer === candidate.answer) + 1) % PUZZLES.length;
+  return PUZZLES[nextIndex];
 }
 
-// ── Build board & keyboard ──
-function buildBoard() {
-  const board = document.getElementById('board');
-  for (let r = 0; r < MAX_GUESSES; r++) {
-    const row = document.createElement('div');
-    row.className = 'wordle-row'; row.id = `row-${r}`;
-    for (let c = 0; c < WORD_LENGTH; c++) {
-      const tile = document.createElement('div');
-      tile.className = `wordle-tile tile-${c}`;
-      row.appendChild(tile);
+function getDateLabel() {
+  return new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+}
+
+function makeNewState() {
+  return {
+    dayId: getDayId(),
+    attempts: 0,
+    clueIndex: 0,
+    score: 100,
+    solved: false,
+    lost: false,
+    guesses: [],
+    counted: false
+  };
+}
+
+function loadState() {
+  const dayId = getDayId();
+  if (localStorage.getItem(DATE_KEY) !== dayId) return makeNewState();
+  const saved = JSON.parse(localStorage.getItem(STATE_KEY) || 'null');
+  if (!saved || saved.dayId !== dayId) return makeNewState();
+  return saved;
+}
+
+function saveState() {
+  localStorage.setItem(DATE_KEY, getDayId());
+  localStorage.setItem(STATE_KEY, JSON.stringify(dailyState));
+}
+
+function makePracticeState() {
+  return {
+    dayId: `practice-${Date.now()}`,
+    attempts: 0,
+    clueIndex: 0,
+    score: 100,
+    solved: false,
+    lost: false,
+    guesses: [],
+    counted: false
+  };
+}
+
+function clampScore() {
+  state.score = Math.max(0, state.score);
+}
+
+function loadStats() {
+  return JSON.parse(localStorage.getItem(STATS_KEY) || '{"played":0,"solved":0,"streak":0,"maxStreak":0}');
+}
+
+function saveStats(stats) {
+  localStorage.setItem(STATS_KEY, JSON.stringify(stats));
+}
+
+function syncStatsView(stats) {
+  const pct = stats.played ? Math.round((stats.solved / stats.played) * 100) : 0;
+  document.getElementById('stat-played').textContent = String(stats.played);
+  document.getElementById('stat-win').textContent = `${pct}%`;
+  document.getElementById('stat-streak').textContent = String(stats.streak);
+  document.getElementById('stat-max').textContent = String(stats.maxStreak);
+}
+
+function setFeedback(msg, tone = 'info') {
+  const feedback = document.getElementById('pin-feedback');
+  feedback.textContent = msg;
+  feedback.classList.remove('good', 'bad', 'pop');
+  if (tone === 'good') feedback.classList.add('good');
+  if (tone === 'bad') feedback.classList.add('bad');
+  feedback.classList.add('pop');
+  setTimeout(() => feedback.classList.remove('pop'), 260);
+}
+
+function renderClues() {
+  const list = document.getElementById('pin-clue-list');
+  list.innerHTML = '';
+  for (let i = 0; i <= state.clueIndex && i < puzzle.clues.length; i++) {
+    const li = document.createElement('li');
+    if (i === state.clueIndex && state.clueIndex > renderedClueIndex) {
+      li.classList.add('newly-revealed');
     }
-    board.appendChild(row);
+    li.style.animationDelay = `${i * 0.05}s`;
+    li.textContent = puzzle.clues[i];
+    list.appendChild(li);
   }
+  renderedClueIndex = state.clueIndex;
 }
 
-function buildKeyboard() {
-  const kb = document.getElementById('keyboard');
-  const rows = [
-    ['Q','W','E','R','T','Y','U','I','O','P'],
-    ['A','S','D','F','G','H','J','K','L'],
-    ['ENTER','Z','X','C','V','B','N','M','⌫']
-  ];
-  rows.forEach(keys => {
-    const row = document.createElement('div');
-    row.className = 'wordle-key-row';
-    keys.forEach(k => {
-      const btn = document.createElement('button');
-      btn.className = 'wordle-key' + (k.length > 1 ? ' wide' : '');
-      btn.textContent = k;
-      btn.dataset.key = k === '⌫' ? 'BACKSPACE' : k;
-      btn.addEventListener('click', () => handleKey(btn.dataset.key));
-      row.appendChild(btn);
-    });
-    kb.appendChild(row);
-  });
-}
-
-// ── Input ──
-function handleKey(key) {
-  if (gameOver) return;
-  if (key === 'ENTER')     submitGuess();
-  else if (key === 'BACKSPACE') deleteLetter();
-  else if (/^[A-Z]$/.test(key)) addLetter(key);
-}
-
-function addLetter(letter) {
-  if (currentGuess.length >= WORD_LENGTH) return;
-  const tile = getTile(currentRow, currentGuess.length);
-  tile.textContent = letter;
-  tile.dataset.filled = '1';
-  currentGuess.push(letter);
-  tile.classList.add('pop');
-  setTimeout(() => tile.classList.remove('pop'), 120);
-}
-
-function deleteLetter() {
-  if (currentGuess.length === 0) return;
-  currentGuess.pop();
-  const tile = getTile(currentRow, currentGuess.length);
-  tile.textContent = '';
-  delete tile.dataset.filled;
-}
-
-function submitGuess() {
-  if (currentGuess.length < WORD_LENGTH) {
-    shakeRow(currentRow); showToast('Not enough letters'); return;
-  }
-  const word = currentGuess.join('');
-  const result = evaluate(word);
-  reveal(currentRow, word, result, true);
-
-  guesses.push(word);
-  currentGuess = [];
-
-  const won = word === target;
-  if (won || guesses.length >= MAX_GUESSES) {
-    gameOver = true;
-    const delay = WORD_LENGTH * 320 + 200;
-    if (won) {
-      const msgs = ['Genius!','Magnificent!','Impressive!','Splendid!','Great!','Phew!'];
-      setTimeout(() => showToast(msgs[guesses.length - 1] || 'Nice!'), delay);
-    } else {
-      setTimeout(() => showToast(target, 3500), delay);
-    }
-    setTimeout(() => endGame(won), delay + 1600);
-  } else {
-    currentRow++;
-  }
-  saveLocal();
-}
-
-// ── Evaluate ──
-function evaluate(word) {
-  const result   = Array(WORD_LENGTH).fill('absent');
-  const tArr     = target.split('');
-  const remaining= [...tArr];
-  for (let i = 0; i < WORD_LENGTH; i++) {
-    if (word[i] === tArr[i]) { result[i] = 'correct'; remaining[i] = null; }
-  }
-  for (let i = 0; i < WORD_LENGTH; i++) {
-    if (result[i] === 'correct') continue;
-    const idx = remaining.indexOf(word[i]);
-    if (idx !== -1) { result[i] = 'present'; remaining[idx] = null; }
-  }
-  return result;
-}
-
-// ── Reveal tiles ──
-const STATE_PRIORITY = { correct: 3, present: 2, absent: 1 };
-
-function reveal(row, word, result, animate) {
-  result.forEach((state, i) => {
-    const tile = getTile(row, i);
-    const letter = word[i];
-    if (!animate) {
-      tile.textContent = letter;
-      tile.dataset.filled = '1';
-      tile.dataset.state = state;
-      updateKeyState(letter, state);
-      return;
-    }
-    setTimeout(() => {
-      tile.classList.add('flip');
-      setTimeout(() => {
-        tile.dataset.state = state;
-        updateKeyState(letter, state);
-      }, 250);
-      setTimeout(() => tile.classList.remove('flip'), 520);
-    }, i * 320);
-  });
-}
-
-function updateKeyState(letter, state) {
-  const cur = letterStates[letter];
-  if (!cur || STATE_PRIORITY[state] > STATE_PRIORITY[cur]) {
-    letterStates[letter] = state;
-    const key = getKey(letter);
-    if (key) key.dataset.state = state;
-  }
-}
-
-// ── Animations ──
-function shakeRow(row) {
-  const rowEl = document.getElementById(`row-${row}`);
-  rowEl.classList.add('shake');
-  setTimeout(() => rowEl.classList.remove('shake'), 500);
-}
-
-function bounceRow(row) {
-  for (let c = 0; c < WORD_LENGTH; c++) {
-    const tile = getTile(row, c);
-    setTimeout(() => {
-      tile.classList.add('bounce');
-      setTimeout(() => tile.classList.remove('bounce'), 600);
-    }, c * 100);
-  }
-}
-
-// ── Toast ──
-function showToast(msg, duration = 1200) {
-  const wrap = document.getElementById('toast-wrap');
-  const el   = document.createElement('div');
-  el.className = 'wordle-toast';
-  el.textContent = msg;
-  wrap.appendChild(el);
-  setTimeout(() => {
-    el.style.transition = 'opacity 0.3s';
-    el.style.opacity = '0';
-    setTimeout(() => el.remove(), 350);
-  }, duration);
-}
-
-function applyCatalogHint() {
-  if (hintPos < 0 || hintPos >= WORD_LENGTH) return;
-  const hintBar = document.getElementById('hint-bar');
-  const hintBtn = document.getElementById('hint-btn');
-  hintBar.textContent = `Catalog hint: Letter ${hintPos + 1} is ${target[hintPos]}.`;
-  hintBtn.disabled = true;
-}
-
-function useCatalogHint() {
-  if (gameOver) return;
-  if (hintUsed) {
-    showToast('Hint already used');
+function renderHistory() {
+  const list = document.getElementById('pin-history-list');
+  list.innerHTML = '';
+  if (state.guesses.length === 0) {
+    const li = document.createElement('li');
+    li.textContent = 'No guesses yet.';
+    list.appendChild(li);
     return;
   }
-  hintPos = Math.floor(Math.random() * WORD_LENGTH);
-  hintUsed = true;
-  applyCatalogHint();
-  showToast('Catalog hint revealed');
-  saveLocal();
-}
-
-// ── Local storage ──
-function saveLocal() {
-  localStorage.setItem('fopl_shelfle_date',    new Date().toDateString());
-  localStorage.setItem('fopl_shelfle_guesses', JSON.stringify(guesses));
-  localStorage.setItem('fopl_shelfle_state',
-    gameOver ? (guesses.includes(target) ? 'won' : 'lost') : 'playing');
-  localStorage.setItem('fopl_shelfle_hint_used', hintUsed ? '1' : '0');
-  localStorage.setItem('fopl_shelfle_hint_pos', String(hintPos));
-}
-
-function loadLocal() {
-  if (localStorage.getItem('fopl_shelfle_date') !== new Date().toDateString()) return;
-  const saved = JSON.parse(localStorage.getItem('fopl_shelfle_guesses') || '[]');
-  const state = localStorage.getItem('fopl_shelfle_state') || 'playing';
-  hintUsed = localStorage.getItem('fopl_shelfle_hint_used') === '1';
-  hintPos = Number(localStorage.getItem('fopl_shelfle_hint_pos') || '-1');
-  if (hintUsed) applyCatalogHint();
-  saved.forEach((word, r) => {
-    const result = evaluate(word);
-    reveal(r, word, result, false);
+  state.guesses.forEach((guess) => {
+    const li = document.createElement('li');
+    li.textContent = guess;
+    list.appendChild(li);
   });
-  guesses    = saved;
-  currentRow = saved.length;
-  if (state !== 'playing') {
-    gameOver = true;
-    if (saved.length > 0 && saved[saved.length-1] === target) bounceRow(saved.length - 1);
-    setTimeout(openStats, 600);
+}
+
+function renderHud() {
+  animateScoreTo(state.score);
+  document.getElementById('pin-attempts').textContent = `${state.attempts} / ${MAX_ATTEMPTS}`;
+  document.getElementById('pin-length').textContent = String(puzzle.answer.length);
+}
+
+function animateScoreTo(target) {
+  const el = document.getElementById('pin-score');
+  const start = Number.isFinite(displayedScore) ? displayedScore : target;
+  const delta = target - start;
+  if (delta === 0) {
+    el.textContent = String(target);
+    return;
   }
+  const startTime = performance.now();
+  const duration = 320;
+  const hudBox = el.closest('.pin-hud-box');
+  if (hudBox) {
+    hudBox.classList.add('pulse');
+    setTimeout(() => hudBox.classList.remove('pulse'), 260);
+  }
+
+  function frame(now) {
+    const t = Math.min(1, (now - startTime) / duration);
+    const eased = 1 - Math.pow(1 - t, 3);
+    displayedScore = Math.round(start + delta * eased);
+    el.textContent = String(displayedScore);
+    if (t < 1) requestAnimationFrame(frame);
+  }
+
+  requestAnimationFrame(frame);
 }
 
-// ── Backend stats ──
-async function fetchStats() {
-  const user = JSON.parse(localStorage.getItem('fopl_user') || 'null');
-  if (!user) return null;
-  try {
-    const res = await fetch(`${BACKEND}/api/fopl/puzzle/stats?game=shelfle`, { credentials: 'include' });
-    if (res.ok) return await res.json();
-  } catch {}
-  return null;
+function lockIfDone() {
+  const done = state.solved || state.lost;
+  document.getElementById('pin-input').disabled = done;
+  document.querySelector('#pin-form button[type="submit"]').disabled = done;
+  document.getElementById('pin-reveal').disabled = done || state.clueIndex >= puzzle.clues.length - 1;
 }
 
-async function postResult(won, numGuesses) {
+async function postResult(solved, score) {
   const user = JSON.parse(localStorage.getItem('fopl_user') || 'null');
   if (!user) return;
   try {
-    const res = await fetch(`${BACKEND}/api/fopl/puzzle/stats`, {
-      method: 'POST', credentials: 'include',
+    await fetch(`${BACKEND}/api/fopl/puzzle/stats`, {
+      method: 'POST',
+      credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ game: 'shelfle', won, guesses: won ? numGuesses : null }),
+      body: JSON.stringify({ game: 'pinshelf', won: !!solved, guesses: solved ? score : null })
     });
-    if (res.ok) stats = await res.json();
   } catch {}
 }
 
-// ── End game ──
-async function endGame(won) {
-  if (won) bounceRow(guesses.length - 1);
-  await postResult(won, guesses.length);
-  if (!stats) stats = await fetchStats();
-  openStats(won ? 'won' : 'lost');
+function addOverallProgress(game, points, won) {
+  const overall = JSON.parse(localStorage.getItem('fopl_games_overall_v1') || '{"xp":0,"sessions":0,"wins":0,"byGame":{}}');
+  overall.xp = Number(overall.xp || 0) + Math.max(0, Number(points || 0));
+  overall.sessions = Number(overall.sessions || 0) + 1;
+  if (won) overall.wins = Number(overall.wins || 0) + 1;
+  overall.byGame = overall.byGame || {};
+  const current = Number(overall.byGame[game] || 0);
+  overall.byGame[game] = current + Math.max(0, Number(points || 0));
+  overall.updatedAt = Date.now();
+  localStorage.setItem('fopl_games_overall_v1', JSON.stringify(overall));
 }
 
-// ── Stats modal ──
-function openStats(outcome) {
-  const overlay = document.getElementById('stats-overlay');
-  const title   = document.getElementById('modal-title');
-  const body    = document.getElementById('modal-body');
-  const user    = JSON.parse(localStorage.getItem('fopl_user') || 'null');
+async function finalizeRound() {
+  if (state.counted) return;
+  if (mode !== 'daily') {
+    state.counted = true;
+    return;
+  }
+  const stats = loadStats();
+  stats.played += 1;
+  if (state.solved) {
+    stats.solved += 1;
+    stats.streak += 1;
+    stats.maxStreak = Math.max(stats.maxStreak, stats.streak);
+  } else {
+    stats.streak = 0;
+  }
+  saveStats(stats);
+  syncStatsView(stats);
+  state.counted = true;
+  dailyState = state;
+  saveState();
+  const points = state.solved ? Math.max(25, state.score) : 10;
+  addOverallProgress('pinshelf', points, state.solved);
+  await postResult(state.solved, state.score);
+}
 
-  if (outcome === 'won') title.textContent = 'You Got It!';
-  else if (outcome === 'lost') title.textContent = 'Nice Try!';
-  else title.textContent = 'Statistics';
+function updateModeUi() {
+  const chip = document.getElementById('pin-mode-chip');
+  const note = document.getElementById('pin-mode-note');
+  if (mode === 'daily') {
+    chip.textContent = 'Daily';
+    chip.classList.remove('practice');
+    note.textContent = 'Daily round counts toward streak and leaderboard stats (when signed in).';
+    document.getElementById('pin-date').textContent = `Daily PinShelf • ${getDateLabel()}`;
+  } else {
+    chip.textContent = 'Practice';
+    chip.classList.add('practice');
+    note.textContent = 'Practice rounds are unlimited and do not affect daily streak or leaderboard stats.';
+    document.getElementById('pin-date').textContent = 'Practice PinShelf • Unlimited Rounds';
+  }
+  document.getElementById('pin-daily').style.display = mode === 'practice' ? 'inline-block' : 'none';
+  document.getElementById('pin-session').textContent = `Practice rounds this visit: ${practiceRoundsThisVisit}`;
+}
 
-  let html = '';
+function refresh() {
+  renderHud();
+  renderClues();
+  renderHistory();
+  lockIfDone();
+}
 
-  if (outcome === 'lost') {
-    html += `<p class="wordle-answer">The word was <strong>${target}</strong></p>`;
+async function submitGuess(e) {
+  e.preventDefault();
+  if (state.solved || state.lost) return;
+
+  const input = document.getElementById('pin-input');
+  const guess = input.value.trim().toUpperCase();
+  if (!guess) {
+    setFeedback('Type a guess first.', 'bad');
+    return;
   }
 
-  if (!user) {
-    html += `<p class="wordle-login-note"><a href="/login" style="color:#023b0f">Sign in</a> to save your stats and track your streak.</p>`;
-  } else if (stats) {
-    html += `
-      <div class="wordle-stats-row">
-        <div class="wordle-stat-item"><div class="wordle-stat-num">${stats.games_played}</div><div class="wordle-stat-lbl">Played</div></div>
-        <div class="wordle-stat-item"><div class="wordle-stat-num">${stats.win_rate}</div><div class="wordle-stat-lbl">Win %</div></div>
-        <div class="wordle-stat-item"><div class="wordle-stat-num">${stats.streak}</div><div class="wordle-stat-lbl">Streak</div></div>
-        <div class="wordle-stat-item"><div class="wordle-stat-num">${stats.max_streak}</div><div class="wordle-stat-lbl">Max</div></div>
-      </div>`;
-    const dist = stats.guess_dist || {};
-    const maxVal = Math.max(...Object.values(dist), 1);
-    const lastNum = outcome === 'won' ? String(guesses.length) : null;
-    html += `<div class="wordle-dist"><h3>Guess Distribution</h3>`;
-    for (let i = 1; i <= 6; i++) {
-      const val = dist[String(i)] || 0;
-      const w   = Math.max(Math.round((val / maxVal) * 100), 8);
-      const cur = String(i) === lastNum ? 'current' : '';
-      html += `<div class="wordle-dist-row">
-        <div class="wordle-dist-num">${i}</div>
-        <div class="wordle-dist-bar-wrap">
-          <div class="wordle-dist-bar ${cur}" style="width:${w}%">${val}</div>
-        </div></div>`;
+  state.attempts += 1;
+  state.guesses.push(guess);
+
+  if (guess === puzzle.answer) {
+    state.solved = true;
+    setFeedback(`Correct. The answer is ${puzzle.answer}. Final score: ${state.score}.`, 'good');
+    if (mode === 'daily') {
+      dailyState = state;
+      saveState();
     }
-    html += `</div>`;
+    refresh();
+    await finalizeRound();
+    return;
   }
 
-  if (gameOver) {
-    html += `<button class="wordle-share-btn" onclick="shareResult()">Share Results</button>`;
+  state.score -= 15;
+  clampScore();
+
+  if (state.attempts >= MAX_ATTEMPTS) {
+    state.lost = true;
+    setFeedback(`Round over. The answer was ${puzzle.answer}.`, 'bad');
+    if (mode === 'daily') {
+      dailyState = state;
+      saveState();
+    }
+    refresh();
+    await finalizeRound();
+    return;
   }
 
-  body.innerHTML = html;
-  overlay.classList.add('open');
+  if (state.clueIndex < puzzle.clues.length - 1) state.clueIndex += 1;
+  setFeedback('Not it. A new clue has been revealed.', 'bad');
+  input.select();
+  if (mode === 'daily') {
+    dailyState = state;
+    saveState();
+  }
+  refresh();
 }
 
-function closeStats() {
-  document.getElementById('stats-overlay').classList.remove('open');
+function revealClue() {
+  if (state.solved || state.lost) return;
+  if (state.clueIndex >= puzzle.clues.length - 1) {
+    setFeedback('No more clues available.', 'bad');
+    return;
+  }
+  state.clueIndex += 1;
+  state.score -= 10;
+  clampScore();
+  setFeedback('Additional clue revealed.', 'info');
+  if (mode === 'daily') {
+    dailyState = state;
+    saveState();
+  }
+  refresh();
 }
 
-// ── Share ──
-function shareResult() {
-  const date   = new Date().toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'});
-  const won    = guesses.includes(target);
-  const count  = won ? guesses.length : 'X';
-  let text     = `FOPL Shelfle ${date} ${count}/6\n\n`;
-  guesses.forEach(word => {
-    const result = evaluate(word);
-    text += result.map(s => s === 'correct' ? '🟩' : s === 'present' ? '🟨' : '⬜').join('') + '\n';
-  });
-  text += '\nfopl.powayfriends.org/wordle';
-  navigator.clipboard.writeText(text).then(() => showToast('Copied to clipboard!')).catch(() => showToast('Share copied!'));
+function switchToDaily() {
+  mode = 'daily';
+  dailyPuzzle = getTodayPuzzle();
+  dailyState = loadState();
+  puzzle = dailyPuzzle;
+  state = dailyState;
+  renderedClueIndex = state.clueIndex;
+  displayedScore = state.score;
+  updateModeUi();
+  if (state.solved) setFeedback(`You already solved today. Answer: ${puzzle.answer}.`, 'good');
+  else if (state.lost) setFeedback(`You already finished today. Answer: ${puzzle.answer}.`, 'bad');
+  else setFeedback('Use the clues to identify the hidden word.', 'info');
+  refresh();
+  if (state.solved || state.lost) finalizeRound();
 }
 
-// ── Keyboard listener ──
-document.addEventListener('keydown', e => {
-  if (e.ctrlKey || e.metaKey || e.altKey) return;
-  if (e.key === 'Enter') handleKey('ENTER');
-  else if (e.key === 'Backspace') handleKey('BACKSPACE');
-  else if (/^[a-zA-Z]$/.test(e.key)) handleKey(e.key.toUpperCase());
-});
+function startPracticeRound() {
+  mode = 'practice';
+  practicePuzzle = getPracticePuzzle();
+  practiceState = makePracticeState();
+  puzzle = practicePuzzle;
+  state = practiceState;
+  renderedClueIndex = state.clueIndex;
+  displayedScore = state.score;
+  practiceRoundsThisVisit += 1;
+  updateModeUi();
+  setFeedback('Practice round started. This round does not count toward daily stats.', 'info');
+  refresh();
+}
 
-// ── Nav auth ──
+function boot() {
+  document.getElementById('pin-form').addEventListener('submit', submitGuess);
+  document.getElementById('pin-reveal').addEventListener('click', revealClue);
+  document.getElementById('pin-practice').addEventListener('click', startPracticeRound);
+  document.getElementById('pin-daily').addEventListener('click', switchToDaily);
+
+  syncStatsView(loadStats());
+  switchToDaily();
+}
+
 const foplUser = JSON.parse(localStorage.getItem('fopl_user') || 'null');
 const authItem = document.getElementById('nav-auth-item');
 const authLink = document.getElementById('nav-auth-link');
@@ -744,17 +826,6 @@ if (foplUser && authLink) {
   };
 }
 
-// ── Start ──
-buildBoard();
-buildKeyboard();
-target = getWordOfDay();
-fetchStats().then(s => { stats = s; });
-loadLocal();
-
-// expose for onclick
-window.openStats  = openStats;
-window.closeStats = closeStats;
-window.shareResult= shareResult;
-window.useCatalogHint = useCatalogHint;
+boot();
 }
 </script>

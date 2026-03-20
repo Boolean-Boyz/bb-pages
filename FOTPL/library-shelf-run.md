@@ -76,7 +76,7 @@ description: Play Library Shelf Run and sort misplaced books by call number.
   }
 
   .run-hud {
-    display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+    display: grid; grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 8px; margin-bottom: 12px;
   }
   .hud-box {
@@ -110,15 +110,61 @@ description: Play Library Shelf Run and sort misplaced books by call number.
   .zone-fiction { background: #deefe2; border-color: #4f8f5d; }
   .zone-history { background: #e9f1fb; border-color: #4f729f; }
   .zone-science { background: #f9efdd; border-color: #9a7a3f; }
+  .zone.active-zone {
+    box-shadow: 0 0 0 3px rgba(2,59,15,0.25) inset;
+  }
 
   .book {
     background: #fff3f3; border-color: #bf6c6c; color: #7b2424;
     font-size: 0.7rem; line-height: 1.15; padding: 2px;
   }
+  .book.active-book {
+    background: #fff7d9;
+    border-color: #b39119;
+    color: #5e4b0a;
+    box-shadow: 0 0 0 2px rgba(179,145,25,0.25) inset;
+  }
 
   .cart {
     background: #023b0f; border-color: #023b0f; color: #fff;
     font-size: 0.76rem; line-height: 1.1;
+  }
+  .cart.loaded {
+    background: #7f4f00;
+    border-color: #7f4f00;
+  }
+
+  .run-task {
+    margin: 8px 0 12px;
+    border: 1px solid #d3e3d5;
+    background: #f8fbf8;
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 0.92rem;
+    color: #274127;
+  }
+
+  .run-pad {
+    display: none;
+    margin-top: 12px;
+    width: 180px;
+  }
+  .run-pad-row {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .run-pad-btn {
+    width: 52px;
+    height: 42px;
+    border: 1px solid #c7d7c9;
+    border-radius: 6px;
+    background: #eef6ee;
+    color: #1e3b1f;
+    font-family: 'Cabin', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
   }
 
   .run-controls {
@@ -150,6 +196,7 @@ description: Play Library Shelf Run and sort misplaced books by call number.
   @media (max-width: 680px) {
     .run-hud { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .cell { min-height: 34px; font-size: 0.66rem; }
+    .run-pad { display: block; }
   }
 </style>
 
@@ -190,8 +237,12 @@ description: Play Library Shelf Run and sort misplaced books by call number.
       <div class="hud-box"><div class="hud-label">Sorted</div><div class="hud-num" id="hud-sorted">0 / 4</div></div>
       <div class="hud-box"><div class="hud-label">Moves</div><div class="hud-num" id="hud-moves">0</div></div>
       <div class="hud-box"><div class="hud-label">Timer</div><div class="hud-num" id="hud-time">00:00</div></div>
+      <div class="hud-box"><div class="hud-label">Score</div><div class="hud-num" id="hud-score">0</div></div>
+      <div class="hud-box"><div class="hud-label">Task</div><div class="hud-num" id="hud-task">1 / 4</div></div>
       <div class="hud-box"><div class="hud-label">Best Score</div><div class="hud-num" id="hud-best">--</div></div>
     </div>
+
+    <div class="run-task" id="run-task">Next task: Pick up the highlighted book and deliver it to the highlighted shelf.</div>
 
     <div class="shelf-map" id="shelf-map"></div>
 
@@ -202,6 +253,15 @@ description: Play Library Shelf Run and sort misplaced books by call number.
 
     <div class="run-status" id="run-status">Use arrow keys or WASD to move the cart.</div>
     <div class="run-help" id="run-help">Shelf zones: FIC = Fiction, 900 = History, 500 = Science.</div>
+
+    <div class="run-pad">
+      <div class="run-pad-row"><button class="run-pad-btn" type="button" id="pad-up">Up</button></div>
+      <div class="run-pad-row">
+        <button class="run-pad-btn" type="button" id="pad-left">Left</button>
+        <button class="run-pad-btn" type="button" id="pad-down">Down</button>
+        <button class="run-pad-btn" type="button" id="pad-right">Right</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -232,9 +292,12 @@ const callPool = {
 
 let player = { x: 4, y: 6 };
 let books = [];
+let taskOrder = [];
+let taskIndex = 0;
 let carrying = null;
 let moves = 0;
 let sorted = 0;
+let score = 0;
 let isRunning = false;
 let startTime = 0;
 let timerId = null;
@@ -261,6 +324,8 @@ function setStatus(msg) {
 function setHud() {
   document.getElementById('hud-sorted').textContent = `${sorted} / ${BOOK_COUNT}`;
   document.getElementById('hud-moves').textContent = String(moves);
+  document.getElementById('hud-score').textContent = String(score);
+  document.getElementById('hud-task').textContent = `${Math.min(taskIndex + 1, BOOK_COUNT)} / ${BOOK_COUNT}`;
 }
 
 function setBestHud() {
@@ -269,7 +334,7 @@ function setBestHud() {
     document.getElementById('hud-best').textContent = '--';
     return;
   }
-  document.getElementById('hud-best').textContent = `${best.moves} / ${formatTime(best.timeMs)}`;
+  document.getElementById('hud-best').textContent = `${best.score} / ${formatTime(best.timeMs)}`;
 }
 
 function updateTimer() {
@@ -297,6 +362,32 @@ function zoneAt(x, y) {
 
 function bookAt(x, y) {
   return books.find((b) => b.x === x && b.y === y && !b.sorted) || null;
+}
+
+function currentTaskBook() {
+  if (taskIndex >= taskOrder.length) return null;
+  const id = taskOrder[taskIndex];
+  return books.find((b) => b.id === id) || null;
+}
+
+function zoneLabel(zoneId) {
+  if (zoneId === 'fiction') return 'FIC';
+  if (zoneId === 'history') return '900';
+  return '500';
+}
+
+function updateTaskText() {
+  const taskEl = document.getElementById('run-task');
+  const task = currentTaskBook();
+  if (!task) {
+    taskEl.textContent = 'All books shelved. Start a new round to play again.';
+    return;
+  }
+  if (carrying && carrying.id === task.id) {
+    taskEl.textContent = `Deliver ${task.call} to shelf ${zoneLabel(task.zoneId)}.`;
+    return;
+  }
+  taskEl.textContent = `Pick up ${task.call}, then deliver it to shelf ${zoneLabel(task.zoneId)}.`;
 }
 
 function openCells() {
@@ -335,6 +426,8 @@ function generateBooks() {
       sorted: false
     };
   });
+  taskOrder = books.map((b) => b.id);
+  taskIndex = 0;
 }
 
 function drawMap() {
@@ -349,18 +442,24 @@ function drawMap() {
       const zone = zoneAt(x, y);
       if (zone) {
         cell.classList.add('zone', zone.css);
+        const task = currentTaskBook();
+        if (task && task.zoneId === zone.id && carrying && carrying.id === task.id) {
+          cell.classList.add('active-zone');
+        }
         cell.textContent = zone.label;
       }
 
       const book = bookAt(x, y);
       if (book) {
         cell.className = 'cell book';
+        const task = currentTaskBook();
+        if (task && task.id === book.id) cell.classList.add('active-book');
         cell.textContent = book.call;
       }
 
       if (player.x === x && player.y === y) {
-        cell.className = 'cell cart';
-        cell.textContent = carrying ? 'CART +' : 'CART';
+        cell.className = 'cell cart' + (carrying ? ' loaded' : '');
+        cell.textContent = carrying ? 'LOAD' : 'CART';
       }
 
       map.appendChild(cell);
@@ -372,10 +471,18 @@ function pickUpIfPresent() {
   if (carrying) return;
   const book = bookAt(player.x, player.y);
   if (!book) return;
+  const task = currentTaskBook();
+  if (!task || task.id !== book.id) {
+    setStatus(`That book is out of order. Find ${task ? task.call : 'the next task book'}.`);
+    score = Math.max(0, score - 5);
+    setHud();
+    return;
+  }
   carrying = book;
   book.x = -1;
   book.y = -1;
-  setStatus(`Picked up ${book.call}. Deliver to ${book.zoneId.toUpperCase()}.`);
+  setStatus(`Picked up ${book.call}. Deliver to ${zoneLabel(book.zoneId)}.`);
+  updateTaskText();
 }
 
 function dropIfOnZone() {
@@ -383,18 +490,26 @@ function dropIfOnZone() {
   const zone = zoneAt(player.x, player.y);
   if (!zone) return;
 
+  const task = currentTaskBook();
+  if (!task || carrying.id !== task.id) return;
+
   if (zone.id === carrying.zoneId) {
     carrying.sorted = true;
     carrying = null;
     sorted += 1;
-    setStatus('Great shelving. Keep going!');
+    taskIndex += 1;
+    score += 120;
+    setStatus('Perfect shelving. Next assignment loaded.');
     setHud();
+    updateTaskText();
 
     if (sorted >= BOOK_COUNT) {
       finishRound();
     }
   } else {
     setStatus('Wrong shelf zone. Check the call number range.');
+    score = Math.max(0, score - 10);
+    setHud();
   }
 }
 
@@ -422,16 +537,28 @@ async function postResult(timeMs, moveCount) {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ game: 'library_shelf_run', won: true, guesses: moveCount })
+      body: JSON.stringify({ game: 'library_shelf_run', won: true, guesses: score })
     });
   } catch {}
 }
 
+function addOverallProgress(game, points, won) {
+  const overall = JSON.parse(localStorage.getItem('fopl_games_overall_v1') || '{"xp":0,"sessions":0,"wins":0,"byGame":{}}');
+  overall.xp = Number(overall.xp || 0) + Math.max(0, Number(points || 0));
+  overall.sessions = Number(overall.sessions || 0) + 1;
+  if (won) overall.wins = Number(overall.wins || 0) + 1;
+  overall.byGame = overall.byGame || {};
+  const current = Number(overall.byGame[game] || 0);
+  overall.byGame[game] = current + Math.max(0, Number(points || 0));
+  overall.updatedAt = Date.now();
+  localStorage.setItem('fopl_games_overall_v1', JSON.stringify(overall));
+}
+
 function maybeSaveBest(timeMs, moveCount) {
   const prev = JSON.parse(localStorage.getItem(BEST_KEY) || 'null');
-  const isBetter = !prev || moveCount < prev.moves || (moveCount === prev.moves && timeMs < prev.timeMs);
+  const isBetter = !prev || score > prev.score || (score === prev.score && timeMs < prev.timeMs);
   if (isBetter) {
-    localStorage.setItem(BEST_KEY, JSON.stringify({ moves: moveCount, timeMs }));
+    localStorage.setItem(BEST_KEY, JSON.stringify({ moves: moveCount, timeMs, score }));
   }
   setBestHud();
 }
@@ -439,8 +566,12 @@ function maybeSaveBest(timeMs, moveCount) {
 async function finishRound() {
   stopTimer();
   const timeMs = Date.now() - startTime;
-  setStatus(`Round complete in ${moves} moves and ${formatTime(timeMs)}.`);
+  const timeBonus = Math.max(0, 180 - Math.floor(timeMs / 1000));
+  score += timeBonus;
+  setHud();
+  setStatus(`Round complete. Score ${score} (${moves} moves, ${formatTime(timeMs)}).`);
   maybeSaveBest(timeMs, moves);
+  addOverallProgress('library_shelf_run', score, true);
   await postResult(timeMs, moves);
 }
 
@@ -448,14 +579,18 @@ function resetRound() {
   stopTimer();
   player = { x: 4, y: 6 };
   books = [];
+  taskOrder = [];
+  taskIndex = 0;
   carrying = null;
   moves = 0;
   sorted = 0;
+  score = 0;
   document.getElementById('hud-time').textContent = '00:00';
 
   generateBooks();
   setHud();
-  setStatus('Use arrow keys or WASD to move the cart.');
+  setStatus('Use arrow keys or WASD. Follow the highlighted task order.');
+  updateTaskText();
   drawMap();
 }
 
@@ -474,8 +609,13 @@ function bindControls() {
   });
 
   document.getElementById('show-rules-btn').addEventListener('click', () => {
-    setStatus('Collect a book, then drive onto FIC, 900, or 500 to shelve it. Finish all 4 books.');
+    setStatus('Pick up the highlighted book, then deliver it to the highlighted shelf. Wrong moves reduce score.');
   });
+
+  document.getElementById('pad-up').addEventListener('click', () => movePlayer(0, -1));
+  document.getElementById('pad-down').addEventListener('click', () => movePlayer(0, 1));
+  document.getElementById('pad-left').addEventListener('click', () => movePlayer(-1, 0));
+  document.getElementById('pad-right').addEventListener('click', () => movePlayer(1, 0));
 }
 
 const foplUser = JSON.parse(localStorage.getItem('fopl_user') || 'null');

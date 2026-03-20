@@ -105,8 +105,42 @@ description: Play daily Book Trivia from the Friends of the Poway Library.
     border: 1px solid #cadfca; display: none;
   }
   .trivia-feedback.show { display: block; }
-  .trivia-next {
+  .trivia-mode-row {
+    margin: 0 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .trivia-mode-chip {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    font-weight: 700;
+    border-radius: 999px;
+    padding: 5px 10px;
+    border: 1px solid #bfd1bf;
+    background: #f1f7f1;
+    color: #2f5133;
+  }
+  .trivia-mode-chip.practice {
+    background: #fff6e8;
+    border-color: #e9cf9c;
+    color: #6d4b14;
+  }
+  .trivia-mode-note {
+    margin: 0;
+    font-size: 0.84rem;
+    color: #5d695e;
+    font-weight: 700;
+  }
+  .trivia-actions {
     margin-top: 12px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .trivia-next {
     border: none;
     background: #023b0f;
     color: #fff;
@@ -120,6 +154,32 @@ description: Play daily Book Trivia from the Friends of the Poway Library.
     display: none;
   }
   .trivia-next.show { display: inline-block; }
+  .trivia-btn-alt {
+    border: 1px solid #c7d6c8;
+    background: #f6faf6;
+    color: #1f3d22;
+    border-radius: 6px;
+    padding: 10px 14px;
+    cursor: pointer;
+    font-family: 'Cabin', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.82rem;
+  }
+  .trivia-btn-alt:hover {
+    background: #edf5ed;
+  }
+  .trivia-session {
+    margin-top: 16px;
+    background: #f8fbf8;
+    border: 1px solid #dbe7db;
+    border-radius: 7px;
+    padding: 10px 12px;
+    font-size: 0.84rem;
+    color: #4e5d50;
+    font-weight: 700;
+  }
 
   .stats-row {
     display: grid; grid-template-columns: repeat(4, minmax(0,1fr));
@@ -172,11 +232,20 @@ description: Play daily Book Trivia from the Friends of the Poway Library.
 
   <div class="trivia-card">
     <div class="trivia-date" id="trivia-date"></div>
+    <div class="trivia-mode-row">
+      <span class="trivia-mode-chip" id="trivia-mode-chip">Daily</span>
+      <p class="trivia-mode-note" id="trivia-mode-note">Daily round counts toward streak and overall progress.</p>
+    </div>
     <p class="trivia-progress" id="trivia-progress"></p>
     <h2 class="trivia-question" id="trivia-question"></h2>
     <div class="trivia-options" id="trivia-options"></div>
     <div class="trivia-feedback" id="trivia-feedback"></div>
-    <button type="button" class="trivia-next" id="trivia-next">Next Question</button>
+    <div class="trivia-actions">
+      <button type="button" class="trivia-next" id="trivia-next">Next Question</button>
+      <button type="button" class="trivia-btn-alt" id="trivia-practice">Practice Round (No Daily Count)</button>
+      <button type="button" class="trivia-btn-alt" id="trivia-daily">Back To Daily Round</button>
+    </div>
+    <div class="trivia-session" id="trivia-session">Practice rounds this visit: 0</div>
 
     <div class="stats-row">
       <div class="stat-box"><div class="stat-num" id="stat-played">0</div><div class="stat-label">Rounds</div></div>
@@ -245,6 +314,11 @@ const QUESTIONS = [
   }
 ];
 
+let mode = 'daily';
+let dailyState = null;
+let practiceState = null;
+let practiceRoundsThisVisit = 0;
+
 function getDayId() {
   const epoch = new Date('2024-01-01T00:00:00');
   const today = new Date();
@@ -252,10 +326,9 @@ function getDayId() {
   return String(Math.floor((today - epoch) / 86400000));
 }
 
-function getDailyRoundIndexes() {
-  const day = Number(getDayId());
+function buildSeededIndexes(seedBase) {
   const order = [...Array(QUESTIONS.length).keys()];
-  let seed = day * 7919 + 1237;
+  let seed = seedBase;
   for (let i = order.length - 1; i > 0; i--) {
     seed = (seed * 48271) % 2147483647;
     const j = seed % (i + 1);
@@ -263,11 +336,28 @@ function getDailyRoundIndexes() {
     order[i] = order[j];
     order[j] = t;
   }
+  return order;
+}
+
+function getDailyRoundIndexes() {
+  const day = Number(getDayId());
+  const order = buildSeededIndexes(day * 7919 + 1237);
+  return order.slice(0, Math.min(ROUND_SIZE, QUESTIONS.length));
+}
+
+function getPracticeRoundIndexes() {
+  const noise = Math.floor(Math.random() * 1000000);
+  const seed = Math.floor(Date.now() / 1000) + noise + practiceRoundsThisVisit * 97;
+  const order = buildSeededIndexes(seed);
   return order.slice(0, Math.min(ROUND_SIZE, QUESTIONS.length));
 }
 
 function getDateLabel() {
   return new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+}
+
+function makeRoundState(idxs, roundMode) {
+  return { index: 0, score: 0, answered: [], finished: false, counted: false, idxs, mode: roundMode };
 }
 
 function loadStats() {
@@ -299,6 +389,18 @@ async function postResult(correct) {
   } catch {}
 }
 
+function addOverallProgress(game, points, won) {
+  const overall = JSON.parse(localStorage.getItem('fopl_games_overall_v1') || '{"xp":0,"sessions":0,"wins":0,"byGame":{}}');
+  overall.xp = Number(overall.xp || 0) + Math.max(0, Number(points || 0));
+  overall.sessions = Number(overall.sessions || 0) + 1;
+  if (won) overall.wins = Number(overall.wins || 0) + 1;
+  overall.byGame = overall.byGame || {};
+  const current = Number(overall.byGame[game] || 0);
+  overall.byGame[game] = current + Math.max(0, Number(points || 0));
+  overall.updatedAt = Date.now();
+  localStorage.setItem('fopl_games_overall_v1', JSON.stringify(overall));
+}
+
 function lockChoices(chosen, answer) {
   document.querySelectorAll('.trivia-option').forEach((btn, idx) => {
     btn.disabled = true;
@@ -325,14 +427,34 @@ function clearFeedback() {
   el.textContent = '';
 }
 
+function updateModeBanner() {
+  const chip = document.getElementById('trivia-mode-chip');
+  const note = document.getElementById('trivia-mode-note');
+  if (mode === 'daily') {
+    chip.textContent = 'Daily';
+    chip.classList.remove('practice');
+    note.textContent = 'Daily round counts toward streak and overall progress.';
+  } else {
+    chip.textContent = 'Practice';
+    chip.classList.add('practice');
+    note.textContent = 'Practice rounds do not affect daily streak or daily completion.';
+  }
+  document.getElementById('trivia-session').textContent = `Practice rounds this visit: ${practiceRoundsThisVisit}`;
+}
+
+function updateModeButtons() {
+  document.getElementById('trivia-daily').style.display = mode === 'practice' ? 'inline-block' : 'none';
+}
+
 function loadDayState(dayId, idxs) {
   if (localStorage.getItem(DATE_KEY) !== dayId) {
-    return { index: 0, score: 0, answered: [], finished: false, counted: false, idxs };
+    return makeRoundState(idxs, 'daily');
   }
   const saved = JSON.parse(localStorage.getItem(STATE_KEY) || 'null');
   if (!saved || !Array.isArray(saved.idxs) || saved.idxs.join(',') !== idxs.join(',')) {
-    return { index: 0, score: 0, answered: [], finished: false, counted: false, idxs };
+    return makeRoundState(idxs, 'daily');
   }
+  saved.mode = 'daily';
   return saved;
 }
 
@@ -347,7 +469,11 @@ function renderRound(state) {
   const qIndex = state.idxs[state.index];
   const q = QUESTIONS[qIndex];
 
-  document.getElementById('trivia-date').textContent = `Daily Trivia • ${getDateLabel()}`;
+  updateModeBanner();
+  updateModeButtons();
+  document.getElementById('trivia-date').textContent = mode === 'daily'
+    ? `Daily Trivia • ${getDateLabel()}`
+    : 'Practice Trivia • Unlimited Rounds';
   document.getElementById('trivia-progress').textContent = `Question ${state.index + 1} of ${state.idxs.length} • Score ${state.score}`;
   document.getElementById('trivia-question').textContent = q.question;
   clearFeedback();
@@ -370,7 +496,7 @@ function renderRound(state) {
       lockChoices(idx, q.answer);
       showFeedback(correct, q.fact);
       nextBtn.classList.add('show');
-      saveDayState(state);
+      if (state.mode === 'daily') saveDayState(state);
     });
     optionsWrap.appendChild(btn);
   });
@@ -386,7 +512,7 @@ function renderRound(state) {
 async function finishRound(state) {
   state.finished = true;
 
-  if (!state.counted) {
+  if (state.mode === 'daily' && !state.counted) {
     const stats = loadStats();
     stats.played += 1;
     stats.correct += state.score;
@@ -400,38 +526,68 @@ async function finishRound(state) {
     saveStats(stats);
     syncStatsView(stats);
     await postResult(state.score === state.idxs.length);
+    addOverallProgress('book_trivia', state.score * 30, state.score >= Math.ceil(state.idxs.length * 0.6));
     state.counted = true;
   }
 
-  saveDayState(state);
+  if (state.mode === 'daily') saveDayState(state);
+  updateModeBanner();
+  updateModeButtons();
   document.getElementById('trivia-progress').textContent = `Final Score ${state.score} / ${state.idxs.length}`;
-  document.getElementById('trivia-question').textContent = 'Daily round complete. Come back tomorrow for a fresh set of questions.';
+  document.getElementById('trivia-question').textContent = state.mode === 'daily'
+    ? 'Daily round complete. You can jump into Practice for unlimited rounds.'
+    : 'Practice round complete. Start another practice round or return to Daily.';
   document.getElementById('trivia-options').innerHTML = '';
-  setFeedback(state.score === state.idxs.length ? 'Perfect score. Excellent work.' : `Nice run. You got ${state.score} correct.`);
+  const resultText = state.score === state.idxs.length
+    ? 'Perfect score. Excellent work.'
+    : `Nice run. You got ${state.score} correct.`;
+  setFeedback(state.mode === 'daily' ? resultText : `${resultText} Practice results do not count toward daily progress.`);
   document.getElementById('trivia-next').classList.remove('show');
 }
 
 function runTrivia() {
   const dayId = getDayId();
   const idxs = getDailyRoundIndexes();
-  const state = loadDayState(dayId, idxs);
+  dailyState = loadDayState(dayId, idxs);
+  mode = 'daily';
   const nextBtn = document.getElementById('trivia-next');
 
-  if (state.finished || state.index >= state.idxs.length) {
-    finishRound(state);
+  if (dailyState.finished || dailyState.index >= dailyState.idxs.length) {
+    finishRound(dailyState);
     return;
   }
 
-  renderRound(state);
+  renderRound(dailyState);
   nextBtn.onclick = () => {
-    state.index += 1;
-    if (state.index >= state.idxs.length) {
-      finishRound(state);
+    const active = mode === 'daily' ? dailyState : practiceState;
+    if (!active) return;
+    active.index += 1;
+    if (active.index >= active.idxs.length) {
+      finishRound(active);
       return;
     }
-    saveDayState(state);
-    renderRound(state);
+    if (active.mode === 'daily') saveDayState(active);
+    renderRound(active);
   };
+}
+
+function startPracticeRound() {
+  mode = 'practice';
+  practiceState = makeRoundState(getPracticeRoundIndexes(), 'practice');
+  practiceRoundsThisVisit += 1;
+  renderRound(practiceState);
+}
+
+function showDailyRound() {
+  mode = 'daily';
+  const dayId = getDayId();
+  const idxs = getDailyRoundIndexes();
+  dailyState = loadDayState(dayId, idxs);
+  if (dailyState.finished || dailyState.index >= dailyState.idxs.length) {
+    finishRound(dailyState);
+    return;
+  }
+  renderRound(dailyState);
 }
 
 const foplUser = JSON.parse(localStorage.getItem('fopl_user') || 'null');
@@ -457,5 +613,13 @@ if (foplUser && authLink) {
 
 syncStatsView(loadStats());
 runTrivia();
+
+document.getElementById('trivia-practice').addEventListener('click', () => {
+  startPracticeRound();
+});
+
+document.getElementById('trivia-daily').addEventListener('click', () => {
+  showDailyRound();
+});
 }
 </script>

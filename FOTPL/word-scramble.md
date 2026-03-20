@@ -76,6 +76,65 @@ description: Play daily Word Scramble from the Friends of the Poway Library.
     font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.06em;
     color: #6b756b; margin-bottom: 12px; font-weight: 700;
   }
+  .scramble-mode-row {
+    margin: 0 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .scramble-mode-chip {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    font-weight: 700;
+    border-radius: 999px;
+    padding: 5px 10px;
+    border: 1px solid #bfd1bf;
+    background: #f1f7f1;
+    color: #2f5133;
+  }
+  .scramble-mode-chip.practice {
+    background: #fff6e8;
+    border-color: #e9cf9c;
+    color: #6d4b14;
+  }
+  .scramble-mode-note {
+    margin: 0;
+    font-size: 0.84rem;
+    color: #5d695e;
+    font-weight: 700;
+  }
+  .scramble-actions {
+    margin-top: 12px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .scramble-btn-alt {
+    border: 1px solid #c7d6c8;
+    background: #f6faf6;
+    color: #1f3d22;
+    border-radius: 6px;
+    padding: 10px 14px;
+    cursor: pointer;
+    font-family: 'Cabin', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.82rem;
+  }
+  .scramble-btn-alt:hover { background: #edf5ed; }
+  .scramble-session {
+    margin-top: 12px;
+    background: #f8fbf8;
+    border: 1px solid #dbe7db;
+    border-radius: 7px;
+    padding: 10px 12px;
+    font-size: 0.84rem;
+    color: #4e5d50;
+    font-weight: 700;
+  }
   .scramble-prompt {
     margin: 0 0 10px; color: #2a352a; font-size: 0.98rem;
   }
@@ -161,6 +220,10 @@ description: Play daily Word Scramble from the Friends of the Poway Library.
 
   <div class="scramble-card">
     <div class="scramble-date" id="scramble-date"></div>
+    <div class="scramble-mode-row">
+      <span class="scramble-mode-chip" id="scramble-mode-chip">Daily</span>
+      <p class="scramble-mode-note" id="scramble-mode-note">Daily round counts toward streak and leaderboard stats (when signed in).</p>
+    </div>
     <p class="scramble-prompt">Unscramble the letters to form today\'s word.</p>
     <div class="scramble-letters" id="scramble-letters"></div>
 
@@ -171,6 +234,11 @@ description: Play daily Word Scramble from the Friends of the Poway Library.
 
     <div class="scramble-meta" id="scramble-meta">Attempts left: 5</div>
     <div class="scramble-feedback" id="scramble-feedback"></div>
+    <div class="scramble-actions">
+      <button type="button" class="scramble-btn-alt" id="scramble-practice">Practice Round (No Daily Count)</button>
+      <button type="button" class="scramble-btn-alt" id="scramble-daily">Back To Daily Round</button>
+    </div>
+    <div class="scramble-session" id="scramble-session">Practice rounds this visit: 0</div>
 
     <div class="stats-row">
       <div class="stat-box"><div class="stat-num" id="stat-played">0</div><div class="stat-label">Played</div></div>
@@ -202,6 +270,8 @@ const WORDS = [
 let answer = '';
 let attempts = 0;
 let done = false;
+let mode = 'daily';
+let practiceRoundsThisVisit = 0;
 
 function getDayId() {
   const epoch = new Date('2024-01-01T00:00:00');
@@ -213,6 +283,14 @@ function getDayId() {
 function getTodayWord() {
   const day = Number(getDayId());
   return WORDS[day % WORDS.length].toUpperCase();
+}
+
+function getPracticeWord() {
+  const candidate = WORDS[Math.floor(Math.random() * WORDS.length)].toUpperCase();
+  const daily = getTodayWord();
+  if (WORDS.length < 2 || candidate !== daily) return candidate;
+  const idx = (WORDS.findIndex((w) => w.toUpperCase() === candidate) + 1) % WORDS.length;
+  return WORDS[idx].toUpperCase();
 }
 
 function seededShuffle(word, day) {
@@ -254,9 +332,13 @@ function syncStatsView(stats) {
 
 function updateMeta() {
   const left = Math.max(0, MAX_ATTEMPTS - attempts);
-  document.getElementById('scramble-meta').textContent = done
-    ? 'Come back tomorrow for a new scramble.'
-    : `Attempts left: ${left}`;
+  if (!done) {
+    document.getElementById('scramble-meta').textContent = `Attempts left: ${left}`;
+    return;
+  }
+  document.getElementById('scramble-meta').textContent = mode === 'daily'
+    ? 'Daily round complete. You can play unlimited Practice rounds.'
+    : 'Practice round complete. Start another Practice round any time.';
 }
 
 function showFeedback(text, ok) {
@@ -285,7 +367,20 @@ async function postResult(correct, tries) {
   } catch {}
 }
 
+function addOverallProgress(game, points, won) {
+  const overall = JSON.parse(localStorage.getItem('fopl_games_overall_v1') || '{"xp":0,"sessions":0,"wins":0,"byGame":{}}');
+  overall.xp = Number(overall.xp || 0) + Math.max(0, Number(points || 0));
+  overall.sessions = Number(overall.sessions || 0) + 1;
+  if (won) overall.wins = Number(overall.wins || 0) + 1;
+  overall.byGame = overall.byGame || {};
+  const current = Number(overall.byGame[game] || 0);
+  overall.byGame[game] = current + Math.max(0, Number(points || 0));
+  overall.updatedAt = Date.now();
+  localStorage.setItem('fopl_games_overall_v1', JSON.stringify(overall));
+}
+
 async function finalizeResult(correct) {
+  if (mode !== 'daily') return;
   const stats = loadStats();
   stats.played += 1;
   if (correct) {
@@ -298,6 +393,8 @@ async function finalizeResult(correct) {
   saveStats(stats);
   syncStatsView(stats);
   await postResult(correct, attempts);
+  const points = correct ? Math.max(20, 120 - (attempts - 1) * 20) : 10;
+  addOverallProgress('word_scramble', points, correct);
 }
 
 function loadDayState() {
@@ -309,6 +406,24 @@ function loadDayState() {
 function saveDayState(state) {
   localStorage.setItem(DAY_KEY, getDayId());
   localStorage.setItem(STATE_KEY, JSON.stringify(state));
+}
+
+function updateModeUi() {
+  const chip = document.getElementById('scramble-mode-chip');
+  const note = document.getElementById('scramble-mode-note');
+  if (mode === 'daily') {
+    chip.textContent = 'Daily';
+    chip.classList.remove('practice');
+    note.textContent = 'Daily round counts toward streak and leaderboard stats (when signed in).';
+    document.getElementById('scramble-date').textContent = `Daily Scramble • ${new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}`;
+  } else {
+    chip.textContent = 'Practice';
+    chip.classList.add('practice');
+    note.textContent = 'Practice rounds are unlimited and do not affect daily streak or leaderboard stats.';
+    document.getElementById('scramble-date').textContent = 'Practice Scramble • Unlimited Rounds';
+  }
+  document.getElementById('scramble-daily').style.display = mode === 'practice' ? 'inline-block' : 'none';
+  document.getElementById('scramble-session').textContent = `Practice rounds this visit: ${practiceRoundsThisVisit}`;
 }
 
 function restoreState(saved) {
@@ -342,7 +457,7 @@ function bindForm() {
 
     if (guess === answer) {
       showFeedback(`Solved in ${attempts} attempt${attempts === 1 ? '' : 's'}!`, true);
-      saveDayState({ status: 'won', attempts });
+      if (mode === 'daily') saveDayState({ status: 'won', attempts });
       disableInput();
       await finalizeResult(true);
       return;
@@ -350,7 +465,7 @@ function bindForm() {
 
     if (attempts >= MAX_ATTEMPTS) {
       showFeedback(`Out of attempts. The answer was ${answer}.`, false);
-      saveDayState({ status: 'lost', attempts });
+      if (mode === 'daily') saveDayState({ status: 'lost', attempts });
       disableInput();
       await finalizeResult(false);
       return;
@@ -358,23 +473,47 @@ function bindForm() {
 
     const hint = answer.slice(0, Math.min(2, attempts));
     showFeedback(`Not quite. Hint: starts with ${hint}`, false);
-    saveDayState({ status: 'playing', attempts });
+    if (mode === 'daily') saveDayState({ status: 'playing', attempts });
     updateMeta();
     input.select();
   });
 }
 
-function setupGame() {
-  const dayId = Number(getDayId());
-  answer = getTodayWord();
-  const scrambled = seededShuffle(answer, dayId);
-
-  document.getElementById('scramble-date').textContent = `Daily Scramble • ${new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}`;
-  document.getElementById('scramble-letters').textContent = scrambled;
-
+function drawRound(word, seed) {
+  answer = word;
+  attempts = 0;
+  done = false;
+  document.getElementById('scramble-input').value = '';
+  document.getElementById('scramble-input').disabled = false;
+  document.querySelector('.scramble-submit').disabled = false;
+  document.getElementById('scramble-feedback').className = 'scramble-feedback';
+  document.getElementById('scramble-feedback').textContent = '';
+  document.getElementById('scramble-letters').textContent = seededShuffle(answer, seed);
+  updateModeUi();
   updateMeta();
-  bindForm();
+}
+
+function showDailyRound() {
+  mode = 'daily';
+  const daySeed = Number(getDayId());
+  drawRound(getTodayWord(), daySeed);
   restoreState(loadDayState());
+}
+
+function startPracticeRound() {
+  mode = 'practice';
+  practiceRoundsThisVisit += 1;
+  const word = getPracticeWord();
+  const seed = Math.floor(Date.now() / 1000) + practiceRoundsThisVisit * 37;
+  drawRound(word, seed);
+  showFeedback('Practice round started. This round does not count toward daily stats.', true);
+}
+
+function setupGame() {
+  bindForm();
+  document.getElementById('scramble-practice').addEventListener('click', startPracticeRound);
+  document.getElementById('scramble-daily').addEventListener('click', showDailyRound);
+  showDailyRound();
 }
 
 const foplUser = JSON.parse(localStorage.getItem('fopl_user') || 'null');

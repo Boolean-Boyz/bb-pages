@@ -62,6 +62,56 @@ description: Play word games and puzzles from the Friends of the Poway Library.
   }
   .fopl-hero p { font-size: 1.05rem; opacity: 0.85; margin: 0; }
 
+  .fopl-overall {
+    max-width: 1100px;
+    margin: 20px auto 0;
+    padding: 0 40px;
+  }
+  .overall-card {
+    background: #ffffff;
+    border: 1px solid #d6e2d6;
+    border-top: 4px solid #023b0f;
+    border-radius: 8px;
+    box-shadow: 0 2px 12px rgba(2,59,15,0.09);
+    padding: 18px 20px;
+  }
+  .overall-title {
+    margin: 0 0 10px;
+    font-family: 'Cabin', sans-serif;
+    color: #023b0f;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.95rem;
+    border: none;
+  }
+  .overall-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .overall-stat {
+    background: #f1f7f1;
+    border: 1px solid #dce8dc;
+    border-radius: 7px;
+    text-align: center;
+    padding: 10px;
+  }
+  .overall-stat-num {
+    font-family: 'Cabin', sans-serif;
+    font-size: 1.28rem;
+    color: #023b0f;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .overall-stat-lbl {
+    margin-top: 4px;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #687468;
+    font-weight: 700;
+  }
+
   .fopl-games {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -152,13 +202,25 @@ description: Play word games and puzzles from the Friends of the Poway Library.
   <p>Challenge your mind. Track your streaks. Beat your high scores.</p>
 </div>
 
+<div class="fopl-overall">
+  <div class="overall-card">
+    <h2 class="overall-title">Overall Progress</h2>
+    <div class="overall-grid">
+      <div class="overall-stat"><div class="overall-stat-num" id="overall-level">1</div><div class="overall-stat-lbl">Level</div></div>
+      <div class="overall-stat"><div class="overall-stat-num" id="overall-xp">0</div><div class="overall-stat-lbl">Total XP</div></div>
+      <div class="overall-stat"><div class="overall-stat-num" id="overall-sessions">0</div><div class="overall-stat-lbl">Sessions</div></div>
+      <div class="overall-stat"><div class="overall-stat-num" id="overall-wins">0%</div><div class="overall-stat-lbl">Win Rate</div></div>
+    </div>
+  </div>
+</div>
+
 <div class="fopl-games">
 
   <div class="game-card">
     <div class="game-card-icon">WDL</div>
     <span class="game-card-badge">Live</span>
-    <h2>Shelfle</h2>
-    <p>Guess the 5-letter word in 6 tries, with one Catalog Hint to reveal a letter position.</p>
+    <h2>PinShelf</h2>
+    <p>A clue-based daily challenge inspired by Pinpoint. Guess the hidden library word as clues unlock.</p>
     <a class="play-btn" href="/wordle">Play Now</a>
   </div>
 
@@ -195,6 +257,17 @@ description: Play word games and puzzles from the Friends of the Poway Library.
 
 <script>
 {
+  const overall = JSON.parse(localStorage.getItem('fopl_games_overall_v1') || '{"xp":0,"sessions":0,"wins":0}');
+  const sessions = Number(overall.sessions || 0);
+  const wins = Number(overall.wins || 0);
+  const xp = Number(overall.xp || 0);
+  const winPct = sessions ? Math.round((wins / sessions) * 100) : 0;
+  const level = Math.floor(xp / 500) + 1;
+  document.getElementById('overall-level').textContent = String(level);
+  document.getElementById('overall-xp').textContent = String(xp);
+  document.getElementById('overall-sessions').textContent = String(sessions);
+  document.getElementById('overall-wins').textContent = `${winPct}%`;
+
   const foplUser = JSON.parse(localStorage.getItem('fopl_user') || 'null');
   const authItem = document.getElementById('nav-auth-item');
   const authLink = document.getElementById('nav-auth-link');
