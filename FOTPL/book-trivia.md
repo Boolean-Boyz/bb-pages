@@ -603,6 +603,7 @@ if (foplUser && authLink) {
   document.addEventListener('click', (e) => {
     if (!authItem.contains(e.target)) dropdown.classList.remove('open');
   });
+
   signoutBtn.onclick = async (e) => {
     e.preventDefault();
     await fetch(`${BACKEND}/api/fopl/login`, { method: 'DELETE', credentials: 'include' }).catch(() => {});
