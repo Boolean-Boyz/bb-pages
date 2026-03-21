@@ -193,7 +193,7 @@ description: Play daily Word Scramble from the Friends of the Poway Library.
 
 <nav class="fopl-nav">
   <div class="fopl-logo-wrap">
-    <img src="https://img1.wsimg.com/isteam/ip/1261387c-c13d-44e7-b4b8-53ebdce2bc66/fopllogo1B.jpg"
+    <img src="/FOTPL/newfopllogo.png"
          alt="Friends of the Poway Library" />
   </div>
   <ul class="fopl-nav-links">

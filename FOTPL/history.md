@@ -116,13 +116,12 @@ description: The history of the Friends of the Poway Library organization.
 
 <nav class="fopl-nav">
   <div class="fopl-logo-wrap">
-    <img src="https://img1.wsimg.com/isteam/ip/1261387c-c13d-44e7-b4b8-53ebdce2bc66/fopllogo1B.jpg"
+    <img src="/FOTPL/newfopllogo.png"
          alt="Friends of the Poway Library" />
   </div>
   <ul class="fopl-nav-links">
     <li><a href="/home">Home</a></li>
     <li class="active"><a href="/history">History</a></li>
-    <li><a href="/catalog">Catalog</a></li>
     <li><a href="/bookstore">Bookstore</a></li>
     <li><a href="/news">Newsletters</a></li>
     <li><a href="/puzzles">Puzzles</a></li>

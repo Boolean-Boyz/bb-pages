@@ -298,6 +298,177 @@ description: Friends of the Poway Library Bookstore - Unique gently used books, 
     color: #fff;
   }
 
+  /* ── Inline catalog ── */
+  .fopl-catalog-section {
+    margin-bottom: 36px;
+  }
+
+  .fopl-catalog-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  .fopl-catalog-header h3 {
+    font-family: 'Cabin', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #023b0f;
+    margin: 0;
+    border: none;
+  }
+
+  .fopl-catalog-controls {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .fopl-catalog-controls input {
+    padding: 8px 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-family: 'Lato', sans-serif;
+    outline: none;
+    width: 220px;
+    transition: border-color 0.2s;
+  }
+
+  .fopl-catalog-controls input:focus { border-color: #023b0f; }
+
+  .fopl-catalog-controls select {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-family: 'Lato', sans-serif;
+    background: #fff;
+    outline: none;
+    cursor: pointer;
+  }
+
+  .fopl-catalog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .fopl-book-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+  }
+
+  .fopl-book-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(2,59,15,0.15);
+  }
+
+  .fopl-book-cover {
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.2rem;
+    flex-shrink: 0;
+  }
+
+  .fopl-book-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .fopl-book-info {
+    padding: 10px 12px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .fopl-book-title {
+    font-family: 'Cabin', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #111;
+    line-height: 1.3;
+  }
+
+  .fopl-book-author {
+    font-size: 0.78rem;
+    color: #666;
+  }
+
+  .fopl-book-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 6px;
+  }
+
+  .fopl-book-price {
+    font-family: 'Cabin', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #023b0f;
+  }
+
+  .fopl-book-age {
+    font-size: 0.72rem;
+    padding: 2px 7px;
+    border-radius: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .age-kids      { background: #fff3cd; color: #856404; }
+  .age-middle    { background: #d1ecf1; color: #0c5460; }
+  .age-ya        { background: #d4edda; color: #155724; }
+  .age-adult     { background: #f8d7da; color: #721c24; }
+
+  .fopl-catalog-footer {
+    text-align: center;
+    margin-top: 4px;
+  }
+
+  .fopl-catalog-footer a {
+    color: #023b0f;
+    font-family: 'Cabin', sans-serif;
+    font-weight: 700;
+    font-size: 0.88rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    border-bottom: 2px solid #023b0f;
+    padding-bottom: 1px;
+  }
+
+  .fopl-catalog-footer a:hover { opacity: 0.7; }
+
+  .fopl-catalog-empty {
+    text-align: center;
+    color: #888;
+    font-style: italic;
+    padding: 32px 0;
+    font-size: 0.95rem;
+  }
+
   /* ── Book request section ── */
   .fopl-request {
     background: #f9f9f9;
@@ -429,15 +600,14 @@ description: Friends of the Poway Library Bookstore - Unique gently used books, 
   <nav class="fopl-nav">
     <div class="fopl-logo-wrap">
       <img
-        src="https://img1.wsimg.com/isteam/ip/1261387c-c13d-44e7-b4b8-53ebdce2bc66/fopllogo1B.jpg"
+        src="/FOTPL/newfopllogo.png"
         alt="Friends of the Poway Library"
       />
     </div>
     <ul class="fopl-nav-links">
       <li><a href="/home">Home</a></li>
       <li><a href="/history">History</a></li>
-      <li><a href="/catalog">Catalog</a></li>
-      <li class="active"><a href="/bookstore">Bookstore</a></li>
+        <li class="active"><a href="/bookstore">Bookstore</a></li>
       <li><a href="/news">Newsletters</a></li>
       <li><a href="/puzzles">Puzzles</a></li>
       <li><a href="/contact">Contact Us</a></li>
@@ -542,6 +712,39 @@ description: Friends of the Poway Library Bookstore - Unique gently used books, 
 
     <hr class="fopl-divider">
 
+    <!-- Inline Catalog -->
+    <div class="fopl-catalog-section">
+      <div class="fopl-catalog-header">
+        <h3>Browse Our Inventory</h3>
+        <div class="fopl-catalog-controls">
+          <input type="text" id="bc-search" placeholder="Search title, author, series..." oninput="bcFilter()" />
+          <select id="bc-age" onchange="bcFilter()">
+            <option value="">All Ages</option>
+            <option value="Kids">Kids</option>
+            <option value="Middle Grade">Middle Grade</option>
+            <option value="YA">YA</option>
+            <option value="Adult">Adult</option>
+          </select>
+          <select id="bc-condition" onchange="bcFilter()">
+            <option value="">Any Condition</option>
+            <option value="Like New">Like New</option>
+            <option value="Good">Good</option>
+            <option value="Fair">Fair</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="fopl-catalog-grid" id="bc-grid">
+        <div class="fopl-catalog-empty">Loading inventory…</div>
+      </div>
+
+      <div class="fopl-catalog-footer">
+        <a href="/catalog">View Full Catalog &rarr;</a>
+      </div>
+    </div>
+
+    <hr class="fopl-divider">
+
     <!-- Book request form -->
     <div class="fopl-request">
       <h3>Request a Book</h3>
@@ -637,6 +840,76 @@ description: Friends of the Poway Library Bookstore - Unique gently used books, 
   window.submitBookRequest = submitBookRequest;
 
   loadHours();
+
+  // ── Inline catalog ──────────────────────────────────────────────────────────
+  let bcAllBooks = [];
+
+  const AGE_COLORS = {
+    'Kids':         'age-kids',
+    'Middle Grade': 'age-middle',
+    'YA':           'age-ya',
+    'Adult':        'age-adult',
+  };
+
+  function bcRender(books) {
+    const grid = document.getElementById('bc-grid');
+    if (!books.length) {
+      grid.innerHTML = '<div class="fopl-catalog-empty">No books matched your search.</div>';
+      return;
+    }
+    grid.innerHTML = books.slice(0, 24).map(b => {
+      const ageClass = AGE_COLORS[b.age_group] || 'age-adult';
+      const coverHtml = b.isbn
+        ? `<img src="https://covers.openlibrary.org/b/isbn/${b.isbn}-M.jpg"
+               alt="${b.title}"
+               onerror="this.style.display='none';this.parentElement.style.fontSize='2.5rem';this.parentElement.textContent='📚';">`
+        : '📚';
+      const series = b.series ? `<div class="fopl-book-author" style="font-style:italic">${b.series}${b.series_num ? ' #' + b.series_num : ''}</div>` : '';
+      return `
+        <div class="fopl-book-card" onclick="window.location='/catalog'">
+          <div class="fopl-book-cover">${coverHtml}</div>
+          <div class="fopl-book-info">
+            <div class="fopl-book-title">${b.title}</div>
+            <div class="fopl-book-author">${b.author}</div>
+            ${series}
+            <div class="fopl-book-meta">
+              <span class="fopl-book-price">$${parseFloat(b.price).toFixed(2)}</span>
+              <span class="fopl-book-age ${ageClass}">${b.age_group}</span>
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  async function bcLoad() {
+    try {
+      const res = await fetch(`${BACKEND_URL}/api/fopl/books`);
+      if (!res.ok) throw new Error();
+      bcAllBooks = await res.json();
+      bcRender(bcAllBooks);
+    } catch {
+      document.getElementById('bc-grid').innerHTML =
+        '<div class="fopl-catalog-empty">Could not load inventory. <a href="/catalog">Try the full catalog page.</a></div>';
+    }
+  }
+
+  function bcFilter() {
+    const q   = (document.getElementById('bc-search').value || '').toLowerCase().trim();
+    const age = document.getElementById('bc-age').value;
+    const cond = document.getElementById('bc-condition').value;
+    let books = bcAllBooks;
+    if (q)    books = books.filter(b =>
+      (b.title  || '').toLowerCase().includes(q) ||
+      (b.author || '').toLowerCase().includes(q) ||
+      (b.series || '').toLowerCase().includes(q) ||
+      (b.genre  || '').toLowerCase().includes(q));
+    if (age)  books = books.filter(b => b.age_group === age);
+    if (cond) books = books.filter(b => b.condition === cond);
+    bcRender(books);
+  }
+
+  window.bcFilter = bcFilter;
+  bcLoad();
 
   // ── Auth nav dropdown ──
   const foplUser = JSON.parse(localStorage.getItem('fopl_user') || 'null');
