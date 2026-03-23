@@ -314,7 +314,7 @@ description: Browse and search all available books at the Friends of the Poway L
 <!-- Nav -->
 <nav class="fopl-nav">
   <div class="fopl-logo-wrap">
-    <img src="/FOTPL/newfopllogo.png"
+    <img src="/FOTPL/fopllogo.png"
          alt="Friends of the Poway Library" />
   </div>
   <ul class="fopl-nav-links">

@@ -600,7 +600,7 @@ description: Friends of the Poway Library Bookstore - Unique gently used books, 
   <nav class="fopl-nav">
     <div class="fopl-logo-wrap">
       <img
-        src="/FOTPL/newfopllogo.png"
+        src="/FOTPL/fopllogo.png"
         alt="Friends of the Poway Library"
       />
     </div>
@@ -707,6 +707,13 @@ description: Friends of the Poway Library Bookstore - Unique gently used books, 
           onerror="this.src='https://via.placeholder.com/400x300?text=Stop+By+%26+Chat'"
         />
         <div class="fopl-gallery-caption">Stop by and chat. We just might have what you are looking for.</div>
+      </div>
+      <div class="fopl-gallery-item">
+        <img
+          src="/FOTPL/bookstoresign.png"
+          alt="Friends of the Poway Library Bookstore Sign"
+        />
+        <div class="fopl-gallery-caption">Find us at 13137 Poway Rd — look for our sign!</div>
       </div>
     </div>
 

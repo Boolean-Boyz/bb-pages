@@ -21,7 +21,46 @@ description: Friends of the Poway Library — supporting literacy, community pro
     padding: 0 30px;
     flex-wrap: wrap;
   }
-  .fopl-logo-wrap img { height: 104px; width: auto; padding: 10px 0; display: block; }
+  .fopl-logo-wrap img { height: 208px; width: auto; padding: 10px 0; display: block; }
+
+  /* ── Photo Header ── */
+  .fopl-photo-header {
+    display: flex;
+    align-items: stretch;
+    height: 300px;
+    overflow: hidden;
+    position: relative;
+  }
+  .fopl-photo-header img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+  .fopl-photo-header-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(2,59,15,0.50);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .fopl-photo-header-overlay h2 {
+    font-family: 'Cabin', sans-serif;
+    font-size: 2.6rem;
+    font-weight: 700;
+    color: #fff;
+    text-align: center;
+    letter-spacing: 0.03em;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    margin: 0;
+    border: none;
+  }
+  @media (max-width: 640px) {
+    .fopl-photo-header { height: 180px; }
+    .fopl-photo-header-overlay h2 { font-size: 1.5rem; }
+  }
   .fopl-nav-links { display: flex; list-style: none; margin: 0; padding: 0; }
   .fopl-nav-links li a {
     display: block; color: #fff; text-decoration: none;
@@ -216,7 +255,7 @@ description: Friends of the Poway Library — supporting literacy, community pro
 <!-- Nav -->
 <nav class="fopl-nav">
   <div class="fopl-logo-wrap">
-    <img src="/FOTPL/newfopllogo.png"
+    <img src="/FOTPL/fopllogo.png"
          alt="Friends of the Poway Library" />
   </div>
   <ul class="fopl-nav-links">
@@ -235,9 +274,17 @@ description: Friends of the Poway Library — supporting literacy, community pro
   </ul>
 </nav>
 
+<!-- Photo Header -->
+<div class="fopl-photo-header">
+  <img src="/FOTPL/foplbuilding.png" alt="Friends of the Poway Library Building">
+  <div class="fopl-photo-header-overlay">
+    <h2>Friends of the Poway Library</h2>
+  </div>
+</div>
+
 <!-- Hero -->
 <div class="fopl-hero">
-  <h1>Friends of the Poway Library</h1>
+
   <p>
     A nonprofit volunteer organization supporting the Poway Library
     through fundraising, advocacy, and community programs since 1978.
