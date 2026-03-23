@@ -284,7 +284,7 @@ description: Friends of the Poway Library — supporting literacy, community pro
 
 <!-- Hero -->
 <div class="fopl-hero">
-
+  <h1>Friends of the Poway Library</h1>
   <p>
     A nonprofit volunteer organization supporting the Poway Library
     through fundraising, advocacy, and community programs since 1978.
