@@ -1,3 +1,9 @@
+---
+layout: none
+title: Titanic Survival Predictor - 1912 Newspaper Edition
+description: Predict Titanic passenger survival with a vintage 1912 newspaper theme using logistic regression
+permalink: /titanic/newspaper
+---
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -484,7 +490,6 @@
     </div>
 
     <script>
-        // Logistic Regression Coefficients (trained on Titanic dataset)
         const COEFFICIENTS = {
             intercept: 5.3041,
             pclass: -1.0866,
@@ -495,61 +500,41 @@
             fare: 0.0024,
             embarked_C: 0.4267,
             embarked_Q: 0.0836,
-            embarked_S: 0  // reference category
+            embarked_S: 0
         };
 
-        // Feature names for display
-        const FEATURE_NAMES = {
-            pclass: 'Passenger Class',
-            sex_male: 'Sex (Male)',
-            age: 'Age',
-            sibsp: 'Siblings/Spouse',
-            parch: 'Parents/Children',
-            fare: 'Fare Paid',
-            embarked: 'Port of Embarkation'
-        };
-
-        // Sigmoid function
         function sigmoid(z) {
             return 1 / (1 + Math.exp(-z));
         }
 
-        // Calculate prediction
         function predict(features) {
             let logOdds = COEFFICIENTS.intercept;
             const contributions = {};
 
-            // Pclass contribution
             const pclassContrib = COEFFICIENTS.pclass * features.pclass;
             logOdds += pclassContrib;
             contributions.pclass = pclassContrib;
 
-            // Sex contribution
             const sexContrib = features.sex === 'male' ? COEFFICIENTS.sex_male : 0;
             logOdds += sexContrib;
             contributions.sex_male = sexContrib;
 
-            // Age contribution
             const ageContrib = COEFFICIENTS.age * features.age;
             logOdds += ageContrib;
             contributions.age = ageContrib;
 
-            // SibSp contribution
             const sibspContrib = COEFFICIENTS.sibsp * features.sibsp;
             logOdds += sibspContrib;
             contributions.sibsp = sibspContrib;
 
-            // Parch contribution
             const parchContrib = COEFFICIENTS.parch * features.parch;
             logOdds += parchContrib;
             contributions.parch = parchContrib;
 
-            // Fare contribution
             const fareContrib = COEFFICIENTS.fare * features.fare;
             logOdds += fareContrib;
             contributions.fare = fareContrib;
 
-            // Embarked contribution
             let embarkedContrib = 0;
             if (features.embarked === 'C') {
                 embarkedContrib = COEFFICIENTS.embarked_C;
@@ -560,11 +545,9 @@
             contributions.embarked = embarkedContrib;
 
             const probability = sigmoid(logOdds);
-
             return { probability, contributions };
         }
 
-        // Update display
         function updateDisplay(name, probability, contributions) {
             const predictionSection = document.getElementById('predictionSection');
             const placeholderText = document.getElementById('placeholderText');
@@ -575,7 +558,6 @@
             predictionSection.classList.add('visible');
             placeholderText.style.display = 'none';
 
-            // Update headline
             const survived = probability >= 0.5;
             predictionHeadline.className = 'prediction-headline ' + (survived ? 'survived' : 'perished');
 
@@ -585,10 +567,8 @@
                 predictionHeadline.innerHTML = `"${name.toUpperCase()}"<br>LOST TO THE DEEP`;
             }
 
-            // Update probability
             probabilityValue.textContent = (probability * 100).toFixed(1) + '%';
 
-            // Update feature table
             const featureData = [
                 { name: 'Sex', key: 'sex_male', value: contributions.sex_male },
                 { name: 'Passenger Class', key: 'pclass', value: contributions.pclass },
@@ -599,10 +579,7 @@
                 { name: 'Embarkation Port', key: 'embarked', value: contributions.embarked }
             ];
 
-            // Sort by absolute value
             featureData.sort((a, b) => Math.abs(b.value) - Math.abs(a.value));
-
-            // Find max for scaling
             const maxAbs = Math.max(...featureData.map(f => Math.abs(f.value)));
 
             featureTable.innerHTML = '';
@@ -628,7 +605,6 @@
             });
         }
 
-        // Form submission
         document.getElementById('passengerForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
@@ -647,7 +623,6 @@
             updateDisplay(name, probability, contributions);
         });
 
-        // Auto-calculate on any input change
         document.querySelectorAll('.form-input').forEach(input => {
             input.addEventListener('change', function() {
                 const form = document.getElementById('passengerForm');
