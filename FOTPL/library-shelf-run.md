@@ -3,54 +3,12 @@ layout: fopl
 title: Library Shelf Run — Friends of the Poway Library
 permalink: /library-shelf-run
 description: Play Library Shelf Run and sort misplaced books by call number.
+fopl_nav_active: puzzles
 ---
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Cabin:wght@400;600;700&family=Lato:wght@300;400;700&display=swap');
-  *, *::before, *::after { box-sizing: border-box; }
-  body { margin: 0; font-family: 'Lato', sans-serif; background: #f4f8f4; }
-
-  .fopl-nav {
-    background: #023b0f; display: flex; align-items: center;
-    justify-content: space-between; padding: 0 30px; flex-wrap: wrap;
-  }
-  .fopl-logo-wrap img { height: 90px; width: auto; padding: 8px 0; display: block; }
-  .fopl-nav-links { display: flex; list-style: none; margin: 0; padding: 0; }
-  .fopl-nav-links li a {
-    display: block; color: #fff; text-decoration: none;
-    font-family: 'Cabin', sans-serif; font-size: 0.88rem; font-weight: 600;
-    text-transform: uppercase; letter-spacing: 0.04em;
-    padding: 16px 16px; transition: background 0.2s;
-  }
-  .fopl-nav-links li a:hover,
-  .fopl-nav-links li.active a { background: rgba(255,255,255,0.12); }
-  .fopl-nav-has-dropdown { position: relative; }
-  .fopl-nav-dropdown {
-    display: none; position: absolute; top: 100%; right: 0;
-    background: #fff; border-radius: 4px; box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-    list-style: none; margin: 0; padding: 6px 0; min-width: 140px; z-index: 1000;
-  }
-  .fopl-nav-dropdown.open { display: block; }
-  .fopl-nav-dropdown li a {
-    display: block; padding: 10px 18px; color: #023b0f;
-    font-family: 'Cabin', sans-serif; font-size: 0.88rem; font-weight: 600;
-    text-transform: uppercase; letter-spacing: 0.04em; text-decoration: none; background: none;
-  }
-  .fopl-nav-dropdown li a:hover { background: #f4f8f4 !important; }
-
-  /* ── Auth nav pill ── */
-  #nav-auth-item a#nav-auth-link {
-    background: rgba(255,255,255,0.15);
-    border: 1.5px solid rgba(255,255,255,0.45);
-    border-radius: 20px;
-    padding: 8px 18px;
-    margin: 8px 0;
-    font-size: 0.85rem;
-    letter-spacing: 0.05em;
-  }
-  #nav-auth-item a#nav-auth-link:hover {
-    background: rgba(255,255,255,0.28);
-  }
+  body { background: #f4f8f4; }
+  .fopl-logo-wrap img { height: 90px; }
 
   .run-wrap {
     max-width: 900px; margin: 0 auto; padding: 20px 16px 44px;
@@ -187,39 +145,12 @@ description: Play Library Shelf Run and sort misplaced books by call number.
     margin-top: 10px; font-size: 0.86rem; color: #586558;
   }
 
-  .fopl-footer {
-    background: #023b0f; color: rgba(255,255,255,0.7);
-    text-align: center; padding: 18px; font-size: 0.85rem;
-  }
-  .fopl-footer a { color: rgba(255,255,255,0.85); text-decoration: none; }
-
   @media (max-width: 680px) {
     .run-hud { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .cell { min-height: 34px; font-size: 0.66rem; }
     .run-pad { display: block; }
   }
 </style>
-
-<nav class="fopl-nav">
-  <div class="fopl-logo-wrap">
-    <img src="/FOTPL/fopllogo.png"
-         alt="Friends of the Poway Library" />
-  </div>
-  <ul class="fopl-nav-links">
-    <li><a href="/home">Home</a></li>
-    <li><a href="/history">History</a></li>
-    <li><a href="/bookstore">Bookstore</a></li>
-    <li><a href="/news">Newsletters</a></li>
-    <li class="active"><a href="/puzzles">Puzzles</a></li>
-    <li><a href="/contact">Contact Us</a></li>
-    <li id="nav-auth-item"><a href="/login" id="nav-auth-link">Sign In</a>
-      <ul class="fopl-nav-dropdown" id="nav-auth-dropdown">
-        <li><a href="/profile">Profile</a></li>
-        <li><a href="#" id="nav-signout-btn">Sign Out</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
 
 <div class="run-wrap">
   <div class="run-header">
@@ -265,14 +196,9 @@ description: Play Library Shelf Run and sort misplaced books by call number.
   </div>
 </div>
 
-<div class="fopl-footer">
-  &copy; 2025 Friends of the Poway Library &mdash;
-  <a href="https://powayfriends.org">powayfriends.org</a>
-</div>
-
 <script>
 {
-const BACKEND = 'http://127.0.0.1:8587';
+const BACKEND = window.FOPL_BACKEND;
 const COLS = 10;
 const ROWS = 7;
 const BOOK_COUNT = 4;
@@ -550,30 +476,9 @@ function movePlayer(dx, dy) {
   drawMap();
 }
 
-async function postResult(timeMs, moveCount) {
-  const user = JSON.parse(localStorage.getItem('fopl_user') || 'null');
-  if (!user) return;
-  try {
-    await fetch(`${BACKEND}/api/fopl/puzzle/stats`, {
-      method: 'POST',
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ game: 'library_shelf_run', won: true, guesses: score })
-    });
-  } catch {}
-}
+async function postResult(timeMs, moveCount) { return window.foplPostResult('library_shelf_run', true, score); }
 
-function addOverallProgress(game, points, won) {
-  const overall = JSON.parse(localStorage.getItem('fopl_games_overall_v1') || '{"xp":0,"sessions":0,"wins":0,"byGame":{}}');
-  overall.xp = Number(overall.xp || 0) + Math.max(0, Number(points || 0));
-  overall.sessions = Number(overall.sessions || 0) + 1;
-  if (won) overall.wins = Number(overall.wins || 0) + 1;
-  overall.byGame = overall.byGame || {};
-  const current = Number(overall.byGame[game] || 0);
-  overall.byGame[game] = current + Math.max(0, Number(points || 0));
-  overall.updatedAt = Date.now();
-  localStorage.setItem('fopl_games_overall_v1', JSON.stringify(overall));
-}
+function addOverallProgress(game, points, won) { return window.foplAddOverallProgress(game, points, won); }
 
 function maybeSaveBest(timeMs, moveCount) {
   const prev = JSON.parse(localStorage.getItem(BEST_KEY) || 'null');
@@ -648,27 +553,6 @@ function bindControls() {
   document.getElementById('pad-down').addEventListener('click', () => movePlayer(0, 1));
   document.getElementById('pad-left').addEventListener('click', () => movePlayer(-1, 0));
   document.getElementById('pad-right').addEventListener('click', () => movePlayer(1, 0));
-}
-
-const foplUser = JSON.parse(localStorage.getItem('fopl_user') || 'null');
-const authItem = document.getElementById('nav-auth-item');
-const authLink = document.getElementById('nav-auth-link');
-const dropdown = document.getElementById('nav-auth-dropdown');
-const signoutBtn = document.getElementById('nav-signout-btn');
-if (foplUser && authLink) {
-  authItem.classList.add('fopl-nav-has-dropdown');
-  authLink.textContent = foplUser.name.split(' ')[0];
-  authLink.href = '#';
-  authLink.onclick = (e) => { e.preventDefault(); dropdown.classList.toggle('open'); };
-  document.addEventListener('click', (e) => {
-    if (!authItem.contains(e.target)) dropdown.classList.remove('open');
-  });
-  signoutBtn.onclick = async (e) => {
-    e.preventDefault();
-    await fetch(`${BACKEND}/api/fopl/login`, { method: 'DELETE', credentials: 'include' }).catch(() => {});
-    localStorage.removeItem('fopl_user');
-    window.location.href = '/home';
-  };
 }
 
 setBestHud();

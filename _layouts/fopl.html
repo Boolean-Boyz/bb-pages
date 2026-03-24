@@ -6,8 +6,12 @@
   <title>{{ page.title | default: site.title }}</title>
   <meta name="description" content="{{ page.description | default: site.description }}">
   <link rel="icon" type="image/png" href="{{ '/FOTPL/fopllogo.png' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/css/fopl-shared.css' | relative_url }}">
 </head>
 <body style="margin:0;padding:0;">
+  {% include fopl-nav.html %}
   {{ content }}
+  {% include fopl-footer.html %}
+  <script src="{{ '/assets/js/fopl-shared.js' | relative_url }}"></script>
 </body>
 </html>

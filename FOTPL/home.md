@@ -3,25 +3,13 @@ layout: fopl
 title: Friends of the Poway Library
 permalink: /home
 description: Friends of the Poway Library — supporting literacy, community programs, and the Poway Library since 1978.
+fopl_nav_active: home
 ---
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Cabin:wght@400;600;700&family=Lato:wght@300;400;700&display=swap');
+  body { background: #fff; }
 
-  *, *::before, *::after { box-sizing: border-box; }
-
-  body { margin: 0; font-family: 'Lato', sans-serif; background: #fff; }
-
-  /* ── Nav ── */
-  .fopl-nav {
-    background: #023b0f;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 30px;
-    flex-wrap: wrap;
-  }
-  .fopl-logo-wrap img { height: 208px; width: auto; padding: 10px 0; display: block; }
+  .fopl-logo-wrap img { height: 208px; }
 
   /* ── Photo Header ── */
   .fopl-photo-header {
@@ -61,52 +49,10 @@ description: Friends of the Poway Library — supporting literacy, community pro
     .fopl-photo-header { height: 180px; }
     .fopl-photo-header-overlay h2 { font-size: 1.5rem; }
   }
-  .fopl-nav-links { display: flex; list-style: none; margin: 0; padding: 0; }
-  .fopl-nav-links li a {
-    display: block; color: #fff; text-decoration: none;
-    font-family: 'Cabin', sans-serif; font-size: 0.95rem; font-weight: 600;
-    text-transform: uppercase; letter-spacing: 0.04em;
-    padding: 18px 20px; transition: background 0.2s;
-  }
-  .fopl-nav-links li a:hover,
-  .fopl-nav-links li.active a { background: rgba(255,255,255,0.12); }
   .fopl-nav-links li.games-invite a {
     background: rgba(255,255,255,0.12);
     color: #fff;
   }
-
-  /* ── Auth nav pill ── */
-  #nav-auth-item a#nav-auth-link {
-    background: rgba(255,255,255,0.15);
-    border: 1.5px solid rgba(255,255,255,0.45);
-    border-radius: 20px;
-    padding: 8px 18px;
-    margin: 8px 0;
-    font-size: 0.85rem;
-    letter-spacing: 0.05em;
-  }
-  #nav-auth-item a#nav-auth-link:hover {
-    background: rgba(255,255,255,0.28);
-  }
-
-  /* ── Nav dropdown ── */
-  .fopl-nav-has-dropdown { position: relative; }
-  .fopl-nav-dropdown {
-    display: none; position: absolute; top: 100%; right: 0;
-    background: #fff; border-radius: 4px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-    list-style: none; margin: 0; padding: 6px 0;
-    min-width: 140px; z-index: 1000;
-  }
-  .fopl-nav-dropdown.open { display: block; }
-  .fopl-nav-dropdown li a {
-    display: block; padding: 10px 18px; color: #023b0f;
-    font-family: 'Cabin', sans-serif; font-size: 0.88rem;
-    font-weight: 600; text-transform: uppercase;
-    letter-spacing: 0.04em; text-decoration: none; white-space: nowrap;
-    background: none;
-  }
-  .fopl-nav-dropdown li a:hover { background: #f4f8f4 !important; }
 
   /* ── Hero ── */
   .fopl-hero {
@@ -231,48 +177,12 @@ description: Friends of the Poway Library — supporting literacy, community pro
   }
   .fopl-about p { font-size: 1.05rem; color: #444; line-height: 1.8; margin: 0; }
 
-  /* ── Footer ── */
-  .fopl-footer {
-    background: #023b0f;
-    color: rgba(255,255,255,0.7);
-    text-align: center;
-    padding: 22px 20px;
-    font-size: 0.85rem;
-  }
-  .fopl-footer a { color: rgba(255,255,255,0.85); text-decoration: none; }
-  .fopl-footer a:hover { text-decoration: underline; }
-
   @media (max-width: 640px) {
-    .fopl-nav { flex-direction: column; align-items: flex-start; padding: 0 16px; }
-    .fopl-nav-links { flex-wrap: wrap; }
-    .fopl-nav-links li a { padding: 12px 14px; font-size: 0.85rem; }
     .fopl-hero h1 { font-size: 1.8rem; }
     .fopl-cards { padding: 32px 18px; }
     .fopl-about { padding: 36px 20px; }
   }
 </style>
-
-<!-- Nav -->
-<nav class="fopl-nav">
-  <div class="fopl-logo-wrap">
-    <img src="/FOTPL/fopllogo.png"
-         alt="Friends of the Poway Library" />
-  </div>
-  <ul class="fopl-nav-links">
-    <li class="active"><a href="/home">Home</a></li>
-    <li><a href="/history">History</a></li>
-    <li><a href="/bookstore">Bookstore</a></li>
-    <li><a href="/news">Newsletters</a></li>
-    <li class="games-invite"><a href="/puzzles">Puzzles</a></li>
-    <li><a href="/contact">Contact Us</a></li>
-    <li id="nav-auth-item"><a href="/login" id="nav-auth-link">Sign In</a>
-      <ul class="fopl-nav-dropdown" id="nav-auth-dropdown">
-        <li><a href="/profile">Profile</a></li>
-        <li><a href="#" id="nav-signout-btn">Sign Out</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
 
 <!-- Photo Header -->
 <div class="fopl-photo-header">
@@ -335,37 +245,4 @@ description: Friends of the Poway Library — supporting literacy, community pro
   </p>
 </div>
 
-<!-- Footer -->
-<div class="fopl-footer">
-  &copy; 2025 Friends of the Poway Library &mdash;
-  <a href="https://powayfriends.org">powayfriends.org</a>
-</div>
 
-<script>
-{
-  const foplUser = JSON.parse(localStorage.getItem('fopl_user') || 'null');
-  const authItem = document.getElementById('nav-auth-item');
-  const authLink = document.getElementById('nav-auth-link');
-  const dropdown = document.getElementById('nav-auth-dropdown');
-  const signoutBtn = document.getElementById('nav-signout-btn');
-
-  if (foplUser && authLink) {
-    authItem.classList.add('fopl-nav-has-dropdown');
-    authLink.textContent = foplUser.name.split(' ')[0];
-    authLink.href = '#';
-    authLink.onclick = (e) => {
-      e.preventDefault();
-      dropdown.classList.toggle('open');
-    };
-    document.addEventListener('click', (e) => {
-      if (!authItem.contains(e.target)) dropdown.classList.remove('open');
-    });
-    signoutBtn.onclick = async (e) => {
-      e.preventDefault();
-      await fetch('http://127.0.0.1:8587/api/fopl/login', { method: 'DELETE', credentials: 'include' }).catch(() => {});
-      localStorage.removeItem('fopl_user');
-      window.location.href = '/home';
-    };
-  }
-}
-</script>

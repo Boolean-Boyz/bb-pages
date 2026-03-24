@@ -3,73 +3,18 @@ layout: fopl
 title: Sign In — Friends of the Poway Library
 permalink: /login
 description: Sign in or create an account for the Friends of the Poway Library.
+fopl_nav_active: login
 ---
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Cabin:wght@400;600;700&family=Lato:wght@300;400;700&display=swap');
-
-  *, *::before, *::after { box-sizing: border-box; }
-
   body {
-    margin: 0;
-    font-family: 'Lato', sans-serif;
     background: #f4f8f4;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
   }
 
-  /* ── Nav ── */
-  .fopl-nav {
-    background: #023b0f;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 30px;
-    flex-wrap: wrap;
-  }
-  .fopl-logo-wrap img { height: 90px; width: auto; padding: 8px 0; display: block; }
-  .fopl-nav-links { display: flex; gap: 0; list-style: none; margin: 0; padding: 0; }
-  .fopl-nav-links li a {
-    display: block; color: #fff; text-decoration: none;
-    font-family: 'Cabin', sans-serif; font-size: 0.9rem; font-weight: 600;
-    text-transform: uppercase; letter-spacing: 0.04em;
-    padding: 18px 20px; transition: background 0.2s;
-  }
-  .fopl-nav-links li a:hover { background: rgba(255,255,255,0.12); }
-
-  /* ── Nav dropdown ── */
-  .fopl-nav-has-dropdown { position: relative; }
-  .fopl-nav-dropdown {
-    display: none; position: absolute; top: 100%; right: 0;
-    background: #fff; border-radius: 4px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-    list-style: none; margin: 0; padding: 6px 0;
-    min-width: 140px; z-index: 1000;
-  }
-  .fopl-nav-dropdown.open { display: block; }
-  .fopl-nav-dropdown li a {
-    display: block; padding: 10px 18px; color: #023b0f;
-    font-family: 'Cabin', sans-serif; font-size: 0.88rem;
-    font-weight: 600; text-transform: uppercase;
-    letter-spacing: 0.04em; text-decoration: none; white-space: nowrap;
-    background: none;
-  }
-  .fopl-nav-dropdown li a:hover { background: #f4f8f4 !important; }
-
-  /* ── Auth nav pill ── */
-  #nav-auth-item a#nav-auth-link {
-    background: rgba(255,255,255,0.15);
-    border: 1.5px solid rgba(255,255,255,0.45);
-    border-radius: 20px;
-    padding: 8px 18px;
-    margin: 8px 0;
-    font-size: 0.85rem;
-    letter-spacing: 0.05em;
-  }
-  #nav-auth-item a#nav-auth-link:hover {
-    background: rgba(255,255,255,0.28);
-  }
+  .fopl-logo-wrap img { height: 90px; }
 
   /* ── Card ── */
   .fopl-auth-wrap {
@@ -184,39 +129,7 @@ description: Sign in or create an account for the Friends of the Poway Library.
   .fopl-msg.error   { background: #fdecea; color: #b00020; }
   .fopl-msg.success { background: #e8f5e9; color: #1b5e20; }
 
-  /* ── Footer ── */
-  .fopl-footer {
-    background: #023b0f;
-    color: rgba(255,255,255,0.7);
-    text-align: center;
-    padding: 18px;
-    font-size: 0.85rem;
-  }
-  .fopl-footer a { color: rgba(255,255,255,0.85); text-decoration: none; }
-  .fopl-footer a:hover { text-decoration: underline; }
 </style>
-
-<!-- Nav -->
-<nav class="fopl-nav">
-  <div class="fopl-logo-wrap">
-    <img src="/FOTPL/fopllogo.png"
-         alt="Friends of the Poway Library" />
-  </div>
-  <ul class="fopl-nav-links">
-    <li><a href="/home">Home</a></li>
-    <li><a href="/history">History</a></li>
-    <li><a href="/bookstore">Bookstore</a></li>
-    <li><a href="/news">Newsletters</a></li>
-    <li><a href="/puzzles">Puzzles</a></li>
-    <li><a href="/contact">Contact Us</a></li>
-    <li id="nav-auth-item"><a href="/login" id="nav-auth-link">Sign In</a>
-      <ul class="fopl-nav-dropdown" id="nav-auth-dropdown">
-        <li><a href="/profile">Profile</a></li>
-        <li><a href="#" id="nav-signout-btn">Sign Out</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
 
 <!-- Auth card -->
 <div class="fopl-auth-wrap">
@@ -264,14 +177,9 @@ description: Sign in or create an account for the Friends of the Poway Library.
   </div>
 </div>
 
-<div class="fopl-footer">
-  &copy; 2025 Friends of the Poway Library &mdash;
-  <a href="https://powayfriends.org">powayfriends.org</a>
-</div>
-
 <script>
 {
-  const BACKEND = 'http://127.0.0.1:8587';
+  const BACKEND = window.FOPL_BACKEND;
 
   function showTab(tab) {
     document.querySelectorAll('.fopl-tab').forEach((btn, i) => {
@@ -338,27 +246,5 @@ description: Sign in or create an account for the Friends of the Poway Library.
   window.showTab    = showTab;
   window.doLogin    = doLogin;
   window.doRegister = doRegister;
-
-  // ── Auth nav dropdown (show if already logged in) ──
-  const foplUser = JSON.parse(localStorage.getItem('fopl_user') || 'null');
-  const authItem = document.getElementById('nav-auth-item');
-  const authLink = document.getElementById('nav-auth-link');
-  const dropdown = document.getElementById('nav-auth-dropdown');
-  const signoutBtn = document.getElementById('nav-signout-btn');
-  if (foplUser && authLink) {
-    authItem.classList.add('fopl-nav-has-dropdown');
-    authLink.textContent = foplUser.name.split(' ')[0];
-    authLink.href = '#';
-    authLink.onclick = (e) => { e.preventDefault(); dropdown.classList.toggle('open'); };
-    document.addEventListener('click', (e) => {
-      if (!authItem.contains(e.target)) dropdown.classList.remove('open');
-    });
-    signoutBtn.onclick = async (e) => {
-      e.preventDefault();
-      await fetch('http://127.0.0.1:8587/api/fopl/login', { method: 'DELETE', credentials: 'include' }).catch(() => {});
-      localStorage.removeItem('fopl_user');
-      window.location.href = '/home';
-    };
-  }
 }
 </script>

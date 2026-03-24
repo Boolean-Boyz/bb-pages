@@ -6,10 +6,6 @@ description: Friends of the Poway Library website development roadmap and timeli
 ---
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cabin:wght@400;600;700&family=Lato:wght@300;400;700&display=swap');
-
-*, *::before, *::after { box-sizing: border-box; }
-
 .timeline-page {
   font-family: 'Lato', sans-serif;
   background: linear-gradient(135deg, #f4f8f4 0%, #e8f0e8 100%);
