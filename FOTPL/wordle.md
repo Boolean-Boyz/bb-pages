@@ -443,6 +443,87 @@ const PUZZLES = [
       'It starts with S and has 5 letters.',
       'It ends with F.'
     ]
+  },
+  {
+    answer: 'BOOK SALE',
+    clues: [
+      'A popular library fundraiser event.',
+      'Shoppers hunt bargains here.',
+      'It has 2 words and 8 letters total (ignoring space).',
+      'It starts with B.'
+    ]
+  },
+  {
+    answer: 'DEWEY DECIMAL',
+    clues: [
+      'A famous library classification system.',
+      'Its number ranges help organize nonfiction.',
+      'It has 2 words and starts with D.',
+      'The second word starts with D too.'
+    ]
+  },
+  {
+    answer: 'BOOKMARK',
+    clues: [
+      'It saves your place in a book.',
+      'Readers use this between pages.',
+      'It starts with B and has 8 letters.',
+      'It ends with K.'
+    ]
+  },
+  {
+    answer: 'REFERENCE',
+    clues: [
+      'A library section for information lookup.',
+      'Dictionaries and encyclopedias are often in this area.',
+      'It starts with R and has 9 letters.',
+      'It ends with E.'
+    ]
+  },
+  {
+    answer: 'STORYTIME',
+    clues: [
+      'A library program often for young children.',
+      'Books are read aloud during this event.',
+      'It starts with S and has 9 letters.',
+      'Its second half suggests the clock.'
+    ]
+  },
+  {
+    answer: 'LATE FEE',
+    clues: [
+      'A charge for returning materials after the due date.',
+      'Many libraries have reduced or removed this.',
+      'It has 2 words and starts with L.',
+      'The second word has 3 letters.'
+    ]
+  },
+  {
+    answer: 'READ ALOUD',
+    clues: [
+      'To speak text so others can hear it.',
+      'Teachers and librarians often do this.',
+      'It has 2 words and starts with R.',
+      'The second word starts with A.'
+    ]
+  },
+  {
+    answer: 'CHECKOUT',
+    clues: [
+      'The action of borrowing a book.',
+      'You do this at a circulation desk or kiosk.',
+      'It starts with C and has 8 letters.',
+      'It ends with T.'
+    ]
+  },
+  {
+    answer: 'LIBRARY CARD',
+    clues: [
+      'You usually need this to borrow items.',
+      'It connects your account to loans.',
+      'It has 2 words and starts with L.',
+      'The second word starts with C.'
+    ]
   }
 ];
 
@@ -466,7 +547,8 @@ function getDayId() {
 
 function getTodayPuzzle() {
   const day = Number(getDayId());
-  return PUZZLES[day % PUZZLES.length];
+  const spread = (day * 17 + 11) % PUZZLES.length;
+  return PUZZLES[spread];
 }
 
 function getPracticePuzzle() {
@@ -479,6 +561,14 @@ function getPracticePuzzle() {
 
 function getDateLabel() {
   return new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+}
+
+function normalizeAnswer(text) {
+  return String(text || '')
+    .toUpperCase()
+    .replace(/[^A-Z0-9 ]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 function makeNewState() {
@@ -584,7 +674,8 @@ function renderHistory() {
 function renderHud() {
   animateScoreTo(state.score);
   document.getElementById('pin-attempts').textContent = `${state.attempts} / ${MAX_ATTEMPTS}`;
-  document.getElementById('pin-length').textContent = String(puzzle.answer.length);
+  document.getElementById('pin-length').textContent = String(normalizeAnswer(puzzle.answer).replace(/ /g, '').length);
+  document.getElementById('pin-input').maxLength = Math.max(16, normalizeAnswer(puzzle.answer).length + 2);
 }
 
 function animateScoreTo(target) {
@@ -701,7 +792,8 @@ async function submitGuess(e) {
   if (state.solved || state.lost) return;
 
   const input = document.getElementById('pin-input');
-  const guess = input.value.trim().toUpperCase();
+  const guess = normalizeAnswer(input.value);
+  const correct = normalizeAnswer(puzzle.answer);
   if (!guess) {
     setFeedback('Type a guess first.', 'bad');
     return;
@@ -710,7 +802,7 @@ async function submitGuess(e) {
   state.attempts += 1;
   state.guesses.push(guess);
 
-  if (guess === puzzle.answer) {
+  if (guess === correct) {
     state.solved = true;
     setFeedback(`Correct. The answer is ${puzzle.answer}. Final score: ${state.score}.`, 'good');
     if (mode === 'daily') {
