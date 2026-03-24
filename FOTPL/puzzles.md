@@ -371,6 +371,19 @@ description: Play word games and puzzles from the Friends of the Poway Library.
     <a class="play-btn" href="/library-shelf-run">Play Now</a>
   </div>
 
+  <div class="game-card">
+    <div class="game-card-icon">NET</div>
+    <span class="game-card-badge">Live</span>
+    <h2>Network Stack Challenge</h2>
+    <p>Test your knowledge of the OSI model, HTTP, TCP/IP, DNS, and Nginx through daily trivia challenges.</p>
+    <div class="game-meta">
+      <span class="game-chip">Daily</span>
+      <span class="game-chip">Quiz</span>
+      <span class="game-chip">Networking</span>
+    </div>
+    <a class="play-btn" href="/network-stack-game">Play Now</a>
+  </div>
+
 </div>
 
 <div class="fopl-footer">
