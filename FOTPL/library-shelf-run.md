@@ -32,9 +32,20 @@ fopl_nav_active: puzzles
   .run-intro {
     margin: 0 0 12px; color: #324132; line-height: 1.5;
   }
+  .run-explain {
+    margin: 0 0 12px;
+    border: 1px solid #d3e3d5;
+    background: #f8fbf8;
+    border-radius: 7px;
+    padding: 10px 12px;
+    color: #294129;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  .run-explain strong { color: #1c3f1f; }
 
   .run-hud {
-    display: grid; grid-template-columns: repeat(5, minmax(0, 1fr));
+    display: grid; grid-template-columns: repeat(6, minmax(0, 1fr));
     gap: 8px; margin-bottom: 12px;
   }
   .hud-box {
@@ -167,13 +178,20 @@ fopl_nav_active: puzzles
     <div class="run-hud">
       <div class="hud-box"><div class="hud-label">Sorted</div><div class="hud-num" id="hud-sorted">0 / 4</div></div>
       <div class="hud-box"><div class="hud-label">Moves</div><div class="hud-num" id="hud-moves">0</div></div>
-      <div class="hud-box"><div class="hud-label">Timer</div><div class="hud-num" id="hud-time">00:00</div></div>
+      <div class="hud-box"><div class="hud-label">Time Left</div><div class="hud-num" id="hud-time">01:30</div></div>
+      <div class="hud-box"><div class="hud-label">Strikes</div><div class="hud-num" id="hud-strikes">0 / 3</div></div>
       <div class="hud-box"><div class="hud-label">Score</div><div class="hud-num" id="hud-score">0</div></div>
-      <div class="hud-box"><div class="hud-label">Task</div><div class="hud-num" id="hud-task">1 / 4</div></div>
       <div class="hud-box"><div class="hud-label">Best Score</div><div class="hud-num" id="hud-best">--</div></div>
     </div>
 
-    <div class="run-task" id="run-task">Next task: Pick up the highlighted book and deliver it to the highlighted shelf.</div>
+    <div class="run-task" id="run-task">Current job: Pick up the highlighted book, then drive it to the highlighted shelf.</div>
+
+    <div class="run-explain">
+      <strong>What is this?</strong> A quick library sorting game where you fix misplaced books.<br>
+      <strong>Why it relates:</strong> Libraries use call-number sections (like FIC, 900, 500) to organize shelves.<br>
+      <strong>How to play:</strong> Move with arrow keys/WASD, collect the highlighted book, and drop it at the matching shelf label.<br>
+      <strong>How to win:</strong> Sort all books before time runs out and before you hit 3 strikes.
+    </div>
 
     <div class="shelf-map" id="shelf-map"></div>
 
@@ -182,8 +200,8 @@ fopl_nav_active: puzzles
       <button class="run-btn alt" id="show-rules-btn" type="button">Show Rules</button>
     </div>
 
-    <div class="run-status" id="run-status">Use arrow keys or WASD to move the cart.</div>
-    <div class="run-help" id="run-help">Shelf zones: FIC = Fiction, 900 = History, 500 = Science.</div>
+    <div class="run-status" id="run-status">Move with arrow keys/WASD. Follow the highlighted book and shelf.</div>
+    <div class="run-help" id="run-help">Shelf labels: FIC = Fiction, 900 = History, 500 = Science.</div>
 
     <div class="run-pad">
       <div class="run-pad-row"><button class="run-pad-btn" type="button" id="pad-up">Up</button></div>
@@ -202,6 +220,8 @@ const BACKEND = window.FOPL_BACKEND;
 const COLS = 10;
 const ROWS = 7;
 const BOOK_COUNT = 4;
+const ROUND_SECONDS = 90;
+const MAX_STRIKES = 3;
 const BEST_KEY = 'fopl_shelf_run_best';
 
 const zones = [
@@ -228,6 +248,7 @@ let isRunning = false;
 let startTime = 0;
 let timerId = null;
 let roundComplete = false;
+let strikes = 0;
 
 function randomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -263,7 +284,7 @@ function setHud() {
   document.getElementById('hud-sorted').textContent = `${sorted} / ${BOOK_COUNT}`;
   document.getElementById('hud-moves').textContent = String(moves);
   document.getElementById('hud-score').textContent = String(score);
-  document.getElementById('hud-task').textContent = `${Math.min(taskIndex + 1, BOOK_COUNT)} / ${BOOK_COUNT}`;
+  document.getElementById('hud-strikes').textContent = `${strikes} / ${MAX_STRIKES}`;
 }
 
 function setBestHud() {
@@ -278,7 +299,11 @@ function setBestHud() {
 function updateTimer() {
   if (!isRunning) return;
   const elapsed = Date.now() - startTime;
-  document.getElementById('hud-time').textContent = formatTime(elapsed);
+  const leftMs = Math.max(0, ROUND_SECONDS * 1000 - elapsed);
+  document.getElementById('hud-time').textContent = formatTime(leftMs);
+  if (leftMs <= 0 && !roundComplete) {
+    loseRound('Time ran out. Start a new round and try again.');
+  }
 }
 
 function startTimer() {
@@ -292,6 +317,16 @@ function stopTimer() {
   isRunning = false;
   clearInterval(timerId);
   timerId = null;
+}
+
+function addStrike(message) {
+  strikes += 1;
+  setHud();
+  if (strikes >= MAX_STRIKES) {
+    loseRound('Too many mistakes. Start a new round and try again.');
+    return;
+  }
+  setStatus(`${message} Strike ${strikes}/${MAX_STRIKES}.`);
 }
 
 function zoneAt(x, y) {
@@ -318,14 +353,14 @@ function updateTaskText() {
   const taskEl = document.getElementById('run-task');
   const task = currentTaskBook();
   if (!task) {
-    taskEl.textContent = 'All books shelved. Start a new round to play again.';
+    taskEl.textContent = 'All books sorted. Start a new round to play again.';
     return;
   }
   if (carrying && carrying.id === task.id) {
     taskEl.textContent = `Deliver ${task.call} to shelf ${zoneLabel(task.zoneId)}.`;
     return;
   }
-  taskEl.textContent = `Pick up ${task.call}, then deliver it to shelf ${zoneLabel(task.zoneId)}.`;
+  taskEl.textContent = `Pick up ${task.call}, then drive it to shelf ${zoneLabel(task.zoneId)}.`;
 }
 
 function openCells() {
@@ -415,9 +450,9 @@ function pickUpIfPresent() {
   if (!book) return;
   const task = currentTaskBook();
   if (!task || task.id !== book.id) {
-    setStatus(`That book is out of order. Find ${task ? task.call : 'the next task book'}.`);
     score = Math.max(0, score - 5);
     setHud();
+    addStrike(`Wrong pickup. Find ${task ? task.call : 'the highlighted task book'} first.`);
     return;
   }
   carrying = book;
@@ -441,7 +476,7 @@ function dropIfOnZone() {
     sorted += 1;
     taskIndex += 1;
     score += 120;
-    setStatus('Perfect shelving. Next assignment loaded.');
+    setStatus('Nice. Book sorted correctly. Next job is highlighted.');
     setHud();
     updateTaskText();
 
@@ -449,9 +484,9 @@ function dropIfOnZone() {
       finishRound();
     }
   } else {
-    setStatus('Wrong shelf zone. Check the call number range.');
     score = Math.max(0, score - 10);
     setHud();
+    addStrike('Wrong shelf section. Match the call number label.');
   }
 }
 
@@ -476,7 +511,7 @@ function movePlayer(dx, dy) {
   drawMap();
 }
 
-async function postResult(timeMs, moveCount) { return window.foplPostResult('library_shelf_run', true, score); }
+async function postResult(won) { return window.foplPostResult('library_shelf_run', !!won, score); }
 
 function addOverallProgress(game, points, won) { return window.foplAddOverallProgress(game, points, won); }
 
@@ -490,16 +525,26 @@ function maybeSaveBest(timeMs, moveCount) {
 }
 
 async function finishRound() {
+  if (roundComplete) return;
   stopTimer();
   roundComplete = true;
   const timeMs = Date.now() - startTime;
   const timeBonus = Math.max(0, 180 - Math.floor(timeMs / 1000));
   score += timeBonus;
   setHud();
-  setStatus(`Round complete. Score ${score} (${moves} moves, ${formatTime(timeMs)}).`);
+  setStatus(`You win. Score ${score} (${moves} moves, ${formatTime(timeMs)}).`);
   maybeSaveBest(timeMs, moves);
   addOverallProgress('library_shelf_run', score, true);
-  await postResult(timeMs, moves);
+  await postResult(true);
+}
+
+async function loseRound(message) {
+  if (roundComplete) return;
+  stopTimer();
+  roundComplete = true;
+  setStatus(message);
+  addOverallProgress('library_shelf_run', 5, false);
+  await postResult(false);
 }
 
 function resetRound() {
@@ -513,11 +558,12 @@ function resetRound() {
   moves = 0;
   sorted = 0;
   score = 0;
-  document.getElementById('hud-time').textContent = '00:00';
+  strikes = 0;
+  document.getElementById('hud-time').textContent = formatTime(ROUND_SECONDS * 1000);
 
   generateBooks();
   setHud();
-  setStatus('Use arrow keys or WASD. Follow the highlighted task order.');
+  setStatus('Move with arrow keys/WASD. Pick up highlighted book, then deliver it to highlighted shelf.');
   updateTaskText();
   drawMap();
 }
@@ -546,7 +592,7 @@ function bindControls() {
   });
 
   document.getElementById('show-rules-btn').addEventListener('click', () => {
-    setStatus('Pick up the highlighted book, then deliver it to the highlighted shelf. Wrong moves reduce score.');
+    setStatus('Rules: sort all books before time runs out. Wrong pickups or shelf drops add strikes (3 strikes = game over).');
   });
 
   document.getElementById('pad-up').addEventListener('click', () => movePlayer(0, -1));
