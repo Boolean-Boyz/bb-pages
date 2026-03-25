@@ -237,6 +237,60 @@ const QUESTIONS = [
     options: ['Captain Nemo', 'Captain Ahab', 'Captain Hook', 'Captain Flint'],
     answer: 1,
     fact: 'Captain Ahab obsessively pursues Moby Dick.'
+  },
+  {
+    question: 'Who wrote The Great Gatsby?',
+    options: ['Ernest Hemingway', 'John Steinbeck', 'F. Scott Fitzgerald', 'William Faulkner'],
+    answer: 2,
+    fact: 'The Great Gatsby was published in 1925 by F. Scott Fitzgerald.'
+  },
+  {
+    question: 'What is the name of Harry Potter\'s school?',
+    options: ['Beauxbatons', 'Durmstrang', 'Ilvermorny', 'Hogwarts'],
+    answer: 3,
+    fact: 'Harry attends Hogwarts School of Witchcraft and Wizardry.'
+  },
+  {
+    question: 'Which author wrote Frankenstein?',
+    options: ['Mary Shelley', 'Bram Stoker', 'Jane Eyre', 'Virginia Woolf'],
+    answer: 0,
+    fact: 'Mary Shelley published Frankenstein in 1818.'
+  },
+  {
+    question: 'In The Chronicles of Narnia, what is the lion\'s name?',
+    options: ['Simba', 'Aslan', 'Shere Khan', 'Mufasa'],
+    answer: 1,
+    fact: 'Aslan is the great lion of Narnia in C. S. Lewis\'s series.'
+  },
+  {
+    question: 'Who wrote The Odyssey?',
+    options: ['Sophocles', 'Homer', 'Virgil', 'Plato'],
+    answer: 1,
+    fact: 'The Odyssey is traditionally attributed to Homer.'
+  },
+  {
+    question: 'Which detective appears in The Hound of the Baskervilles?',
+    options: ['Hercule Poirot', 'Sam Spade', 'Sherlock Holmes', 'Philip Marlowe'],
+    answer: 2,
+    fact: 'The Hound of the Baskervilles is a Sherlock Holmes mystery.'
+  },
+  {
+    question: 'Who is the author of Little Women?',
+    options: ['Louisa May Alcott', 'L. M. Montgomery', 'Harper Lee', 'Edith Wharton'],
+    answer: 0,
+    fact: 'Louisa May Alcott wrote Little Women in 1868.'
+  },
+  {
+    question: 'What is the surname of Elizabeth in Pride and Prejudice?',
+    options: ['Darcy', 'Bennet', 'Lucas', 'Wickham'],
+    answer: 1,
+    fact: 'Elizabeth\'s family name is Bennet.'
+  },
+  {
+    question: 'Which book features a pig named Wilbur?',
+    options: ['Animal Farm', 'Babe', 'Charlotte\'s Web', 'Stuart Little'],
+    answer: 2,
+    fact: 'Wilbur is the pig in E. B. White\'s Charlotte\'s Web.'
   }
 ];
 

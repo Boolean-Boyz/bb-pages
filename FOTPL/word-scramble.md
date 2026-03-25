@@ -190,7 +190,10 @@ const STATS_KEY = 'fopl_scramble_stats';
 
 const WORDS = [
   'library', 'chapter', 'fiction', 'archive', 'reading', 'classic', 'mystery',
-  'poetry', 'novel', 'author', 'shelf', 'volume', 'history', 'grammar'
+  'poetry', 'novel', 'author', 'shelf', 'volume', 'history', 'grammar',
+  'catalog', 'borrower', 'bookmark', 'hardcover', 'paperback', 'index',
+  'librarian', 'biography', 'manuscript', 'footnote', 'preface', 'epilogue',
+  'bookstore', 'encyclopedia', 'anthology', 'publisher', 'circulation'
 ];
 
 let answer = '';
@@ -203,7 +206,8 @@ function getDayId() { return window.foplGetDayId(); }
 
 function getTodayWord() {
   const day = Number(getDayId());
-  return WORDS[day % WORDS.length].toUpperCase();
+  const spread = (day * 17 + 11) % WORDS.length;
+  return WORDS[spread].toUpperCase();
 }
 
 function getPracticeWord() {
