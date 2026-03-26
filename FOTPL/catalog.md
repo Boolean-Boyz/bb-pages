@@ -111,7 +111,6 @@ fopl_nav_active: catalog
   .tag-age-kids        { background: #fff3e0; color: #e65100; }
   .tag-age-middle      { background: #e8f5e9; color: #1b5e20; }
   .tag-age-ya          { background: #ede7f6; color: #4a148c; }
-  .tag-age-adult       { background: #e3f2fd; color: #0d47a1; }
   .tag-condition-new   { background: #e8f5e9; color: #1b5e20; }
   .tag-condition-good  { background: #fff8e1; color: #f57f17; }
   .tag-condition-vg    { background: #e3f2fd; color: #0d47a1; }
@@ -303,7 +302,6 @@ fopl_nav_active: catalog
       <button class="filter-btn" data-age="Kids" onclick="setAge(this, 'Kids')">Kids (4–10) <span class="filter-count" id="count-kids"></span></button>
       <button class="filter-btn" data-age="Middle Grade" onclick="setAge(this, 'Middle Grade')">Middle Grade <span class="filter-count" id="count-mg"></span></button>
       <button class="filter-btn" data-age="YA" onclick="setAge(this, 'YA')">Young Adult <span class="filter-count" id="count-ya"></span></button>
-      <button class="filter-btn" data-age="Adult" onclick="setAge(this, 'Adult')">Adult <span class="filter-count" id="count-adult"></span></button>
     </div>
     <div class="filter-section">
       <div class="filter-title">Condition</div>
@@ -356,7 +354,7 @@ fopl_nav_active: catalog
       <div class="form-field">
         <label>Age Group *</label>
         <select id="f-age">
-          <option>Kids</option><option>Middle Grade</option><option>YA</option><option>Adult</option>
+          <option>Kids</option><option>Middle Grade</option><option>YA</option>
         </select>
       </div>
       <div class="form-field"><label>Genre *</label><input id="f-genre" /></div>
@@ -423,7 +421,6 @@ const AGE_COLORS = {
   'Kids':         '#e65100',
   'Middle Grade': '#1b5e20',
   'YA':           '#4a148c',
-  'Adult':        '#0d47a1',
 };
 
 // ── Fetch books ──
@@ -434,7 +431,7 @@ async function loadBooks() {
     if (activeAge)  params.set('age', activeAge);
     if (activeCond) params.set('condition', activeCond);
     const res  = await fetch(`${BACKEND}/api/fopl/books?${params}`);
-    allBooks   = await res.json();
+    allBooks   = (await res.json()).filter(b => b.age_group !== 'Adult');
     updateCounts();
     renderBooks();
   } catch {
@@ -450,12 +447,12 @@ function updateCounts() {
   const full = async () => {
     const r = await fetch(`${BACKEND}/api/fopl/books`);
     const b = await r.json();
-    const cnt = g => b.filter(x => x.age_group === g).length;
-    set('count-all',   b.length);
+    const nonAdult = b.filter(x => x.age_group !== 'Adult');
+    const cnt = g => nonAdult.filter(x => x.age_group === g).length;
+    set('count-all',   nonAdult.length);
     set('count-kids',  cnt('Kids'));
     set('count-mg',    cnt('Middle Grade'));
     set('count-ya',    cnt('YA'));
-    set('count-adult', cnt('Adult'));
   };
   full().catch(() => {});
 }

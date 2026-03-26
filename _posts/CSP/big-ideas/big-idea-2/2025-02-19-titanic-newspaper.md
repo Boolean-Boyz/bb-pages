@@ -4,7 +4,6 @@ title: Titanic Survival Predictor - 1912 Newspaper Edition
 description: Predict Titanic passenger survival with a vintage 1912 newspaper theme using logistic regression
 permalink: /titanic/newspaper
 ---
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">

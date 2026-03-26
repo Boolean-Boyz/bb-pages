@@ -4,7 +4,6 @@ title: Titanic Survival Predictor - Interactive Iceberg Edition
 description: Predict Titanic passenger survival with an interactive iceberg visualization using logistic regression
 permalink: /titanic/iceberg
 ---
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">

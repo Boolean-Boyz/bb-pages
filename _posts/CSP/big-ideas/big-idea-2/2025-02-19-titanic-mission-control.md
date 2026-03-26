@@ -4,7 +4,6 @@ title: Titanic Survival Predictor - NASA Mission Control Edition
 description: Predict Titanic passenger survival with a NASA Mission Control theme using logistic regression
 permalink: /titanic/mission-control
 ---
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">

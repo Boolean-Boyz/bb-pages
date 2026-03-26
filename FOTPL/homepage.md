@@ -597,7 +597,6 @@ fopl_nav_active: bookstore
             <option value="Kids">Kids</option>
             <option value="Middle Grade">Middle Grade</option>
             <option value="YA">YA</option>
-            <option value="Adult">Adult</option>
           </select>
           <select id="bc-condition" onchange="bcFilter()">
             <option value="">Any Condition</option>
@@ -752,7 +751,7 @@ fopl_nav_active: bookstore
     try {
       const res = await fetch(`${BACKEND_URL}/api/fopl/books`);
       if (!res.ok) throw new Error();
-      bcAllBooks = await res.json();
+      bcAllBooks = (await res.json()).filter(b => b.age_group !== 'Adult');
       bcRender(bcAllBooks);
     } catch {
       document.getElementById('bc-grid').innerHTML =
