@@ -141,6 +141,10 @@ fopl_nav_active: puzzles
     .stats-row { grid-template-columns: repeat(2, minmax(0,1fr)); }
     .scramble-letters { font-size: 1.6rem; letter-spacing: 0.15em; }
   }
+
+  /* ── Character scene ── */
+  .char-scene { margin: -24px -24px 20px; height: 200px; overflow: hidden; border-radius: 4px 4px 0 0; }
+  .char-scene canvas { display: block; width: 100%; height: 200px; }
 </style>
 
 <div class="scramble-wrap">
@@ -150,6 +154,7 @@ fopl_nav_active: puzzles
   </div>
 
   <div class="scramble-card">
+    <div class="char-scene"><canvas id="char-canvas" height="200"></canvas></div>
     <div class="scramble-date" id="scramble-date"></div>
     <div class="scramble-mode-row">
       <span class="scramble-mode-chip" id="scramble-mode-chip">Daily</span>
@@ -363,6 +368,7 @@ function bindForm() {
       showFeedback(`Solved in ${attempts} attempt${attempts === 1 ? '' : 's'}!`, true);
       if (mode === 'daily') saveDayState({ status: 'won', attempts });
       disableInput();
+      if (window.charScene) { window.charScene.npcRight('Letters align! Solved it!'); window.charScene.aiComment(true); }
       await finalizeResult(true);
       return;
     }
@@ -371,12 +377,14 @@ function bindForm() {
       showFeedback(`Out of attempts. The answer was ${answer}.`, false);
       if (mode === 'daily') saveDayState({ status: 'lost', attempts });
       disableInput();
+      if (window.charScene) { window.charScene.npcWrong('Out of tries...'); window.charScene.aiComment(false); }
       await finalizeResult(false);
       return;
     }
 
     const hint = answer.slice(0, Math.min(2, attempts));
     showFeedback(`Not quite. Hint: starts with ${hint}`, false);
+    if (window.charScene) { const wm=["You're on the right track!","Hmm, not quite...","Rearrange those letters!"]; window.charScene.npcWrong(wm[Math.floor(Math.random()*wm.length)]); }
     if (mode === 'daily') saveDayState({ status: 'playing', attempts });
     updateMeta();
     input.select();
@@ -423,4 +431,28 @@ function setupGame() {
 syncStatsView(loadStats());
 setupGame();
 }
+
+// ── Character Scene ──
+(function(){
+const cvs=document.getElementById('char-canvas');
+if(!cvs)return;
+const ctx=cvs.getContext('2d');
+let W=0,H=200,tick=0;
+let nA='idle',nAT=0,nM='',nMT=0;
+let aB='',aBT=0,aLoad=false;
+function resize(){const p=cvs.parentElement;if(!p)return;W=p.clientWidth;cvs.width=W;cvs.height=H;}
+function rr(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+function bbl(bx,by,txt){if(!txt)return;ctx.font='11px sans-serif';const mw=Math.min(150,W*0.3);const words=txt.split(' ');const lines=[];let cur='';words.forEach(w=>{const t=cur?cur+' '+w:w;if(ctx.measureText(t).width>mw-14&&cur){lines.push(cur);cur=w;}else cur=t;});if(cur)lines.push(cur);const bw=mw,bh=lines.length*14+12;const rx=Math.max(2,Math.min(W-bw-2,bx-bw/2)),ry=by-bh-10;ctx.shadowColor='rgba(0,0,0,0.2)';ctx.shadowBlur=5;ctx.fillStyle='#fffef5';rr(rx,ry,bw,bh,5);ctx.fill();ctx.shadowBlur=0;ctx.strokeStyle='#c8a04a';ctx.lineWidth=1.5;rr(rx,ry,bw,bh,5);ctx.stroke();ctx.beginPath();ctx.moveTo(bx-5,ry+bh);ctx.lineTo(bx,ry+bh+7);ctx.lineTo(bx+5,ry+bh);ctx.fillStyle='#fffef5';ctx.fill();ctx.strokeStyle='#c8a04a';ctx.stroke();ctx.fillStyle='#3a2a0a';ctx.textAlign='center';ctx.textBaseline='top';lines.forEach((l,i)=>ctx.fillText(l,rx+bw/2,ry+6+i*14));}
+function drawBg(){ctx.fillStyle='#c4956a';ctx.fillRect(0,0,W,H-45);ctx.fillStyle='#2d5e3a';ctx.fillRect(0,H-45,W,45);ctx.fillStyle='rgba(255,230,100,0.07)';ctx.fillRect(0,H-45,W,3);const ns=Math.max(2,Math.floor(W/130)),sw=Math.floor(W/ns)-6;for(let i=0;i<ns;i++){const sx=i*(sw+6)+3,sy=8;ctx.fillStyle='#7a4e22';rr(sx,sy,sw,H-58,3);ctx.fill();const BC=['#a83030','#2a5e8a','#3a8a3a','#8a6a1a','#5a1a8a','#8a3a1a','#1a7a6a','#8a1a4a'];for(let s=0;s<3;s++){const by2=sy+8+s*36;ctx.fillStyle='#9a6030';ctx.fillRect(sx+2,by2+26,sw-4,3);let bx2=sx+3,ci=(i*7+s*4)%8;while(bx2<sx+sw-8){const bw2=6+(ci%3)*3,bh2=16+(ci%4)*3;ctx.fillStyle=BC[ci%8];ctx.fillRect(bx2,by2+26-bh2,bw2,bh2);ctx.fillStyle='rgba(0,0,0,0.12)';ctx.fillRect(bx2+bw2-2,by2+26-bh2,2,bh2);bx2+=bw2+1;ci++;}}}const g=ctx.createRadialGradient(W/2,-10,0,W/2,-10,H);g.addColorStop(0,'rgba(255,210,100,0.1)');g.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);}
+function drawLib(cx,fy){const by=fy+Math.sin(tick*0.04)*2;ctx.fillStyle='#111';ctx.fillRect(cx-5,by+24,5,3);ctx.fillRect(cx,by+24,5,3);ctx.fillStyle='#1a3a1a';ctx.fillRect(cx-4,by+16,3,8);ctx.fillRect(cx+1,by+16,3,8);ctx.fillStyle='#4a7a5a';ctx.fillRect(cx-7,by,14,16);ctx.fillStyle='#fff';ctx.fillRect(cx-2,by,4,5);ctx.fillStyle='#4a7a5a';ctx.fillRect(cx-10,by+2,3,9);ctx.fillRect(cx+7,by+2,3,9);ctx.fillStyle='#f5c9a0';ctx.fillRect(cx-10,by+11,3,3);ctx.fillRect(cx+7,by+11,3,3);ctx.fillStyle='#f5c9a0';ctx.fillRect(cx-2,by-5,4,5);ctx.fillRect(cx-5,by-14,10,11);ctx.fillStyle='#3a1e0a';ctx.fillRect(cx-5,by-14,10,4);ctx.fillRect(cx-7,by-11,3,8);ctx.fillStyle='#1a1a1a';ctx.fillRect(cx-3,by-9,2,2);ctx.fillRect(cx+1,by-9,2,2);ctx.strokeStyle='#333';ctx.lineWidth=1;ctx.strokeRect(cx-5,by-11,4,4);ctx.strokeRect(cx+1,by-11,4,4);ctx.beginPath();ctx.moveTo(cx-1,by-9);ctx.lineTo(cx+1,by-9);ctx.stroke();ctx.fillStyle='#fff';ctx.fillRect(cx-4,by+6,8,5);ctx.fillStyle='#023b0f';ctx.font='bold 4px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('LIB',cx,by+9);}
+function drawOwl(cx,fy){let ox=cx,oy=fy;if(nA==='happy')oy+=Math.sin(tick*0.25)*7;if(nA==='shake')ox+=Math.sin(tick*0.6)*5;ctx.fillStyle='#7a5a10';ctx.beginPath();ctx.ellipse(ox,oy+8,10,12,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#c4981e';ctx.beginPath();ctx.ellipse(ox,oy+11,6,8,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#5a4008';ctx.beginPath();ctx.ellipse(ox-11,oy+8,4,7,-0.3,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.ellipse(ox+11,oy+8,4,7,0.3,0,Math.PI*2);ctx.fill();ctx.fillStyle='#7a5a10';ctx.beginPath();ctx.ellipse(ox,oy-6,10,10,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#5a4008';ctx.beginPath();ctx.moveTo(ox-5,oy-14);ctx.lineTo(ox-8,oy-22);ctx.lineTo(ox-2,oy-14);ctx.fill();ctx.beginPath();ctx.moveTo(ox+5,oy-14);ctx.lineTo(ox+8,oy-22);ctx.lineTo(ox+2,oy-14);ctx.fill();ctx.fillStyle='#c4981e';ctx.beginPath();ctx.ellipse(ox,oy-5,6,6,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#fff';ctx.beginPath();ctx.ellipse(ox-3.5,oy-7,3.5,3.5,0,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.ellipse(ox+3.5,oy-7,3.5,3.5,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#1a1a1a';ctx.beginPath();ctx.ellipse(ox-3.5,oy-7+(nA==='happy'?-1:0),2,2,0,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.ellipse(ox+3.5,oy-7+(nA==='happy'?-1:0),2,2,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#c47800';ctx.beginPath();ctx.moveTo(ox-2,oy-3);ctx.lineTo(ox,oy+1);ctx.lineTo(ox+2,oy-3);ctx.fill();ctx.strokeStyle='#b06a00';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(ox-5,oy+20);ctx.lineTo(ox-8,oy+26);ctx.moveTo(ox-5,oy+20);ctx.lineTo(ox-2,oy+26);ctx.moveTo(ox+5,oy+20);ctx.lineTo(ox+8,oy+26);ctx.moveTo(ox+5,oy+20);ctx.lineTo(ox+2,oy+26);ctx.stroke();}
+function drawQM(cx,fy){const by=fy+Math.sin(tick*0.03+1.5)*1.5;ctx.fillStyle='#111';ctx.fillRect(cx-5,by+24,5,3);ctx.fillRect(cx,by+24,5,3);ctx.fillStyle='#1a2a4a';ctx.fillRect(cx-4,by+16,3,8);ctx.fillRect(cx+1,by+16,3,8);ctx.fillStyle='#1a2a4a';ctx.fillRect(cx-7,by,14,16);ctx.fillStyle='#7a2a2a';ctx.fillRect(cx+7,by+4,8,10);ctx.fillStyle='#c48080';ctx.fillRect(cx+8,by+5,6,8);ctx.fillStyle='#f5c9a0';ctx.fillRect(cx-2,by-5,4,5);ctx.fillRect(cx-5,by-14,10,11);ctx.fillStyle='#1a2a4a';ctx.fillRect(cx-9,by-15,18,3);ctx.fillRect(cx-4,by-21,8,6);ctx.strokeStyle='#c4a010';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(cx+8,by-12);ctx.lineTo(cx+11,by-6);ctx.stroke();ctx.fillStyle='#c4a010';ctx.beginPath();ctx.ellipse(cx+11,by-5,2,2,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#1a1a1a';ctx.fillRect(cx-3,by-9,2,2);ctx.fillRect(cx+1,by-9,2,2);ctx.strokeStyle='#a05030';ctx.lineWidth=1;ctx.beginPath();ctx.arc(cx,by-5,3,0.1,Math.PI-0.1);ctx.stroke();}
+function loop(){tick++;nAT=Math.max(0,nAT-1);nMT=Math.max(0,nMT-1);aBT=Math.max(0,aBT-1);if(nAT===0)nA='idle';if(nMT===0)nM='';if(aBT===0&&!aLoad)aB='';if(!W)resize();ctx.clearRect(0,0,W,H);drawBg();const fy=H-45-28;const pX=Math.max(45,W*0.12),nX=Math.floor(W/2),aX=Math.min(W-45,W*0.85);drawLib(pX,fy);drawOwl(nX,fy);if(nM)bbl(nX,H-45-50,nM);drawQM(aX,fy);if(aB)bbl(aX,H-45-50,aB);requestAnimationFrame(loop);}
+window.charScene={
+  npcRight(m){nA='happy';nAT=80;nM=m;nMT=200;},
+  npcWrong(m){nA='shake';nAT=50;nM=m;nMT=180;},
+  async aiComment(ok){aLoad=true;aB='...';aBT=9999;try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:100,system:'You are a fun game character in a library game. Give one short (max 15 words), encouraging or playful comment based on whether the player just got something right or wrong. Be fun and library-themed.',messages:[{role:'user',content:ok?'The player got the answer right!':'The player got the answer wrong.'}]})});const d=await r.json();aB=d.content?.[0]?.text||(ok?'Splendid!':'Check the stacks!');}catch{aB=ok?'Well read!':'Back to the books!';}aLoad=false;aBT=300;}
+};
+resize();new ResizeObserver(resize).observe(cvs.parentElement);loop();
+})();
 </script>

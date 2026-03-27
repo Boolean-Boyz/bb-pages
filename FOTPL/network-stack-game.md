@@ -204,6 +204,109 @@ fopl_nav_active: puzzles
     .stats-row { grid-template-columns: repeat(2, minmax(0,1fr)); }
     .osi-layer-name { font-size: 0.6rem; }
   }
+
+  /* ── Character scene ── */
+  .char-scene { margin: -24px -24px 20px; height: 200px; overflow: hidden; border-radius: 4px 4px 0 0; }
+  .char-scene canvas { display: block; width: 100%; height: 200px; }
+
+  /* ── OSI vs TCP/IP comparison panel ── */
+  .tcpip-wrap { margin-bottom: 14px; }
+  .tcpip-toggle {
+    width: 100%; background: #f1f7f1; border: 1px solid #c8d8c8; border-radius: 6px;
+    padding: 10px 14px; cursor: pointer; font-family: 'Cabin', sans-serif;
+    font-weight: 700; font-size: 0.84rem; text-align: left; color: #1f3d22;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .tcpip-toggle:hover { background: #e8f2e8; }
+  .tcpip-content {
+    border: 1px solid #c8d8c8; border-top: none; border-radius: 0 0 6px 6px;
+    background: #fff; padding: 14px; display: none;
+  }
+  .tcpip-content.open { display: block; }
+  .tcpip-grid {
+    display: grid; grid-template-columns: 1fr auto 1fr; gap: 0; align-items: start;
+  }
+  .tcpip-col-head {
+    font-family: 'Cabin', sans-serif; font-size: 0.78rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.07em; padding: 6px 10px;
+    border-radius: 5px 5px 0 0; text-align: center;
+  }
+  .tcpip-col-head.osi { background: #023b0f; color: #fff; }
+  .tcpip-col-head.tcpip { background: #1a3a6a; color: #fff; }
+  .tcpip-col-note { font-size: 0.72rem; color: #5d6d5e; text-align: center; padding: 4px 8px 8px; }
+  .tcpip-rows { border: 1px solid #d4e0d4; border-radius: 0 0 5px 5px; overflow: hidden; }
+  .tcpip-rows.osi-col { border-color: #8ab88a; }
+  .tcpip-rows.tcp-col { border-color: #8aabb8; }
+  .tcpip-layer {
+    padding: 7px 10px; border-bottom: 1px solid #e8f0e8; font-size: 0.82rem;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .tcpip-layer:last-child { border-bottom: none; }
+  .tcpip-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .tcpip-arrow-col { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 8px; gap: 0; }
+  .tcpip-arrow { font-size: 0.7rem; color: #8a9e8a; line-height: 1.8; }
+  .tcpip-note-box {
+    margin-top: 10px; background: #f4f8f4; border: 1px solid #d0ddd0;
+    border-radius: 5px; padding: 8px 10px; font-size: 0.78rem; color: #3a4e3a; line-height: 1.45;
+  }
+
+  /* ── MTU Minigame ── */
+  .mtu-wrap {
+    background: #fff8e8; border: 2px solid #c8a020; border-radius: 8px;
+    padding: 16px; margin-bottom: 14px; display: none;
+  }
+  .mtu-wrap.show { display: block; }
+  .mtu-title {
+    font-family: 'Cabin', sans-serif; font-size: 1rem; font-weight: 700;
+    color: #5a3a00; margin-bottom: 4px;
+  }
+  .mtu-desc { font-size: 0.86rem; color: #5a4a20; margin-bottom: 14px; line-height: 1.4; }
+  .mtu-frame-builder { display: flex; gap: 0; flex-wrap: wrap; margin-bottom: 14px; align-items: stretch; }
+  .mtu-slot {
+    border: 2px solid #d0c080; border-radius: 5px; background: #fffbe8;
+    padding: 8px 6px; text-align: center; min-width: 80px; flex: 1;
+    margin-right: 3px;
+  }
+  .mtu-slot:last-child { margin-right: 0; }
+  .mtu-slot-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #7a5a00; margin-bottom: 6px; }
+  .mtu-slot select {
+    width: 100%; border: 1px solid #c8b060; border-radius: 4px;
+    background: #fff; padding: 5px 4px; font-size: 0.82rem; color: #3a2a00;
+    cursor: pointer;
+  }
+  .mtu-slot select.correct { background: #d7f1db; border-color: #2e7d32; }
+  .mtu-slot select.wrong { background: #fae1e1; border-color: #a52c2c; }
+  .mtu-total {
+    font-family: 'Cabin', sans-serif; font-size: 0.9rem; font-weight: 700;
+    color: #3a2a00; margin-bottom: 10px;
+  }
+  .mtu-total span { font-size: 1.1rem; color: #023b0f; }
+  .mtu-check {
+    border: none; background: #023b0f; color: #fff; border-radius: 6px;
+    padding: 9px 16px; cursor: pointer; font-family: 'Cabin', sans-serif;
+    font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.82rem;
+    margin-right: 8px;
+  }
+  .mtu-check:hover { background: #045218; }
+  .mtu-skip {
+    border: 1px solid #c8d0c8; background: #f6faf6; color: #3a4e3a;
+    border-radius: 6px; padding: 9px 14px; cursor: pointer;
+    font-family: 'Cabin', sans-serif; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.82rem;
+  }
+  .mtu-feedback {
+    margin-top: 10px; padding: 9px 11px; border-radius: 5px;
+    font-size: 0.88rem; display: none;
+  }
+  .mtu-feedback.show { display: block; }
+  .mtu-feedback.ok { background: #d7f1db; border: 1px solid #2e7d32; color: #1f4a20; }
+  .mtu-feedback.err { background: #fae1e1; border: 1px solid #a52c2c; color: #6c1e1e; }
+
+  @media (max-width: 560px) {
+    .mtu-slot { min-width: 60px; }
+    .mtu-slot-label { font-size: 0.6rem; }
+    .tcpip-grid { grid-template-columns: 1fr 16px 1fr; }
+  }
 </style>
 
 <div class="net-outer">
@@ -215,7 +318,91 @@ fopl_nav_active: puzzles
       <a class="net-btn-link" href="/puzzles" title="All Games">All Games</a>
     </div>
 
+    <!-- OSI vs TCP/IP comparison panel -->
+    <div class="tcpip-wrap">
+      <button class="tcpip-toggle" id="tcpip-toggle" type="button">
+        <span>OSI Model vs TCP/IP Stack — What's the difference?</span>
+        <span id="tcpip-arrow">▼</span>
+      </button>
+      <div class="tcpip-content" id="tcpip-content">
+        <div class="tcpip-grid">
+          <div>
+            <div class="tcpip-col-head osi">OSI Model (7 layers)</div>
+            <div class="tcpip-col-note">Theoretical guideline — not directly implemented</div>
+            <div class="tcpip-rows osi-col">
+              <div class="tcpip-layer"><span class="tcpip-dot" style="background:#4a0080"></span>7 — Application</div>
+              <div class="tcpip-layer"><span class="tcpip-dot" style="background:#b33000"></span>6 — Presentation</div>
+              <div class="tcpip-layer"><span class="tcpip-dot" style="background:#b35a00"></span>5 — Session</div>
+              <div class="tcpip-layer"><span class="tcpip-dot" style="background:#7a6600"></span>4 — Transport</div>
+              <div class="tcpip-layer"><span class="tcpip-dot" style="background:#023b0f"></span>3 — Network</div>
+              <div class="tcpip-layer"><span class="tcpip-dot" style="background:#004080"></span>2 — Data Link</div>
+              <div class="tcpip-layer"><span class="tcpip-dot" style="background:#4a4a4a"></span>1 — Physical</div>
+            </div>
+          </div>
+          <div class="tcpip-arrow-col">
+            <div class="tcpip-arrow">↔</div>
+            <div class="tcpip-arrow">↕</div>
+            <div class="tcpip-arrow">↔</div>
+            <div class="tcpip-arrow">↔</div>
+            <div class="tcpip-arrow">↔</div>
+            <div class="tcpip-arrow">↔</div>
+            <div class="tcpip-arrow">↕</div>
+          </div>
+          <div>
+            <div class="tcpip-col-head tcpip">TCP/IP Stack (4–5 layers)</div>
+            <div class="tcpip-col-note">Practical standard — actually used on the internet</div>
+            <div class="tcpip-rows tcp-col">
+              <div class="tcpip-layer" style="background:#f3e8ff"><span class="tcpip-dot" style="background:#4a0080"></span>Application (L5–7)</div>
+              <div class="tcpip-layer" style="background:#f3e8ff"><span class="tcpip-dot" style="background:#4a0080"></span>↳ HTTP, HTTPS, DNS, TLS</div>
+              <div class="tcpip-layer" style="background:#f3e8ff"><span class="tcpip-dot" style="background:#4a0080"></span>↳ (incl. Presentation + Session)</div>
+              <div class="tcpip-layer" style="background:#fffbe8"><span class="tcpip-dot" style="background:#7a6600"></span>Transport (TCP/UDP)</div>
+              <div class="tcpip-layer" style="background:#eef6ee"><span class="tcpip-dot" style="background:#023b0f"></span>Internet / Network (IP)</div>
+              <div class="tcpip-layer" style="background:#e8f0ff"><span class="tcpip-dot" style="background:#004080"></span>Network Access (L1–2)</div>
+              <div class="tcpip-layer" style="background:#e8f0ff"><span class="tcpip-dot" style="background:#004080"></span>↳ Ethernet, Wi-Fi, MAC</div>
+            </div>
+          </div>
+        </div>
+        <div class="tcpip-note-box">
+          <strong>Key insight:</strong> OSI is an abstract 7-layer <em>reference model</em> — it was designed to standardize how networks communicate. TCP/IP is the <em>actual protocol suite</em> that powers the internet, collapsing OSI layers 5–7 into one Application layer and layers 1–2 into one Network Access layer. In real deployments: your <strong>flask.opencodingsociety.com</strong> runs over TCP/IP on an AWS EC2 instance fronted by Nginx — no software directly "implements" OSI layers, but they help us <em>reason</em> about what happens at each level.
+        </div>
+      </div>
+    </div>
+
     <div class="net-card">
+      <div class="char-scene"><canvas id="char-canvas" data-npc="network" height="200"></canvas></div>
+
+      <!-- MTU Minigame -->
+      <div class="mtu-wrap" id="mtu-wrap">
+        <div class="mtu-title">Bonus: MTU Frame Assembly Challenge (+50 pts if correct)</div>
+        <div class="mtu-desc">You're at Layer 4 — Transport. Before TCP segments leave, they're wrapped in an Ethernet frame. Select the correct byte size for each frame component:</div>
+        <div class="mtu-frame-builder">
+          <div class="mtu-slot">
+            <div class="mtu-slot-label">Frame Header</div>
+            <select id="mtu-s0"><option value="">—</option><option value="4">4 B</option><option value="8">8 B</option><option value="14">14 B</option><option value="20">20 B</option></select>
+          </div>
+          <div class="mtu-slot">
+            <div class="mtu-slot-label">IP Header</div>
+            <select id="mtu-s1"><option value="">—</option><option value="10">10 B</option><option value="20">20 B</option><option value="40">40 B</option><option value="64">64 B</option></select>
+          </div>
+          <div class="mtu-slot">
+            <div class="mtu-slot-label">TCP Header</div>
+            <select id="mtu-s2"><option value="">—</option><option value="10">10 B</option><option value="20">20 B</option><option value="40">40 B</option><option value="80">80 B</option></select>
+          </div>
+          <div class="mtu-slot">
+            <div class="mtu-slot-label">Max Payload</div>
+            <select id="mtu-s3"><option value="">—</option><option value="1024">1024 B</option><option value="1460">1460 B</option><option value="1492">1492 B</option><option value="1500">1500 B</option></select>
+          </div>
+          <div class="mtu-slot">
+            <div class="mtu-slot-label">Frame Tail</div>
+            <select id="mtu-s4"><option value="">—</option><option value="2">2 B</option><option value="4">4 B</option><option value="8">8 B</option><option value="16">16 B</option></select>
+          </div>
+        </div>
+        <div class="mtu-total">Frame total: <span id="mtu-total">—</span></div>
+        <button class="mtu-check" id="mtu-check" type="button">Check Frame</button>
+        <button class="mtu-skip" id="mtu-skip" type="button">Skip</button>
+        <div class="mtu-feedback" id="mtu-feedback"></div>
+      </div>
+
       <div class="net-date" id="net-date"></div>
       <div class="net-mode-row">
         <span class="net-mode-chip" id="net-mode-chip">Daily</span>
@@ -568,6 +755,13 @@ function renderRound(state) {
       showFeedback((correct ? '✓ Correct! ' : '✗ Not quite. ') + q.fact);
       next.classList.add('show');
       if (state.mode === 'daily') saveDayState(state);
+      if (window.charScene) {
+        const rm=['Packets delivered!','Routing success!','Signal received clearly!'];
+        const wm=['Packet lost. Retry!','Check your OSI layers!','Firewall blocked that one.'];
+        const ms=correct?rm:wm; const m=ms[Math.floor(Math.random()*ms.length)];
+        if(correct)window.charScene.npcRight(m);else window.charScene.npcWrong(m);
+        window.charScene.aiComment(correct);
+      }
     });
     opts.appendChild(btn);
   });
@@ -682,5 +876,144 @@ document.getElementById('net-daily').addEventListener('click', showDaily);
 
 syncStatsView(loadStats());
 runDaily();
+
+// ── OSI vs TCP/IP toggle ──
+document.getElementById('tcpip-toggle').addEventListener('click', function() {
+  const c = document.getElementById('tcpip-content');
+  const a = document.getElementById('tcpip-arrow');
+  const open = c.classList.toggle('open');
+  a.textContent = open ? '▲' : '▼';
+});
+
+// ── MTU Minigame ──
+const MTU_ANSWERS = [14, 20, 20, 1460, 4];
+let mtuDone = false;
+
+// Override renderRound to intercept L4 questions and show MTU game first
+const _origRenderRound = renderRound;
+window._netRenderRound = function(state) {
+  const qi = state.idxs[state.index];
+  const q = QUESTIONS[qi];
+  if (q.layer === 4 && !mtuDone) {
+    document.getElementById('mtu-wrap').classList.add('show');
+    // Hide the quiz content while MTU is shown
+    document.getElementById('net-question').textContent = 'Complete the MTU challenge above first!';
+    document.getElementById('net-options').innerHTML = '';
+    document.getElementById('net-feedback').classList.remove('show');
+    document.getElementById('net-next').classList.remove('show');
+    document.getElementById('layer-badge').style.display = '';
+    setLayerBadge(4);
+    document.getElementById('net-date').textContent = 'Layer 4 — Transport Layer Bonus';
+    document.getElementById('net-progress').textContent = 'Bonus challenge before question ' + (state.index + 1);
+    window._pendingRoundState = state;
+    return;
+  }
+  _origRenderRound(state);
+};
+
+// Patch advanceActive and renderRound calls to use our override
+const origAdvance = advanceActive;
+window.advanceActive = function() {
+  const active = mode === 'daily' ? dailyState : practiceState;
+  if (!active) return;
+  active.index += 1;
+  if (active.index >= active.idxs.length) { finishRound(active); return; }
+  if (active.mode === 'daily') saveDayState(active);
+  window._netRenderRound(active);
+};
+document.getElementById('net-next').onclick = window.advanceActive;
+
+// Patch runDaily and startPractice render calls
+const origRunDaily = runDaily;
+window.runDailyPatched = function() {
+  const dayId = getDayId();
+  const idxs = getDailyIndexes();
+  dailyState = loadDayState(dayId, idxs);
+  mode = 'daily';
+  mtuDone = false;
+  document.getElementById('layer-badge').style.display = '';
+  if (dailyState.finished || dailyState.index >= dailyState.idxs.length) {
+    finishRound(dailyState); return;
+  }
+  window._netRenderRound(dailyState);
+  document.getElementById('net-next').onclick = window.advanceActive;
+};
+
+// MTU live total calculator
+function mtuCalcTotal() {
+  let total = 0; let allSet = true;
+  for (let i = 0; i < 5; i++) {
+    const v = parseInt(document.getElementById('mtu-s'+i).value || '0');
+    if (!v) { allSet = false; total += 0; } else total += v;
+  }
+  document.getElementById('mtu-total').textContent = allSet ? total + ' bytes' : '— (select all)';
 }
+for (let i = 0; i < 5; i++) {
+  document.getElementById('mtu-s'+i).addEventListener('change', mtuCalcTotal);
+}
+
+function mtuFinish(bonus) {
+  mtuDone = true;
+  document.getElementById('mtu-wrap').classList.remove('show');
+  const state = window._pendingRoundState;
+  if (state) {
+    if (bonus) addOverallProgress('network_stack_mtu', 50, true);
+    _origRenderRound(state);
+    document.getElementById('net-next').onclick = window.advanceActive;
+  }
+}
+
+document.getElementById('mtu-check').addEventListener('click', function() {
+  const vals = [14,20,20,1460,4];
+  let allCorrect = true; let allSet = true;
+  for (let i = 0; i < 5; i++) {
+    const sel = document.getElementById('mtu-s'+i);
+    const v = parseInt(sel.value || '0');
+    if (!v) { allSet = false; break; }
+    if (v === vals[i]) { sel.className = 'correct'; } else { sel.className = 'wrong'; allCorrect = false; }
+  }
+  if (!allSet) {
+    const fb = document.getElementById('mtu-feedback');
+    fb.className = 'mtu-feedback show err'; fb.textContent = 'Select a value for all 5 slots first.'; return;
+  }
+  const fb = document.getElementById('mtu-feedback');
+  if (allCorrect) {
+    fb.className = 'mtu-feedback show ok';
+    fb.textContent = 'Perfect! 14 + 20 + 20 + 1460 + 4 = 1518 bytes. +50 bonus points!';
+    if (window.charScene) { window.charScene.npcRight('MTU mastered!'); window.charScene.aiComment(true); }
+    setTimeout(() => mtuFinish(true), 1800);
+  } else {
+    fb.className = 'mtu-feedback show err';
+    fb.textContent = 'Not quite. Correct: Frame Header=14B, IP Header=20B, TCP Header=20B, Max Payload=1460B, CRC Tail=4B. Total=1518B.';
+    if (window.charScene) { window.charScene.npcWrong('Check the byte sizes!'); window.charScene.aiComment(false); }
+    setTimeout(() => mtuFinish(false), 2800);
+  }
+});
+
+document.getElementById('mtu-skip').addEventListener('click', () => mtuFinish(false));
+}
+
+// ── Character Scene (Network: Router + Firewall) ──
+(function(){
+const cvs=document.getElementById('char-canvas');
+if(!cvs)return;
+const ctx=cvs.getContext('2d');
+let W=0,H=200,tick=0;
+let nA='idle',nAT=0,nM='',nMT=0;
+let aB='',aBT=0,aLoad=false;
+function resize(){const p=cvs.parentElement;if(!p)return;W=p.clientWidth;cvs.width=W;cvs.height=H;}
+function rr(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+function bbl(bx,by,txt){if(!txt)return;ctx.font='11px sans-serif';const mw=Math.min(150,W*0.3);const words=txt.split(' ');const lines=[];let cur='';words.forEach(w=>{const t=cur?cur+' '+w:w;if(ctx.measureText(t).width>mw-14&&cur){lines.push(cur);cur=w;}else cur=t;});if(cur)lines.push(cur);const bw=mw,bh=lines.length*14+12;const rx=Math.max(2,Math.min(W-bw-2,bx-bw/2)),ry=by-bh-10;ctx.shadowColor='rgba(0,0,0,0.2)';ctx.shadowBlur=5;ctx.fillStyle='#fffef5';rr(rx,ry,bw,bh,5);ctx.fill();ctx.shadowBlur=0;ctx.strokeStyle='#c8a04a';ctx.lineWidth=1.5;rr(rx,ry,bw,bh,5);ctx.stroke();ctx.beginPath();ctx.moveTo(bx-5,ry+bh);ctx.lineTo(bx,ry+bh+7);ctx.lineTo(bx+5,ry+bh);ctx.fillStyle='#fffef5';ctx.fill();ctx.strokeStyle='#c8a04a';ctx.stroke();ctx.fillStyle='#3a2a0a';ctx.textAlign='center';ctx.textBaseline='top';lines.forEach((l,i)=>ctx.fillText(l,rx+bw/2,ry+6+i*14));}
+function drawBg(){ctx.fillStyle='#c4956a';ctx.fillRect(0,0,W,H-45);ctx.fillStyle='#2d5e3a';ctx.fillRect(0,H-45,W,45);ctx.fillStyle='rgba(255,230,100,0.07)';ctx.fillRect(0,H-45,W,3);const ns=Math.max(2,Math.floor(W/130)),sw=Math.floor(W/ns)-6;for(let i=0;i<ns;i++){const sx=i*(sw+6)+3,sy=8;ctx.fillStyle='#7a4e22';rr(sx,sy,sw,H-58,3);ctx.fill();const BC=['#a83030','#2a5e8a','#3a8a3a','#8a6a1a','#5a1a8a','#8a3a1a','#1a7a6a','#8a1a4a'];for(let s=0;s<3;s++){const by2=sy+8+s*36;ctx.fillStyle='#9a6030';ctx.fillRect(sx+2,by2+26,sw-4,3);let bx2=sx+3,ci=(i*7+s*4)%8;while(bx2<sx+sw-8){const bw2=6+(ci%3)*3,bh2=16+(ci%4)*3;ctx.fillStyle=BC[ci%8];ctx.fillRect(bx2,by2+26-bh2,bw2,bh2);ctx.fillStyle='rgba(0,0,0,0.12)';ctx.fillRect(bx2+bw2-2,by2+26-bh2,2,bh2);bx2+=bw2+1;ci++;}}}const g=ctx.createRadialGradient(W/2,-10,0,W/2,-10,H);g.addColorStop(0,'rgba(255,210,100,0.1)');g.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);}
+function drawLib(cx,fy){const by=fy+Math.sin(tick*0.04)*2;ctx.fillStyle='#111';ctx.fillRect(cx-5,by+24,5,3);ctx.fillRect(cx,by+24,5,3);ctx.fillStyle='#1a3a1a';ctx.fillRect(cx-4,by+16,3,8);ctx.fillRect(cx+1,by+16,3,8);ctx.fillStyle='#4a7a5a';ctx.fillRect(cx-7,by,14,16);ctx.fillStyle='#fff';ctx.fillRect(cx-2,by,4,5);ctx.fillStyle='#4a7a5a';ctx.fillRect(cx-10,by+2,3,9);ctx.fillRect(cx+7,by+2,3,9);ctx.fillStyle='#f5c9a0';ctx.fillRect(cx-10,by+11,3,3);ctx.fillRect(cx+7,by+11,3,3);ctx.fillStyle='#f5c9a0';ctx.fillRect(cx-2,by-5,4,5);ctx.fillRect(cx-5,by-14,10,11);ctx.fillStyle='#3a1e0a';ctx.fillRect(cx-5,by-14,10,4);ctx.fillRect(cx-7,by-11,3,8);ctx.fillStyle='#1a1a1a';ctx.fillRect(cx-3,by-9,2,2);ctx.fillRect(cx+1,by-9,2,2);ctx.strokeStyle='#333';ctx.lineWidth=1;ctx.strokeRect(cx-5,by-11,4,4);ctx.strokeRect(cx+1,by-11,4,4);ctx.beginPath();ctx.moveTo(cx-1,by-9);ctx.lineTo(cx+1,by-9);ctx.stroke();ctx.fillStyle='#fff';ctx.fillRect(cx-4,by+6,8,5);ctx.fillStyle='#023b0f';ctx.font='bold 4px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('LIB',cx,by+9);}
+function drawRouter(cx,fy){let ox=cx,oy=fy;if(nA==='happy')oy+=Math.sin(tick*0.25)*7;if(nA==='shake')ox+=Math.sin(tick*0.6)*5;ctx.fillStyle='#1e3a5a';rr(ox-18,oy-2,36,20,5);ctx.fill();ctx.fillStyle='#2a5a8a';rr(ox-18,oy-2,36,5,3);ctx.fill();const lc=nA==='happy'?['#00ff88','#00ff88','#00ff88']:nA==='shake'?['#ff4444','#ff4444','#ff4444']:['#00aa44',tick%60<30?'#ffaa00':'#004422','#3366cc'];lc.forEach((c,i)=>{ctx.fillStyle=c;ctx.beginPath();ctx.ellipse(ox-8+i*8,oy+6,2.5,2.5,0,0,Math.PI*2);ctx.fill();});for(let i=0;i<4;i++){ctx.fillStyle='#0e2038';ctx.fillRect(ox-13+i*7,oy+11,5,3);}ctx.strokeStyle='#3a7aaa';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(ox+10,oy-2);ctx.lineTo(ox+14,oy-16);ctx.stroke();ctx.fillStyle=tick%80<40?'#ff6622':'#aa4400';ctx.beginPath();ctx.ellipse(ox+14,oy-17,2.5,2.5,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#6a9fc4';ctx.font='bold 7px monospace';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('ROUTER',ox,oy+4);}
+function drawFW(cx,fy){const ox=cx,oy=fy;ctx.fillStyle='#7a2008';ctx.beginPath();ctx.moveTo(ox,oy-22);ctx.lineTo(ox+15,oy-11);ctx.lineTo(ox+15,oy+5);ctx.quadraticCurveTo(ox+13,oy+18,ox,oy+24);ctx.quadraticCurveTo(ox-13,oy+18,ox-15,oy+5);ctx.lineTo(ox-15,oy-11);ctx.closePath();ctx.fill();ctx.fillStyle='#b83818';ctx.beginPath();ctx.moveTo(ox,oy-15);ctx.lineTo(ox+10,oy-6);ctx.lineTo(ox+10,oy+4);ctx.quadraticCurveTo(ox+8,oy+13,ox,oy+18);ctx.quadraticCurveTo(ox-8,oy+13,ox-10,oy+4);ctx.lineTo(ox-10,oy-6);ctx.closePath();ctx.fill();const ft=tick*0.15;[-5,0,5].forEach((fx,fi)=>{const fh=7+Math.sin(ft+fi*1.3)*3;ctx.fillStyle=`rgba(255,${80+fi*40},0,0.8)`;ctx.beginPath();ctx.moveTo(ox+fx-3,oy+10);ctx.quadraticCurveTo(ox+fx,oy-fh+8,ox+fx+3,oy+10);ctx.fill();});ctx.fillStyle='rgba(255,255,255,0.9)';ctx.font='bold 12px monospace';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('F',ox,oy+2);ctx.fillStyle=aLoad?(tick%20<10?'#ffaa00':'#ff8800'):'#ff4444';ctx.beginPath();ctx.ellipse(ox-3.5,oy-4,2.2,2.2,0,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.ellipse(ox+3.5,oy-4,2.2,2.2,0,0,Math.PI*2);ctx.fill();}
+function loop(){tick++;nAT=Math.max(0,nAT-1);nMT=Math.max(0,nMT-1);aBT=Math.max(0,aBT-1);if(nAT===0)nA='idle';if(nMT===0)nM='';if(aBT===0&&!aLoad)aB='';if(!W)resize();ctx.clearRect(0,0,W,H);drawBg();const fy=H-45-28;const pX=Math.max(45,W*0.12),nX=Math.floor(W/2),aX=Math.min(W-45,W*0.85);drawLib(pX,fy);drawRouter(nX,fy);if(nM)bbl(nX,H-45-50,nM);drawFW(aX,fy);if(aB)bbl(aX,H-45-50,aB);requestAnimationFrame(loop);}
+window.charScene={
+  npcRight(m){nA='happy';nAT=80;nM=m;nMT=200;},
+  npcWrong(m){nA='shake';nAT=50;nM=m;nMT=180;},
+  async aiComment(ok){aLoad=true;aB='...';aBT=9999;try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:100,system:'You are a fun game character in a library game. Give one short (max 15 words), encouraging or playful comment based on whether the player just got something right or wrong. Be fun and library-themed.',messages:[{role:'user',content:ok?'The player got the networking question right!':'The player got the networking question wrong.'}]})});const d=await r.json();aB=d.content?.[0]?.text||(ok?'Packet delivered!':'Check your routing table!');}catch{aB=ok?'Signal strong!':'Packet lost. Resend!';}aLoad=false;aBT=300;}
+};
+resize();new ResizeObserver(resize).observe(cvs.parentElement);loop();
+})();
 </script>
