@@ -313,6 +313,7 @@ fopl_nav_active: puzzles
   </div>
 
   <div class="game-card">
+<<<<<<< HEAD
     <div class="game-card-icon">OSI</div>
     <span class="game-card-badge">Live</span>
     <h2>OSI Layers Quest</h2>
@@ -323,6 +324,18 @@ fopl_nav_active: puzzles
       <span class="game-chip">Networking</span>
     </div>
     <a class="play-btn" href="/osi-layers-quest">Play Now</a>
+=======
+    <div class="game-card-icon">N7</div>
+    <span class="game-card-badge">New</span>
+    <h2>Library Stack Climb</h2>
+    <p>Play a real-time networking game: guide the librarian with WASD through 7 levels and learn each network layer.</p>
+    <div class="game-meta">
+      <span class="game-chip">Arcade</span>
+      <span class="game-chip">WASD</span>
+      <span class="game-chip">Networking</span>
+    </div>
+    <a class="play-btn" href="/network-library-climb">Play Now</a>
+>>>>>>> 17f956a42 (puzzles game card)
   </div>
 
 </div>
