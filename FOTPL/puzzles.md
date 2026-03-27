@@ -312,6 +312,19 @@ fopl_nav_active: puzzles
     <a class="play-btn" href="/network-stack-game">Play Now</a>
   </div>
 
+  <div class="game-card">
+    <div class="game-card-icon">OSI</div>
+    <span class="game-card-badge">Live</span>
+    <h2>OSI Layers Quest</h2>
+    <p>Explore the Library of Networking Knowledge in this RPG adventure. A wise librarian guides you through all 7 layers of the OSI model.</p>
+    <div class="game-meta">
+      <span class="game-chip">RPG</span>
+      <span class="game-chip">Learning</span>
+      <span class="game-chip">Networking</span>
+    </div>
+    <a class="play-btn" href="/osi-layers-quest">Play Now</a>
+  </div>
+
 </div>
 
 <script>
