@@ -26,7 +26,7 @@ fopl_nav_active: home
     padding: 34px 26px;
     background:
       linear-gradient(130deg, rgba(2,59,15,0.9), rgba(7,96,32,0.76)),
-      url('/FOTPL/foplbuilding.png') center/cover no-repeat;
+      url('/FOTPL/Images/foplbuilding.png') center/cover no-repeat;
     color: #fff;
     box-shadow: 0 10px 28px rgba(2,59,15,0.22);
   }
@@ -298,11 +298,11 @@ fopl_nav_active: home
 
   <section class="visuals">
     <article class="shot">
-      <img src="/FOTPL/foplbuilding.png" alt="Friends of the Poway Library building" />
+      <img src="/FOTPL/Images/foplbuilding.png" alt="Friends of the Poway Library building" />
       <div>Local Identity + Trust</div>
     </article>
     <article class="shot">
-      <img src="/FOTPL/bookstoresign.png" alt="Friends of the Poway Library bookstore sign" />
+      <img src="/FOTPL/Images/bookstoresign.png" alt="Friends of the Poway Library bookstore sign" />
       <div>Book Discovery + Conversion</div>
     </article>
   </section>

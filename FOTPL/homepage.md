@@ -577,7 +577,7 @@ fopl_nav_active: bookstore
       </div>
       <div class="fopl-gallery-item">
         <img
-          src="/FOTPL/bookstoresign.png"
+          src="/FOTPL/Images/bookstoresign.png"
           alt="Friends of the Poway Library Bookstore Sign"
         />
         <div class="fopl-gallery-caption">Find us at 13137 Poway Rd — look for our sign!</div>

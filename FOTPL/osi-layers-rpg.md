@@ -380,7 +380,7 @@ class OSILayersLevel {
     };
 
     // The Librarian - AI-powered guide
-    const librarian_src = "/FOTPL/librarian12.png";
+    const librarian_src = "/FOTPL/Images/librarian12.png";
     const librarian_greeting = "Welcome to the Library of Networking Knowledge! I am the Librarian, your guide through the seven sacred layers of the OSI Model.";
 
     const librarianNPC = {

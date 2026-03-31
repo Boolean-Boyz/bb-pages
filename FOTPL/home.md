@@ -294,7 +294,7 @@ fopl_nav_active: home
 
 <!-- Photo Header -->
 <div class="fopl-photo-header">
-  <img src="/FOTPL/foplbuilding.png" alt="Friends of the Poway Library Building">
+  <img src="/FOTPL/Images/foplbuilding.png" alt="Friends of the Poway Library Building">
   <div class="fopl-photo-header-overlay">
     <h2>Friends of the Poway Library</h2>
   </div>
