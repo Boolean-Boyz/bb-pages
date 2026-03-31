@@ -1,205 +1,215 @@
 ---
 layout: fopl
-title: Checkpoint #2 Pitch Script — Friends of the Poway Library
+title: FOTPL Product Pitch Board
 permalink: /fopl-pitch-script
-description: Review-ready planning and pitch script with user-flow visuals, site walkthrough, deployment links, and feature progress.
+description: A visual sales pitch board for the Friends of the Poway Library web platform.
 fopl_nav_active: home
 ---
 
 <style>
-  body { background: #f4f8f4; }
+  body { background: #f3f7f3; }
 
-  .pitch-wrap {
-    max-width: 1100px;
+  .board {
+    max-width: 1140px;
     margin: 0 auto;
-    padding: 26px 16px 52px;
+    padding: 24px 16px 56px;
   }
 
-  .pitch-hero {
-    position: relative;
-    overflow: hidden;
-    border-radius: 10px;
+  .top {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 14px;
+  }
+
+  .hero {
+    border-radius: 12px;
+    padding: 34px 26px;
     background:
-      linear-gradient(120deg, rgba(2,59,15,0.86), rgba(5,82,24,0.78)),
+      linear-gradient(130deg, rgba(2,59,15,0.9), rgba(7,96,32,0.76)),
       url('/FOTPL/foplbuilding.png') center/cover no-repeat;
     color: #fff;
-    padding: 44px 28px;
-    box-shadow: 0 8px 26px rgba(2,59,15,0.24);
+    box-shadow: 0 10px 28px rgba(2,59,15,0.22);
   }
-  .pitch-hero h1 {
+  .hero h1 {
     margin: 0 0 10px;
-    color: #fff;
     border: none;
+    color: #fff;
     font-family: 'Cabin', sans-serif;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    font-size: 1.9rem;
+    font-size: 2rem;
   }
-  .pitch-hero p {
+  .hero p {
     margin: 0;
-    max-width: 760px;
+    max-width: 680px;
     line-height: 1.7;
-    font-size: 1.02rem;
-    opacity: 0.95;
+    font-size: 1.03rem;
+    opacity: 0.96;
   }
-
-  .quick-links {
-    margin-top: 16px;
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-  .quick-links a {
-    text-decoration: none;
-    padding: 7px 12px;
-    border-radius: 999px;
-    background: rgba(255,255,255,0.16);
+  .tagline {
+    margin-top: 14px;
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
     border: 1px solid rgba(255,255,255,0.35);
-    color: #fff;
+    border-radius: 999px;
+    padding: 7px 12px;
     font-size: 0.74rem;
-    letter-spacing: 0.05em;
     text-transform: uppercase;
+    letter-spacing: 0.06em;
     font-weight: 700;
   }
 
-  .pitch-grid {
-    margin-top: 18px;
-    display: grid;
-    grid-template-columns: 1.15fr 0.85fr;
-    gap: 16px;
-  }
-  .card {
+  .evidence {
     background: #fff;
-    border: 1px solid #d6e2d6;
-    border-radius: 10px;
-    box-shadow: 0 3px 14px rgba(2,59,15,0.08);
-    padding: 18px;
+    border: 1px solid #d7e4d7;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 4px 16px rgba(2,59,15,0.08);
   }
-  .card h2 {
+  .evidence h2 {
+    margin: 0 0 10px;
+    border: none;
+    color: #023b0f;
+    font-family: 'Cabin', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.96rem;
+  }
+  .evidence a {
+    display: block;
+    text-decoration: none;
+    margin-bottom: 8px;
+    padding: 9px 10px;
+    border-radius: 8px;
+    background: #f6fbf6;
+    border: 1px solid #dbe8db;
+    color: #234927;
+    font-size: 0.88rem;
+    font-weight: 700;
+  }
+
+  .middle {
+    margin-top: 14px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .tile {
+    background: #fff;
+    border: 1px solid #d7e4d7;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 4px 16px rgba(2,59,15,0.08);
+  }
+  .tile h3 {
+    margin: 0 0 8px;
+    border: none;
+    color: #023b0f;
+    font-family: 'Cabin', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.9rem;
+  }
+  .tile p {
+    margin: 0;
+    font-size: 0.92rem;
+    color: #3b513e;
+    line-height: 1.6;
+  }
+
+  .tour {
+    margin-top: 14px;
+    background: #fff;
+    border: 1px solid #d7e4d7;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 4px 16px rgba(2,59,15,0.08);
+  }
+  .tour h2 {
     margin: 0 0 12px;
     border: none;
     color: #023b0f;
     font-family: 'Cabin', sans-serif;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    font-size: 1rem;
+    font-size: 0.96rem;
   }
-
-  .flow {
+  .steps {
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 8px;
-    align-items: stretch;
+    gap: 10px;
   }
-  .flow-step {
-    border: 1px solid #d6e2d6;
-    background: #f7fbf7;
-    border-radius: 8px;
+  .step {
+    border: 1px solid #dce9dc;
+    border-radius: 10px;
+    background: #f7fcf7;
     padding: 10px;
-    text-align: center;
-    font-size: 0.82rem;
-    line-height: 1.45;
-    color: #2f4a32;
-    font-weight: 700;
   }
-  .flow-step b {
-    display: block;
-    color: #023b0f;
+  .step .n {
+    font-size: 0.72rem;
+    color: #1f5e28;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    margin-bottom: 4px;
-    font-size: 0.68rem;
-  }
-
-  .route-list {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    display: grid;
-    gap: 8px;
-  }
-  .route-list li {
-    border: 1px solid #dce8dc;
-    border-radius: 8px;
-    padding: 10px;
-    background: #f9fcf9;
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    align-items: baseline;
-  }
-  .route-list code {
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
     font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .step .r {
+    display: inline-block;
+    background: #edf6ed;
+    border: 1px solid #d3e4d3;
+    border-radius: 6px;
+    padding: 1px 6px;
     color: #023b0f;
-    background: #edf5ed;
-    padding: 2px 6px;
-    border-radius: 4px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.78rem;
+    margin-bottom: 5px;
+    font-weight: 700;
   }
-  .route-list span { color: #4f5f50; font-size: 0.9rem; }
+  .step p {
+    margin: 0;
+    color: #445b47;
+    font-size: 0.84rem;
+    line-height: 1.45;
+  }
 
-  .img-row {
+  .visuals {
+    margin-top: 14px;
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
-    margin-top: 10px;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
   }
-  .img-card {
-    border: 1px solid #dce8dc;
-    border-radius: 8px;
+  .shot {
+    border: 1px solid #d7e4d7;
+    border-radius: 12px;
     overflow: hidden;
     background: #fff;
+    box-shadow: 0 4px 16px rgba(2,59,15,0.08);
   }
-  .img-card img {
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
+  .shot img {
     display: block;
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
   }
-  .img-card p {
-    margin: 0;
-    padding: 8px 10px;
-    font-size: 0.8rem;
-    color: #3f5242;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    background: #f6faf6;
-  }
-
-  .bar-chart {
-    display: grid;
-    gap: 10px;
-  }
-  .bar-row {
-    display: grid;
-    grid-template-columns: 145px 1fr 44px;
-    gap: 8px;
-    align-items: center;
+  .shot div {
+    padding: 10px 12px;
     font-size: 0.84rem;
-    color: #2f4a32;
     font-weight: 700;
-  }
-  .bar-track {
-    height: 12px;
-    border-radius: 999px;
-    background: #dce9dc;
-    overflow: hidden;
-  }
-  .bar-fill {
-    height: 100%;
-    border-radius: 999px;
-    background: linear-gradient(90deg, #1f7a32, #53a466);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #295030;
+    background: #f6fbf6;
   }
 
   .script {
-    margin-top: 16px;
+    margin-top: 14px;
     background: #fff;
-    border: 1px solid #d6e2d6;
+    border: 1px solid #d7e4d7;
     border-left: 5px solid #023b0f;
-    border-radius: 10px;
-    box-shadow: 0 3px 14px rgba(2,59,15,0.08);
-    padding: 18px;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 4px 16px rgba(2,59,15,0.08);
   }
   .script h2 {
     margin: 0 0 10px;
@@ -208,103 +218,110 @@ fopl_nav_active: home
     font-family: 'Cabin', sans-serif;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    font-size: 1rem;
+    font-size: 0.96rem;
   }
   .script p {
     margin: 0 0 10px;
+    color: #2c3f2f;
     line-height: 1.75;
-    color: #2a382b;
   }
 
-  @media (max-width: 920px) {
-    .pitch-grid { grid-template-columns: 1fr; }
-    .flow { grid-template-columns: 1fr 1fr; }
-    .img-row { grid-template-columns: 1fr; }
-    .bar-row { grid-template-columns: 120px 1fr 40px; }
+  @media (max-width: 980px) {
+    .top { grid-template-columns: 1fr; }
+    .middle { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr 1fr; }
+    .visuals { grid-template-columns: 1fr; }
   }
 
-  @media (max-width: 580px) {
-    .flow { grid-template-columns: 1fr; }
+  @media (max-width: 560px) {
+    .steps { grid-template-columns: 1fr; }
   }
 </style>
 
-<div class="pitch-wrap">
-  <section class="pitch-hero">
-    <h1>Checkpoint #2 Planning + Pitch</h1>
-    <p>
-      Friends of the Poway Library platform walkthrough for review: deployment evidence, user journey,
-      key features, and progress toward the Sprint 9 goals.
-    </p>
-    <div class="quick-links">
-      <a href="https://pages.opencodingsociety.com/csp/sprint9/objectives" target="_blank" rel="noopener">Sprint 9 Objectives</a>
+<div class="board">
+  <section class="top">
+    <article class="hero">
+      <h1>Friends Of The Poway Library: Product Pitch</h1>
+      <p>
+        We built this as a usable community platform, not a static nonprofit page. People can discover books,
+        interact with content, and return through daily game experiences that reinforce literacy and participation.
+      </p>
+      <span class="tagline">From information-only to interaction-first</span>
+    </article>
+
+    <aside class="evidence">
+      <h2>Live Evidence To Show In Review</h2>
+      <a href="https://pages.opencodingsociety.com/csp/sprint9/objectives" target="_blank" rel="noopener">Sprint 9 Requirements</a>
       <a href="https://pages.opencodingsociety.com/capstone/" target="_blank" rel="noopener">Capstone Home</a>
-      <a href="/home">Our Home</a>
-      <a href="/catalog">Catalog</a>
-      <a href="/puzzles">Games</a>
-      <a href="/login">Login</a>
+      <a href="/home">Route: /home</a>
+      <a href="/catalog">Route: /catalog</a>
+      <a href="/login">Route: /login</a>
+      <a href="/puzzles">Route: /puzzles</a>
+      <a href="/word-scramble">Route: /word-scramble</a>
+    </aside>
+  </section>
+
+  <section class="middle">
+    <article class="tile">
+      <h3>Customer Problem</h3>
+      <p>
+        Traditional library support pages are often read-once and leave users without strong next actions.
+        Discovery and repeat engagement are usually weak.
+      </p>
+    </article>
+    <article class="tile">
+      <h3>Our Solution</h3>
+      <p>
+        A connected site flow: mission context, searchable catalog experience, account workflows,
+        and game routes that keep users coming back.
+      </p>
+    </article>
+    <article class="tile">
+      <h3>What We Improve</h3>
+      <p>
+        Better usability than static pages, stronger retention through daily interactions,
+        and a foundation for future member features and program growth.
+      </p>
+    </article>
+  </section>
+
+  <section class="tour">
+    <h2>Product Tour: How A User Moves Through The Site</h2>
+    <div class="steps">
+      <div class="step"><div class="n">Step 1</div><div class="r">/home</div><p>Build trust with mission, events, and clear navigation.</p></div>
+      <div class="step"><div class="n">Step 2</div><div class="r">/catalog</div><p>Search and filter books quickly instead of scanning static lists.</p></div>
+      <div class="step"><div class="n">Step 3</div><div class="r">/login</div><p>Create account path for persistence and future personalization.</p></div>
+      <div class="step"><div class="n">Step 4</div><div class="r">/puzzles</div><p>Enter literacy games and challenge loops that drive repeat visits.</p></div>
+      <div class="step"><div class="n">Step 5</div><div class="r">/word-scramble</div><p>Use daily + practice rounds for ongoing user engagement.</p></div>
     </div>
   </section>
 
-  <section class="pitch-grid">
-    <article class="card">
-      <h2>User Flow Through The Site</h2>
-      <div class="flow">
-        <div class="flow-step"><b>Step 1</b>Visit <code>/home</code><br/>See mission, programs, navigation.</div>
-        <div class="flow-step"><b>Step 2</b>Open <code>/catalog</code><br/>Search/filter books by category and age.</div>
-        <div class="flow-step"><b>Step 3</b>Use <code>/login</code><br/>Create account and keep session state.</div>
-        <div class="flow-step"><b>Step 4</b>Play <code>/puzzles</code><br/>Engagement loop with XP and streaks.</div>
-        <div class="flow-step"><b>Step 5</b>Return + Retain<br/>New events, books, and daily game play.</div>
-      </div>
-
-      <div class="img-row">
-        <div class="img-card">
-          <img src="/FOTPL/foplbuilding.png" alt="Poway Library building" />
-          <p>Community-Focused Landing Experience</p>
-        </div>
-        <div class="img-card">
-          <img src="/FOTPL/bookstoresign.png" alt="Friends of the Poway Library bookstore sign" />
-          <p>Bookstore + Discovery Journey</p>
-        </div>
-      </div>
+  <section class="visuals">
+    <article class="shot">
+      <img src="/FOTPL/foplbuilding.png" alt="Friends of the Poway Library building" />
+      <div>Local Identity + Trust</div>
     </article>
-
-    <article class="card">
-      <h2>Live Route Map</h2>
-      <ul class="route-list">
-        <li><code>/home</code><span>Hero, calendar, and mission communication</span></li>
-        <li><code>/catalog</code><span>Interactive book grid, filters, detail modal</span></li>
-        <li><code>/login</code><span>Sign in/register with backend API</span></li>
-        <li><code>/puzzles</code><span>Game hub with progress tracking</span></li>
-        <li><code>/word-scramble</code><span>Daily + practice rounds, multi-level gameplay</span></li>
-      </ul>
-
-      <h2 style="margin-top:16px;">Progress Graph (Checkpoint #2)</h2>
-      <div class="bar-chart">
-        <div class="bar-row"><span>Deployment</span><div class="bar-track"><div class="bar-fill" style="width: 85%;"></div></div><span>85%</span></div>
-        <div class="bar-row"><span>Frontend UX</span><div class="bar-track"><div class="bar-fill" style="width: 78%;"></div></div><span>78%</span></div>
-        <div class="bar-row"><span>Backend/API</span><div class="bar-track"><div class="bar-fill" style="width: 72%;"></div></div><span>72%</span></div>
-        <div class="bar-row"><span>Testing</span><div class="bar-track"><div class="bar-fill" style="width: 64%;"></div></div><span>64%</span></div>
-        <div class="bar-row"><span>Pitch Readiness</span><div class="bar-track"><div class="bar-fill" style="width: 80%;"></div></div><span>80%</span></div>
-      </div>
+    <article class="shot">
+      <img src="/FOTPL/bookstoresign.png" alt="Friends of the Poway Library bookstore sign" />
+      <div>Book Discovery + Conversion</div>
     </article>
   </section>
 
   <section class="script">
-    <h2>Presentation Script (Use This)</h2>
+    <h2>60-Second Presentation Script</h2>
     <p>
-      Today we are presenting the Friends of the Poway Library platform as a user-centered community product.
-      The primary requirement is deployment, and our live routes are visible here: home, catalog, login, puzzles,
-      and word scramble.
+      Our project turns the Friends of the Poway Library website into a real product experience.
+      Instead of only reading information, users can discover books through interactive catalog flows,
+      create account pathways, and return through game-based literacy engagement.
     </p>
     <p>
-      The user journey starts at the home page, moves into catalog discovery, supports account-based interaction,
-      and then reinforces retention through games and daily challenges. This improves on a static informational site
-      by adding searchable inventory, interactive engagement, and repeat-visit mechanics.
+      The flow we show is home to catalog to login to puzzles and word scramble. That means we are solving both
+      communication and retention. The key value is practical: better discovery, stronger participation,
+      and a platform that can grow with future member and community needs.
     </p>
     <p>
-      Our wow features are: interactive catalog filtering and detail views, account-based workflows,
-      and game progression with XP/streak behavior. For Checkpoint #2, we are focused on completing deployment,
-      expanding test evidence, and finalizing capstone references for review.
+      This is why our capstone is not just a visual redesign. It is a functional experience that improves
+      how people interact with the library online.
     </p>
   </section>
 </div>
