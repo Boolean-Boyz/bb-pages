@@ -4,7 +4,7 @@
    ═══════════════════════════════════════════ */
 
 // Shared backend URL — single source of truth
-window.FOPL_BACKEND = 'http://127.0.0.1:8587';
+window.FOPL_BACKEND = 'https://fopl-flask.opencodingsociety.com';
 
 // ── Auth nav dropdown (runs on every page) ──
 (function initAuthNav() {

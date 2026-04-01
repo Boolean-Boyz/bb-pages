@@ -304,7 +304,7 @@ description: Get in touch with the Friends of the Poway Library. Visit us, volun
     });
     signoutBtn.onclick = async (e) => {
       e.preventDefault();
-      await fetch('http://127.0.0.1:8587/api/fopl/login', { method: 'DELETE', credentials: 'include' }).catch(() => {});
+      await fetch(window.FOPL_BACKEND + '/api/fopl/login', { method: 'DELETE', credentials: 'include' }).catch(() => {});
       localStorage.removeItem('fopl_user');
       window.location.href = '/home';
     };
