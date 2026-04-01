@@ -325,6 +325,19 @@ fopl_nav_active: puzzles
     <a class="play-btn" href="/osi-layers-quest">Play Now</a>
   </div>
 
+  <div class="game-card">
+    <div class="game-card-icon">🎮</div>
+    <span class="game-card-badge">New</span>
+    <h2>Library Dodge</h2>
+    <p>Run through the library and dodge flying books! Move, jump, and duck to survive as the books get faster.</p>
+    <div class="game-meta">
+      <span class="game-chip">Arcade</span>
+      <span class="game-chip">Action</span>
+      <span class="game-chip">Keyboard</span>
+    </div>
+    <a class="play-btn" href="/library-dodge">Play Now</a>
+  </div>
+
 </div>
 
 <script>

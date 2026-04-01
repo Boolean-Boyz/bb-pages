@@ -10,16 +10,19 @@
 body {
   margin: 0;
   font-family: 'Lato', sans-serif;
+  background: #023b0f !important;
 }
 
 /* ── Nav bar ── */
 .fopl-nav {
-  background: #023b0f;
+  background: linear-gradient(180deg, #02450f 0%, #023b0f 100%);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 30px;
   flex-wrap: wrap;
+  border-bottom: 3px solid #2db84d;
+  box-shadow: 0 2px 14px rgba(45,184,77,0.18);
 }
 
 .fopl-logo-wrap img {
@@ -120,6 +123,95 @@ body {
 }
 
 .fopl-footer a:hover { text-decoration: underline; }
+
+/* ── Fun decorative scene strip above footer ── */
+@keyframes palm-sway {
+  0%, 100% { transform: rotate(-3deg) translateY(0); }
+  50%       { transform: rotate(3deg) translateY(-6px); }
+}
+@keyframes palm-sway-r {
+  0%, 100% { transform: scaleX(-1) rotate(-3deg) translateY(0); }
+  50%       { transform: scaleX(-1) rotate(3deg) translateY(-6px); }
+}
+@keyframes mascot-bounce {
+  0%, 100% { transform: translateY(0) rotate(-4deg); }
+  50%       { transform: translateY(-14px) rotate(4deg); }
+}
+@keyframes nav-shimmer {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+.fopl-deco-scene {
+  position: relative;
+  width: 100%;
+  background: linear-gradient(180deg, #d4edda 0%, #a8d5b5 60%, #6ab87f 100%);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 160px;
+  overflow: hidden;
+  padding: 0 40px;
+}
+
+/* wavy ground line */
+.fopl-deco-scene::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 28px;
+  background: #023b0f;
+  border-radius: 60% 60% 0 0 / 100% 100% 0 0;
+}
+
+.fopl-deco-scene::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: rgba(2,59,15,0.18);
+}
+
+.deco-palm {
+  height: 140px;
+  width: auto;
+  mix-blend-mode: multiply;
+  position: relative;
+  z-index: 2;
+  transform-origin: bottom center;
+  animation: palm-sway 4s ease-in-out infinite;
+  filter: drop-shadow(0 4px 8px rgba(2,59,15,0.25));
+}
+
+.deco-palm--right {
+  animation: palm-sway-r 4.5s ease-in-out infinite;
+  transform: scaleX(-1);
+}
+
+.deco-book-mascot {
+  height: 110px;
+  width: auto;
+  mix-blend-mode: multiply;
+  position: relative;
+  z-index: 2;
+  transform-origin: bottom center;
+  animation: mascot-bounce 2.2s ease-in-out infinite;
+  filter: drop-shadow(0 6px 10px rgba(2,59,15,0.3));
+}
+
+/* ── Nav fun: subtle shimmer underline on active ── */
+.fopl-nav-links li.active a {
+  background: rgba(255,255,255,0.16);
+  border-bottom: 3px solid #58e87a;
+}
+
+/* ── Nav fun: hover leaf-pop effect ── */
+.fopl-nav-links li a:hover {
+  background: rgba(255,255,255,0.14);
+  color: #a8f5b8;
+  transition: background 0.2s, color 0.2s;
+}
+
 
 /* ── Responsive nav ── */
 @media (max-width: 640px) {

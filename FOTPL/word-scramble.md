@@ -63,6 +63,30 @@ fopl_nav_active: puzzles
     color: #5d695e;
     font-weight: 700;
   }
+  .scramble-level-row {
+    margin: 0 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .scramble-level-chip {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    font-weight: 700;
+    border-radius: 999px;
+    padding: 5px 10px;
+    border: 1px solid #bfd1bf;
+    background: #eef6ef;
+    color: #214325;
+  }
+  .scramble-level-note {
+    margin: 0;
+    font-size: 0.84rem;
+    color: #5d695e;
+    font-weight: 700;
+  }
   .scramble-actions {
     margin-top: 12px;
     display: flex;
@@ -160,6 +184,10 @@ fopl_nav_active: puzzles
       <span class="scramble-mode-chip" id="scramble-mode-chip">Daily</span>
       <p class="scramble-mode-note" id="scramble-mode-note">Daily round counts toward streak and leaderboard stats (when signed in).</p>
     </div>
+    <div class="scramble-level-row">
+      <span class="scramble-level-chip" id="scramble-level-chip">Level 1</span>
+      <p class="scramble-level-note" id="scramble-level-note">Short words and warm-up difficulty.</p>
+    </div>
     <p class="scramble-prompt">Unscramble the letters to form today\'s word.</p>
     <div class="scramble-letters" id="scramble-letters"></div>
 
@@ -192,35 +220,61 @@ const MAX_ATTEMPTS = 5;
 const DAY_KEY = 'fopl_scramble_day';
 const STATE_KEY = 'fopl_scramble_state';
 const STATS_KEY = 'fopl_scramble_stats';
-
-const WORDS = [
-  'library', 'chapter', 'fiction', 'archive', 'reading', 'classic', 'mystery',
-  'poetry', 'novel', 'author', 'shelf', 'volume', 'history', 'grammar',
-  'catalog', 'borrower', 'bookmark', 'hardcover', 'paperback', 'index',
-  'librarian', 'biography', 'manuscript', 'footnote', 'preface', 'epilogue',
-  'bookstore', 'encyclopedia', 'anthology', 'publisher', 'circulation'
+const LEVELS = [
+  {
+    label: 'Level 1',
+    note: 'Short words and warm-up difficulty.',
+    words: ['novel', 'shelf', 'index', 'poetry', 'author', 'genre', 'story', 'title']
+  },
+  {
+    label: 'Level 2',
+    note: 'Medium words with familiar book terms.',
+    words: ['library', 'chapter', 'fiction', 'archive', 'reading', 'classic', 'mystery', 'volume']
+  },
+  {
+    label: 'Level 3',
+    note: 'Longer words and trickier letter mixes.',
+    words: ['catalog', 'borrower', 'bookmark', 'hardcover', 'paperback', 'grammar', 'history', 'footnote']
+  },
+  {
+    label: 'Level 4',
+    note: 'Advanced literary vocabulary and patterns.',
+    words: ['librarian', 'biography', 'manuscript', 'epilogue', 'anthology', 'publisher', 'narrative', 'reference']
+  },
+  {
+    label: 'Level 5',
+    note: 'Expert mode with the hardest scrambles.',
+    words: ['circulation', 'encyclopedia', 'classification', 'bibliography', 'periodicals', 'preservation', 'bookmobile', 'bookstore']
+  }
 ];
+const MAX_LEVEL = LEVELS.length;
 
 let answer = '';
 let attempts = 0;
 let done = false;
 let mode = 'daily';
 let practiceRoundsThisVisit = 0;
+let practiceLevel = 1;
+let dailyLevel = 1;
 
 function getDayId() { return window.foplGetDayId(); }
 
 function getTodayWord() {
   const day = Number(getDayId());
-  const spread = (day * 17 + 11) % WORDS.length;
-  return WORDS[spread].toUpperCase();
+  dailyLevel = (day % MAX_LEVEL) + 1;
+  const pool = LEVELS[dailyLevel - 1].words;
+  const spread = (day * 17 + 11) % pool.length;
+  return pool[spread].toUpperCase();
 }
 
-function getPracticeWord() {
-  const candidate = WORDS[Math.floor(Math.random() * WORDS.length)].toUpperCase();
+function getPracticeWord(level) {
+  const safeLevel = Math.min(MAX_LEVEL, Math.max(1, level));
+  const pool = LEVELS[safeLevel - 1].words;
+  const candidate = pool[Math.floor(Math.random() * pool.length)].toUpperCase();
   const daily = getTodayWord();
-  if (WORDS.length < 2 || candidate !== daily) return candidate;
-  const idx = (WORDS.findIndex((w) => w.toUpperCase() === candidate) + 1) % WORDS.length;
-  return WORDS[idx].toUpperCase();
+  if (pool.length < 2 || candidate !== daily) return candidate;
+  const idx = (pool.findIndex((w) => w.toUpperCase() === candidate) + 1) % pool.length;
+  return pool[idx].toUpperCase();
 }
 
 function seededShuffle(word, day) {
@@ -320,15 +374,21 @@ function saveDayState(state) {
 function updateModeUi() {
   const chip = document.getElementById('scramble-mode-chip');
   const note = document.getElementById('scramble-mode-note');
+  const levelChip = document.getElementById('scramble-level-chip');
+  const levelNote = document.getElementById('scramble-level-note');
   if (mode === 'daily') {
     chip.textContent = 'Daily';
     chip.classList.remove('practice');
     note.textContent = 'Daily round counts toward streak and leaderboard stats (when signed in).';
+    levelChip.textContent = LEVELS[dailyLevel - 1].label;
+    levelNote.textContent = `Daily difficulty rotates each day. Today: ${LEVELS[dailyLevel - 1].note}`;
     document.getElementById('scramble-date').textContent = `Daily Scramble • ${new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}`;
   } else {
     chip.textContent = 'Practice';
     chip.classList.add('practice');
     note.textContent = 'Practice rounds are unlimited and do not affect daily streak or leaderboard stats.';
+    levelChip.textContent = `${LEVELS[practiceLevel - 1].label} / ${MAX_LEVEL}`;
+    levelNote.textContent = `Practice progression: solve rounds to climb levels. Current: ${LEVELS[practiceLevel - 1].note}`;
     document.getElementById('scramble-date').textContent = 'Practice Scramble • Unlimited Rounds';
   }
   document.getElementById('scramble-daily').style.display = mode === 'practice' ? 'inline-block' : 'none';
@@ -365,7 +425,16 @@ function bindForm() {
     attempts += 1;
 
     if (guess === answer) {
-      showFeedback(`Solved in ${attempts} attempt${attempts === 1 ? '' : 's'}!`, true);
+      let msg = `Solved in ${attempts} attempt${attempts === 1 ? '' : 's'}!`;
+      if (mode === 'practice') {
+        if (practiceLevel < MAX_LEVEL) {
+          practiceLevel += 1;
+          msg += ` Nice work - advanced to ${LEVELS[practiceLevel - 1].label}.`;
+        } else {
+          msg += ' You are at max practice level.';
+        }
+      }
+      showFeedback(msg, true);
       if (mode === 'daily') saveDayState({ status: 'won', attempts });
       disableInput();
       if (window.charScene) { window.charScene.npcRight('Letters align! Solved it!'); window.charScene.aiComment(true); }
@@ -415,10 +484,10 @@ function showDailyRound() {
 function startPracticeRound() {
   mode = 'practice';
   practiceRoundsThisVisit += 1;
-  const word = getPracticeWord();
+  const word = getPracticeWord(practiceLevel);
   const seed = Math.floor(Date.now() / 1000) + practiceRoundsThisVisit * 37;
   drawRound(word, seed);
-  showFeedback('Practice round started. This round does not count toward daily stats.', true);
+  showFeedback(`Practice round started at ${LEVELS[practiceLevel - 1].label}. This round does not count toward daily stats.`, true);
 }
 
 function setupGame() {

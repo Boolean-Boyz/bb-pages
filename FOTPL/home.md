@@ -7,7 +7,7 @@ fopl_nav_active: home
 ---
 
 <style>
-  body { background: #fff; }
+  body { background: #023b0f; }
 
   .fopl-logo-wrap img { height: 208px; }
 
@@ -169,13 +169,13 @@ fopl_nav_active: home
     font-family: 'Cabin', sans-serif;
     font-size: 1.6rem;
     font-weight: 700;
-    color: #023b0f;
+    color: #fff !important;
     text-transform: uppercase;
     letter-spacing: 0.04em;
     margin: 0 0 16px;
     border: none;
   }
-  .fopl-about p { font-size: 1.05rem; color: #444; line-height: 1.8; margin: 0; }
+  .fopl-about p { font-size: 1.05rem; color: #fff !important; line-height: 1.8; margin: 0; }
 
   /* ── Calendar ── */
   .fopl-calendar-wrap {
@@ -183,7 +183,7 @@ fopl_nav_active: home
   }
   .fopl-calendar-wrap h2 {
     font-family: 'Cabin', sans-serif; font-size: 1.6rem; font-weight: 700;
-    color: #023b0f; text-transform: uppercase; letter-spacing: 0.04em;
+    color: #fff !important; text-transform: uppercase; letter-spacing: 0.04em;
     margin: 0 0 24px; border: none; text-align: center;
   }
   .cal-header {
@@ -192,15 +192,15 @@ fopl_nav_active: home
   }
   .cal-title {
     font-family: 'Cabin', sans-serif; font-size: 1rem; font-weight: 700;
-    color: #023b0f; text-transform: uppercase; letter-spacing: 0.05em;
+    color: #fff; text-transform: uppercase; letter-spacing: 0.05em;
   }
   .cal-nav {
-    background: none; border: 1.5px solid #023b0f; color: #023b0f;
+    background: none; border: 1.5px solid rgba(255,255,255,0.6); color: #fff;
     border-radius: 4px; width: 32px; height: 32px; cursor: pointer;
     font-size: 1.1rem; display: flex; align-items: center; justify-content: center;
     transition: background 0.15s;
   }
-  .cal-nav:hover { background: #023b0f; color: #fff; }
+  .cal-nav:hover { background: rgba(255,255,255,0.15); color: #fff; }
   .cal-grid {
     display: grid; grid-template-columns: repeat(7, 1fr);
     border: 1px solid #d8e8d8; border-radius: 6px; overflow: hidden;
@@ -294,7 +294,7 @@ fopl_nav_active: home
 
 <!-- Photo Header -->
 <div class="fopl-photo-header">
-  <img src="/FOTPL/foplbuilding.png" alt="Friends of the Poway Library Building">
+  <img src="/FOTPL/Images/foplbuilding.png" alt="Friends of the Poway Library Building">
   <div class="fopl-photo-header-overlay">
     <h2>Friends of the Poway Library</h2>
   </div>
