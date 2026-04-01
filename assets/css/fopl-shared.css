@@ -10,6 +10,7 @@
 body {
   margin: 0;
   font-family: 'Lato', sans-serif;
+  background: url('/FOTPL/Images/greenbg.png') center/cover fixed !important;
 }
 
 /* ── Nav bar ── */
@@ -211,38 +212,6 @@ body {
   transition: background 0.2s, color 0.2s;
 }
 
-/* ── Floating side palm on wide screens ── */
-@media (min-width: 1400px) {
-  body::before {
-    content: '';
-    position: fixed;
-    left: -20px;
-    bottom: 180px;
-    width: 120px;
-    height: 200px;
-    background: url('/FOTPL/Images/PalmTree.png') center/contain no-repeat;
-    opacity: 0.22;
-    pointer-events: none;
-    z-index: 0;
-    mix-blend-mode: multiply;
-    animation: palm-sway 5s ease-in-out infinite;
-  }
-  body::after {
-    content: '';
-    position: fixed;
-    right: -20px;
-    bottom: 180px;
-    width: 120px;
-    height: 200px;
-    background: url('/FOTPL/Images/PalmTree.png') center/contain no-repeat;
-    opacity: 0.22;
-    pointer-events: none;
-    z-index: 0;
-    mix-blend-mode: multiply;
-    transform: scaleX(-1);
-    animation: palm-sway-r 5.5s ease-in-out infinite;
-  }
-}
 
 /* ── Responsive nav ── */
 @media (max-width: 640px) {
