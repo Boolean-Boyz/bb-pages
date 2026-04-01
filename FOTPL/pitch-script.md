@@ -308,7 +308,7 @@ fopl_nav_active: home
   </section>
 
   <section class="script">
-    <h2>60-Second Presentation Script</h2>
+    <h2>Project Overview</h2>
     <p>
       Our project turns the Friends of the Poway Library website into a real product experience.
       Instead of only reading information, users can discover books through interactive catalog flows,
