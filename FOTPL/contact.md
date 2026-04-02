@@ -221,30 +221,5 @@ fopl_nav_active: contact
   <a href="https://powayfriends.org">powayfriends.org</a>
 </div>
 
-<script>
-{
-  // Auth nav dropdown
-  const foplUser = JSON.parse(localStorage.getItem('fopl_user') || 'null');
-  const authItem = document.getElementById('nav-auth-item');
-  const authLink = document.getElementById('nav-auth-link');
-  const dropdown = document.getElementById('nav-auth-dropdown');
-  const signoutBtn = document.getElementById('nav-signout-btn');
-  if (foplUser && authLink) {
-    authItem.classList.add('fopl-nav-has-dropdown');
-    authLink.textContent = foplUser.name.split(' ')[0];
-    authLink.href = '#';
-    authLink.onclick = (e) => { e.preventDefault(); dropdown.classList.toggle('open'); };
-    document.addEventListener('click', (e) => {
-      if (!authItem.contains(e.target)) dropdown.classList.remove('open');
-    });
-    signoutBtn.onclick = async (e) => {
-      e.preventDefault();
-      await fetch(window.FOPL_BACKEND + '/api/fopl/login', { method: 'DELETE', credentials: 'include' }).catch(() => {});
-      localStorage.removeItem('fopl_user');
-      window.location.href = '/home';
-    };
-  }
-}
-</script>
 
 

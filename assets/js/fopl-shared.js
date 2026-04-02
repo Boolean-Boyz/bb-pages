@@ -3,11 +3,13 @@
    Auth nav dropdown, backend URL, game helpers
    ═══════════════════════════════════════════ */
 
-// Shared backend URL — single source of truth
-window.FOPL_BACKEND = 'https://fopl-flask.opencodingsociety.com';
+// Shared backend URL — local dev hits localhost, production hits the deployed backend
+window.FOPL_BACKEND = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+  ? 'http://localhost:8321'
+  : 'https://fopl-flask.opencodingsociety.com';
 
 // ── Auth nav dropdown (runs on every page) ──
-(function initAuthNav() {
+document.addEventListener('DOMContentLoaded', function initAuthNav() {
   var foplUser = JSON.parse(localStorage.getItem('fopl_user') || 'null');
   var authItem = document.getElementById('nav-auth-item');
   var authLink = document.getElementById('nav-auth-link');
@@ -34,7 +36,7 @@ window.FOPL_BACKEND = 'https://fopl-flask.opencodingsociety.com';
       window.location.href = '/home';
     };
   }
-})();
+});
 
 // ── Day-ID helper (shared across all daily games) ──
 window.foplGetDayId = function() {
