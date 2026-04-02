@@ -57,10 +57,48 @@ fopl_nav_active: home
   /* ── Hero ── */
   .fopl-hero {
     background: #023b0f;
+    background-image: radial-gradient(rgba(255,255,255,0.07) 1.5px, transparent 1.5px);
+    background-size: 28px 28px;
     color: #fff;
-    text-align: center;
-    padding: 72px 24px 60px;
+    padding: 56px 20px;
+    display: grid;
+    grid-template-columns: 200px 1fr 200px;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
   }
+  @keyframes sparkPulse {
+    0%, 100% { opacity: 0.3; transform: scale(0.85); }
+    50%       { opacity: 1;  transform: scale(1.2);  }
+  }
+
+  /* ── CSS mini book for card icon ── */
+  .css-book {
+    width: 28px; height: 36px;
+    position: relative;
+    display: inline-block;
+  }
+  .css-book .spine {
+    position: absolute; left: 0; top: 0;
+    width: 6px; height: 100%;
+    background: #023b0f;
+    border-radius: 2px 0 0 2px;
+  }
+  .css-book .cover {
+    position: absolute; left: 6px; top: 0;
+    width: 22px; height: 100%;
+    background: linear-gradient(135deg, #4caf50, #2e7d32);
+    border-radius: 0 3px 3px 0;
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.25);
+  }
+  .css-book .page-line {
+    position: absolute; top: 10px; left: 12px;
+    width: 12px; height: 2px;
+    background: rgba(255,255,255,0.5);
+    border-radius: 1px;
+    box-shadow: 0 5px 0 rgba(255,255,255,0.4), 0 10px 0 rgba(255,255,255,0.3);
+  }
+
   .fopl-hero h1 {
     font-family: 'Cabin', sans-serif;
     font-size: 2.6rem;
@@ -69,13 +107,14 @@ fopl_nav_active: home
     letter-spacing: 0.02em;
     color: #fff;
     border: none;
+    text-align: center;
   }
   .fopl-hero p {
     font-size: 1.15rem;
     opacity: 0.88;
-    max-width: 600px;
-    margin: 0 auto 32px;
+    margin: 0 0 32px;
     line-height: 1.7;
+    text-align: center;
   }
   .fopl-hero-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
   .fopl-hero-btn {
@@ -283,6 +322,10 @@ fopl_nav_active: home
   }
   .cal-color-swatch.selected { border-color: #333; }
 
+  @media (max-width: 900px) {
+    .fopl-hero-side { display: none; }
+    .fopl-hero { padding: 56px 20px; }
+  }
   @media (max-width: 640px) {
     .fopl-hero h1 { font-size: 1.8rem; }
     .fopl-cards { padding: 32px 18px; }
@@ -302,22 +345,39 @@ fopl_nav_active: home
 
 <!-- Hero -->
 <div class="fopl-hero">
-  <h1>Friends of the Poway Library</h1>
-  <p>
-    A nonprofit volunteer organization supporting the Poway Library
-    through fundraising, advocacy, and community programs since 1978.
-  </p>
-  <div class="fopl-hero-btns">
-    <a class="fopl-hero-btn primary" href="/bookstore">Visit Our Bookstore</a>
-    <a class="fopl-hero-btn outline" href="/contact">Get Involved</a>
-    <a class="fopl-hero-btn games" href="/puzzles">Play Games</a>
+
+  <!-- Left: tree image -->
+  <div aria-hidden="true" style="width:200px;display:flex;align-items:flex-end;justify-content:flex-start;">
+    <img src="/FOTPL/Images/fopltreee.png" alt="" style="height:220px;width:auto;object-fit:contain;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.4));">
   </div>
+
+  <!-- Center -->
+  <div class="fopl-hero-center" style="text-align:center;padding:0 24px;">
+    <h1>Friends of the Poway Library</h1>
+    <p>
+      A nonprofit volunteer organization supporting the Poway Library
+      through fundraising, advocacy, and community programs since 1978.
+    </p>
+    <div class="fopl-hero-btns">
+      <a class="fopl-hero-btn primary" href="/bookstore">Visit Our Bookstore</a>
+      <a class="fopl-hero-btn outline" href="/contact">Get Involved</a>
+      <a class="fopl-hero-btn games" href="/puzzles">Play Games</a>
+    </div>
+  </div>
+
+  <!-- Right: tree image (mirrored) -->
+  <div aria-hidden="true" style="width:200px;display:flex;align-items:flex-end;justify-content:flex-end;">
+    <img src="/FOTPL/Images/fopltreee.png" alt="" style="height:220px;width:auto;object-fit:contain;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.4));transform:scaleX(-1);">
+  </div>
+
 </div>
 
 <!-- Feature cards -->
 <div class="fopl-cards">
   <div class="fopl-card">
-    <div class="fopl-card-icon">Books</div>
+    <div class="fopl-card-icon">
+      <div class="css-book"><div class="spine"></div><div class="cover"></div><div class="page-line"></div></div>
+    </div>
     <h3>Bookstore</h3>
     <p>Gently used books, magazines, DVDs, puzzles and more — all at great prices.</p>
     <a href="/bookstore">Browse the Store</a>

@@ -130,6 +130,17 @@ fopl_nav_active: contact
 <div class="fopl-hero">
   <h1>Contact Us</h1>
   <p>We'd love to hear from you. Reach out to volunteer, donate, ask a question, or learn more about the Friends.</p>
+  <div aria-hidden="true" style="display:flex;justify-content:center;align-items:center;gap:6px;margin-top:18px;opacity:0.75;">
+    <div style="width:14px;height:26px;background:linear-gradient(135deg,#66bb6a,#1b5e20);border-radius:60% 40% 40% 60%/50% 50% 50% 50%;transform:rotate(-40deg);"></div>
+    <div style="width:10px;height:20px;background:linear-gradient(135deg,#81c784,#2e7d32);border-radius:60% 40% 40% 60%/50% 50% 50% 50%;transform:rotate(-65deg);"></div>
+    <div style="width:7px;height:14px;background:linear-gradient(135deg,#a5d6a7,#388e3c);border-radius:60% 40% 40% 60%/50% 50% 50% 50%;transform:rotate(-80deg);"></div>
+    <div style="width:50px;height:1.5px;background:rgba(255,255,255,0.35);"></div>
+    <div style="width:20px;height:20px;background:#2e7d32;border-radius:50%;"></div>
+    <div style="width:50px;height:1.5px;background:rgba(255,255,255,0.35);"></div>
+    <div style="width:7px;height:14px;background:linear-gradient(135deg,#a5d6a7,#388e3c);border-radius:60% 40% 40% 60%/50% 50% 50% 50%;transform:rotate(80deg);"></div>
+    <div style="width:10px;height:20px;background:linear-gradient(135deg,#81c784,#2e7d32);border-radius:60% 40% 40% 60%/50% 50% 50% 50%;transform:rotate(65deg);"></div>
+    <div style="width:14px;height:26px;background:linear-gradient(135deg,#66bb6a,#1b5e20);border-radius:60% 40% 40% 60%/50% 50% 50% 50%;transform:rotate(40deg);"></div>
+  </div>
 </div>
 
 <div class="contact-content">
