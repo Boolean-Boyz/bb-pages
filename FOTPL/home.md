@@ -481,7 +481,7 @@ fopl_nav_active: home
     const firstDay    = new Date(calYear, calMonth, 1).getDay();
     const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
     const prevDays    = new Date(calYear, calMonth, 0).getDate();
-    const todayStr    = now.toISOString().slice(0, 10);
+    const todayStr    = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
     const admin       = isAdmin();
 
     let cells = [];
