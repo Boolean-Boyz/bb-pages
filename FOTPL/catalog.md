@@ -385,10 +385,7 @@ fopl_nav_active: catalog
 </div>
 
 <!-- AI Chat -->
-<button class="ai-fab" onclick="toggleAI()">
-  <div class="ai-fab-dot"></div>
-  Ask AI
-</button>
+<button class="ai-fab" onclick="toggleAI()"><span class="ai-fab-dot"></span>Ask AI</button>
 
 <div class="ai-panel" id="ai-panel">
   <div class="ai-panel-header">
