@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function initAuthNav() {
                 (!cell.cur ? ' other' : '') +
                 (isToday    ? ' today'    : '') +
                 (isSelected ? ' selected' : '');
-      var click = cell.cur ? ' onclick="foplPopSelectDay(\'' + dateStr + '\')"' : '';
+      var click = cell.cur ? ' onclick="event.stopPropagation();foplPopSelectDay(\'' + dateStr + '\')"' : '';
       html += '<div class="' + cls + '"' + click + '>' +
               '<span class="fopl-pop-day">' + cell.day + '</span>' + dots + '</div>';
     });
