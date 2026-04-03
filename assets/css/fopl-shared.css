@@ -81,8 +81,8 @@ body {
   border: 1px solid rgba(2,59,15,0.2);
   border-radius: 8px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.22);
-  width: 300px;
-  padding: 14px;
+  width: 420px;
+  padding: 18px;
 }
 .fopl-cal-popup.open { display: block; }
 
@@ -90,11 +90,11 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 .fopl-pop-month {
   font-family: 'Cabin', sans-serif;
-  font-size: 0.82rem;
+  font-size: 0.9rem;
   font-weight: 700;
   color: #023b0f;
   text-transform: uppercase;
@@ -105,10 +105,10 @@ body {
   border: 1px solid rgba(2,59,15,0.3);
   color: #023b0f;
   border-radius: 3px;
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 1.1rem;
   line-height: 1;
   display: flex;
   align-items: center;
@@ -120,39 +120,43 @@ body {
 .fopl-pop-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 2px;
+  gap: 3px;
 }
 .fopl-pop-dow {
   text-align: center;
   font-family: 'Cabin', sans-serif;
-  font-size: 0.62rem;
+  font-size: 0.68rem;
   font-weight: 700;
   color: #023b0f;
   text-transform: uppercase;
-  padding: 3px 0 5px;
+  padding: 4px 0 6px;
 }
 .fopl-pop-cell {
-  min-height: 30px;
-  padding: 3px;
-  border-radius: 4px;
+  min-height: 40px;
+  padding: 4px 2px;
+  border-radius: 5px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 3px;
+  cursor: pointer;
+  transition: background 0.12s;
 }
-.fopl-pop-cell.other { opacity: 0.3; }
+.fopl-pop-cell:not(.other):hover { background: #e8f5eb; }
+.fopl-pop-cell.selected { background: #c8e6c9; }
+.fopl-pop-cell.other { opacity: 0.3; cursor: default; }
 .fopl-pop-cell.today .fopl-pop-day {
   background: #023b0f;
   color: #fff;
   border-radius: 50%;
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .fopl-pop-day {
-  font-size: 0.72rem;
+  font-size: 0.78rem;
   font-weight: 600;
   color: #333;
   line-height: 1;
@@ -163,6 +167,48 @@ body {
   border-radius: 50%;
   display: block;
   flex-shrink: 0;
+}
+
+/* ── Day detail panel ── */
+.fopl-pop-detail {
+  display: none;
+  margin-top: 14px;
+  border-top: 1px solid rgba(2,59,15,0.15);
+  padding-top: 12px;
+}
+.fopl-pop-detail.open { display: block; }
+.fopl-pop-detail-date {
+  font-family: 'Cabin', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #023b0f;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+.fopl-pop-event-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(2,59,15,0.08);
+  font-size: 0.82rem;
+  color: #1a1a1a;
+}
+.fopl-pop-event-row:last-child { border-bottom: none; }
+.fopl-pop-event-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+.fopl-pop-event-name { font-weight: 600; }
+.fopl-pop-event-desc { font-size: 0.76rem; color: #555; margin-top: 1px; }
+.fopl-pop-no-events {
+  font-size: 0.8rem;
+  color: #888;
+  font-style: italic;
 }
 
 /* ── Nav dropdown ── */

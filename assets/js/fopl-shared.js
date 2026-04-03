@@ -43,6 +43,7 @@ document.addEventListener('DOMContentLoaded', function initAuthNav() {
   var popOpen = false;
   var popEvents = [];
   var popYear = null, popMonth = null;
+  var popSelectedDate = null;
 
   window.foplToggleCalPopup = function() {
     var popup = document.getElementById('fopl-cal-popup');
@@ -53,6 +54,8 @@ document.addEventListener('DOMContentLoaded', function initAuthNav() {
       var now = new Date();
       if (popYear === null) { popYear = now.getFullYear(); popMonth = now.getMonth(); }
       popLoadAndRender();
+    } else {
+      popSelectedDate = null;
     }
   };
 
@@ -62,6 +65,7 @@ document.addEventListener('DOMContentLoaded', function initAuthNav() {
     var btn   = document.getElementById('fopl-cal-pop-btn');
     if (popup && !popup.contains(e.target) && btn && !btn.contains(e.target)) {
       popOpen = false;
+      popSelectedDate = null;
       popup.classList.remove('open');
     }
   });
@@ -79,13 +83,13 @@ document.addEventListener('DOMContentLoaded', function initAuthNav() {
       .toLocaleString('default', { month: 'long', year: 'numeric' });
     document.getElementById('fopl-pop-month-label').textContent = label;
 
-    var now          = new Date();
-    var todayStr     = now.getFullYear() + '-' +
-                       String(now.getMonth()+1).padStart(2,'0') + '-' +
-                       String(now.getDate()).padStart(2,'0');
-    var firstDay     = new Date(popYear, popMonth, 1).getDay();
-    var daysInMonth  = new Date(popYear, popMonth + 1, 0).getDate();
-    var prevDays     = new Date(popYear, popMonth, 0).getDate();
+    var now         = new Date();
+    var todayStr    = now.getFullYear() + '-' +
+                      String(now.getMonth()+1).padStart(2,'0') + '-' +
+                      String(now.getDate()).padStart(2,'0');
+    var firstDay    = new Date(popYear, popMonth, 1).getDay();
+    var daysInMonth = new Date(popYear, popMonth + 1, 0).getDate();
+    var prevDays    = new Date(popYear, popMonth, 0).getDate();
 
     var dows = ['Su','Mo','Tu','We','Th','Fr','Sa'];
     var html = dows.map(function(d) { return '<div class="fopl-pop-dow">' + d + '</div>'; }).join('');
@@ -100,24 +104,67 @@ document.addEventListener('DOMContentLoaded', function initAuthNav() {
       var dateStr = cell.cur
         ? popYear + '-' + String(popMonth+1).padStart(2,'0') + '-' + String(cell.day).padStart(2,'0')
         : '';
-      var isToday = dateStr === todayStr;
-      var events  = cell.cur ? popEvents.filter(function(e) { return e.date === dateStr; }) : [];
-      var dots    = events.map(function(e) {
-        return '<span class="fopl-pop-dot" style="background:' + e.color + '" title="' + e.title + '"></span>';
+      var isToday    = dateStr === todayStr;
+      var isSelected = dateStr === popSelectedDate;
+      var events     = cell.cur ? popEvents.filter(function(e) { return e.date === dateStr; }) : [];
+      var dots       = events.map(function(e) {
+        return '<span class="fopl-pop-dot" style="background:' + e.color + '"></span>';
       }).join('');
-      html += '<div class="fopl-pop-cell' + (!cell.cur ? ' other' : '') + (isToday ? ' today' : '') + '">' +
+      var cls = 'fopl-pop-cell' +
+                (!cell.cur ? ' other' : '') +
+                (isToday    ? ' today'    : '') +
+                (isSelected ? ' selected' : '');
+      var click = cell.cur ? ' onclick="foplPopSelectDay(\'' + dateStr + '\')"' : '';
+      html += '<div class="' + cls + '"' + click + '>' +
               '<span class="fopl-pop-day">' + cell.day + '</span>' + dots + '</div>';
     });
 
     document.getElementById('fopl-pop-grid').innerHTML = html;
+
+    // re-render detail if a date is already selected
+    if (popSelectedDate) popShowDetail(popSelectedDate);
+  }
+
+  window.foplPopSelectDay = function(dateStr) {
+    popSelectedDate = dateStr;
+    popRender();
+  };
+
+  function popShowDetail(dateStr) {
+    var detail = document.getElementById('fopl-pop-detail');
+    if (!detail) return;
+    var events = popEvents.filter(function(e) { return e.date === dateStr; });
+    var parts   = dateStr.split('-');
+    var label   = new Date(+parts[0], +parts[1]-1, +parts[2])
+                    .toLocaleDateString('default', { weekday:'long', month:'long', day:'numeric' });
+    var inner;
+    if (events.length === 0) {
+      inner = '<div class="fopl-pop-no-events">No events on this day.</div>';
+    } else {
+      inner = events.map(function(e) {
+        return '<div class="fopl-pop-event-row">' +
+               '<span class="fopl-pop-event-swatch" style="background:' + e.color + '"></span>' +
+               '<div><div class="fopl-pop-event-name">' + e.title + '</div>' +
+               (e.description ? '<div class="fopl-pop-event-desc">' + e.description + '</div>' : '') +
+               '</div></div>';
+      }).join('');
+    }
+    detail.innerHTML = '<div class="fopl-pop-detail-date">' + label + '</div>' + inner;
+    detail.classList.add('open');
   }
 
   window.foplPopCalPrev = function() {
     if (--popMonth < 0) { popMonth = 11; popYear--; }
+    popSelectedDate = null;
+    var detail = document.getElementById('fopl-pop-detail');
+    if (detail) detail.classList.remove('open');
     popRender();
   };
   window.foplPopCalNext = function() {
     if (++popMonth > 11) { popMonth = 0; popYear++; }
+    popSelectedDate = null;
+    var detail = document.getElementById('fopl-pop-detail');
+    if (detail) detail.classList.remove('open');
     popRender();
   };
 })();
