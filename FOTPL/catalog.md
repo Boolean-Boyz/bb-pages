@@ -408,17 +408,50 @@ fopl_nav_active: catalog
 const BACKEND = window.FOPL_BACKEND;
 
 // ── State ──
-let allBooks   = [];
-let filtered   = [];
-let activeAge  = '';
-let activeCond = '';
-let searchQ    = '';
+let allBooks     = [];
+let allInventory = [];   // full unfiltered list for similarity fallback
+let filtered     = [];
+let activeAge    = '';
+let activeCond   = '';
+let searchQ      = '';
 
 const AGE_COLORS = {
   'Kids':         '#e65100',
   'Middle Grade': '#1b5e20',
   'YA':           '#4a148c',
 };
+
+// ── Full inventory (for similarity fallback) ──
+async function loadInventory() {
+  try {
+    const res = await fetch(`${BACKEND}/api/fopl/books`);
+    allInventory = (await res.json()).filter(b => b.age_group !== 'Adult');
+  } catch {}
+}
+
+function wordSet(str) {
+  return new Set((str || '').toLowerCase().replace(/[^a-z0-9 ]/g, '').split(/\s+/).filter(Boolean));
+}
+
+function similarityScore(query, book) {
+  const qWords = wordSet(query);
+  let score = 0;
+  for (const field of [book.title, book.author, book.genre, book.series]) {
+    const fWords = wordSet(field);
+    for (const w of qWords) if (fWords.has(w) && w.length > 2) score++;
+  }
+  // bonus if title contains the full query string
+  if (book.title.toLowerCase().includes(query.toLowerCase())) score += 5;
+  return score;
+}
+
+function findSimilar(query, n = 3) {
+  return allInventory
+    .map(b => ({ ...b, _score: similarityScore(query, b) }))
+    .filter(b => b._score > 0)
+    .sort((a, b) => b._score - a._score)
+    .slice(0, n);
+}
 
 // ── Fetch books ──
 async function loadBooks() {
@@ -454,6 +487,47 @@ function updateCounts() {
   full().catch(() => {});
 }
 
+// ── Card template ──
+function renderCard(b, isAdmin) {
+  const color    = AGE_COLORS[b.age_group] || '#023b0f';
+  const initials = b.title.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase();
+  const condTag  = b.condition === 'Like New' ? 'new' : b.condition === 'Very Good' ? 'vg' : 'good';
+  const ageTag   = b.age_group.toLowerCase().replace(' ','');
+  const seriesStr = b.series ? `<div class="book-series">${b.series}${b.series_num ? ` #${b.series_num}` : ''}</div>` : '';
+  const qtyStr   = b.quantity <= 1 ? `<span class="book-qty low">${b.quantity} left</span>` : `<span class="book-qty">${b.quantity} in stock</span>`;
+  const adminBtns = isAdmin ? `
+    <div style="display:flex;gap:6px;margin-top:8px">
+      <button onclick="event.stopPropagation();openEditForm(${b.id})"
+        style="flex:1;padding:5px;font-size:0.75rem;background:#fff;border:1px solid #023b0f;
+               color:#023b0f;border-radius:3px;cursor:pointer;font-family:Cabin,sans-serif;font-weight:700">Edit</button>
+      <button onclick="event.stopPropagation();deleteBook(${b.id})"
+        style="flex:1;padding:5px;font-size:0.75rem;background:#fff;border:1px solid #c00;
+               color:#c00;border-radius:3px;cursor:pointer;font-family:Cabin,sans-serif;font-weight:700">Delete</button>
+    </div>` : '';
+  return `
+    <div class="book-card" onclick="openBook(${b.id})">
+      <div class="book-cover" style="background:${color}">
+        ${b.isbn ? `<img src="https://covers.openlibrary.org/b/isbn/${b.isbn}-M.jpg"
+                     onerror="this.style.display='none'" loading="lazy" alt="${b.title}" />` : ''}
+        <span class="book-cover-letters">${initials}</span>
+      </div>
+      <div class="book-info">
+        <div class="book-title">${b.title}</div>
+        <div class="book-author">${b.author}</div>
+        ${seriesStr}
+        <div class="book-tags">
+          <span class="book-tag tag-age-${ageTag}">${b.age_group}</span>
+          <span class="book-tag tag-condition-${condTag}">${b.condition}</span>
+        </div>
+        <div class="book-footer">
+          <div class="book-price">$${b.price.toFixed(2)}</div>
+          ${qtyStr}
+        </div>
+        ${adminBtns}
+      </div>
+    </div>`;
+}
+
 // ── Render ──
 function renderBooks() {
   const sort = document.getElementById('sort-select').value;
@@ -466,53 +540,27 @@ function renderBooks() {
   const count = document.getElementById('result-count');
   count.innerHTML = `Showing <strong>${books.length}</strong> book${books.length !== 1 ? 's' : ''}`;
 
-  const grid = document.getElementById('book-grid');
+  const grid    = document.getElementById('book-grid');
+  const isAdmin = (JSON.parse(localStorage.getItem('fopl_user') || 'null') || {}).role === 'Admin';
+
   if (!books.length) {
+    if (searchQ) {
+      const similar = findSimilar(searchQ);
+      if (similar.length) {
+        grid.innerHTML =
+          `<div class="empty-state" style="grid-column:1/-1">
+            <h3>We don't have "${searchQ}" in our inventory</h3>
+            <p>Here are some similar titles you might enjoy:</p>
+          </div>` +
+          similar.map(b => renderCard(b, isAdmin)).join('');
+        return;
+      }
+    }
     grid.innerHTML = `<div class="empty-state"><h3>No books found</h3><p>Try adjusting your search or filters.</p></div>`;
     return;
   }
 
-  const isAdmin = (JSON.parse(localStorage.getItem('fopl_user') || 'null') || {}).role === 'Admin';
-
-  grid.innerHTML = books.map(b => {
-    const color   = AGE_COLORS[b.age_group] || '#023b0f';
-    const initials= b.title.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase();
-    const condTag = b.condition === 'Like New' ? 'new' : b.condition === 'Very Good' ? 'vg' : 'good';
-    const ageTag  = b.age_group.toLowerCase().replace(' ','');
-    const seriesStr = b.series ? `<div class="book-series">${b.series}${b.series_num ? ` #${b.series_num}` : ''}</div>` : '';
-    const qtyStr  = b.quantity <= 1 ? `<span class="book-qty low">${b.quantity} left</span>` : `<span class="book-qty">${b.quantity} in stock</span>`;
-    const adminBtns = isAdmin ? `
-      <div style="display:flex;gap:6px;margin-top:8px">
-        <button onclick="event.stopPropagation();openEditForm(${b.id})"
-          style="flex:1;padding:5px;font-size:0.75rem;background:#fff;border:1px solid #023b0f;
-                 color:#023b0f;border-radius:3px;cursor:pointer;font-family:Cabin,sans-serif;font-weight:700">Edit</button>
-        <button onclick="event.stopPropagation();deleteBook(${b.id})"
-          style="flex:1;padding:5px;font-size:0.75rem;background:#fff;border:1px solid #c00;
-                 color:#c00;border-radius:3px;cursor:pointer;font-family:Cabin,sans-serif;font-weight:700">Delete</button>
-      </div>` : '';
-    return `
-      <div class="book-card" onclick="openBook(${b.id})">
-        <div class="book-cover" style="background:${color}">
-          ${b.isbn ? `<img src="https://covers.openlibrary.org/b/isbn/${b.isbn}-M.jpg"
-                       onerror="this.style.display='none'" loading="lazy" alt="${b.title}" />` : ''}
-          <span class="book-cover-letters">${initials}</span>
-        </div>
-        <div class="book-info">
-          <div class="book-title">${b.title}</div>
-          <div class="book-author">${b.author}</div>
-          ${seriesStr}
-          <div class="book-tags">
-            <span class="book-tag tag-age-${ageTag}">${b.age_group}</span>
-            <span class="book-tag tag-condition-${condTag}">${b.condition}</span>
-          </div>
-          <div class="book-footer">
-            <div class="book-price">$${b.price.toFixed(2)}</div>
-            ${qtyStr}
-          </div>
-          ${adminBtns}
-        </div>
-      </div>`;
-  }).join('');
+  grid.innerHTML = books.map(b => renderCard(b, isAdmin)).join('');
 }
 
 // ── Filters ──
@@ -737,6 +785,7 @@ window.closeFormOverlay = closeFormOverlay;
 window.submitBookForm = submitBookForm;
 window.deleteBook     = deleteBook;
 
+loadInventory();
 loadBooks();
 }
 </script>

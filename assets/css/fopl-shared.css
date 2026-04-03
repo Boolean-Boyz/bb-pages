@@ -57,6 +57,17 @@ body {
   background: rgba(255,255,255,0.12);
 }
 
+.fopl-nav-cal-icon {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 14px !important;
+}
+.fopl-nav-cal-icon svg {
+  display: block;
+  vertical-align: middle;
+}
+
 /* ── Nav dropdown ── */
 .fopl-nav-has-dropdown { position: relative; }
 
