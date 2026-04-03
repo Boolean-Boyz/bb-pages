@@ -5,7 +5,17 @@
   </div>
   <ul class="fopl-nav-links">
     <li{% if page.fopl_nav_active == 'home' %} class="active"{% endif %}><a href="/home">Home</a></li>
-    <li{% if page.fopl_nav_active == 'calendar' %} class="active"{% endif %}><a href="/calendar" class="fopl-nav-cal-icon" title="Events Calendar"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></a></li>
+    <li style="position:relative;">
+      <button id="fopl-cal-pop-btn" class="fopl-nav-cal-icon" onclick="foplToggleCalPopup()" title="Events Calendar" aria-label="Events Calendar"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></button>
+      <div id="fopl-cal-popup" class="fopl-cal-popup">
+        <div class="fopl-pop-header">
+          <button class="fopl-pop-nav" onclick="foplPopCalPrev()">&#8249;</button>
+          <span class="fopl-pop-month" id="fopl-pop-month-label"></span>
+          <button class="fopl-pop-nav" onclick="foplPopCalNext()">&#8250;</button>
+        </div>
+        <div class="fopl-pop-grid" id="fopl-pop-grid"></div>
+      </div>
+    </li>
     <li{% if page.fopl_nav_active == 'history' %} class="active"{% endif %}><a href="/history">History</a></li>
     {% if page.fopl_nav_active == 'catalog' %}<li class="active"><a href="/catalog">Catalog</a></li>{% endif %}
     <li{% if page.fopl_nav_active == 'bookstore' %} class="active"{% endif %}><a href="/bookstore">Bookstore</a></li>

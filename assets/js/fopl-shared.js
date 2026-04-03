@@ -38,6 +38,90 @@ document.addEventListener('DOMContentLoaded', function initAuthNav() {
   }
 });
 
+// ── Nav calendar popup ──
+(function() {
+  var popOpen = false;
+  var popEvents = [];
+  var popYear = null, popMonth = null;
+
+  window.foplToggleCalPopup = function() {
+    var popup = document.getElementById('fopl-cal-popup');
+    if (!popup) return;
+    popOpen = !popOpen;
+    popup.classList.toggle('open', popOpen);
+    if (popOpen) {
+      var now = new Date();
+      if (popYear === null) { popYear = now.getFullYear(); popMonth = now.getMonth(); }
+      popLoadAndRender();
+    }
+  };
+
+  document.addEventListener('click', function(e) {
+    if (!popOpen) return;
+    var popup = document.getElementById('fopl-cal-popup');
+    var btn   = document.getElementById('fopl-cal-pop-btn');
+    if (popup && !popup.contains(e.target) && btn && !btn.contains(e.target)) {
+      popOpen = false;
+      popup.classList.remove('open');
+    }
+  });
+
+  async function popLoadAndRender() {
+    try {
+      var res = await fetch(window.FOPL_BACKEND + '/api/fopl/events');
+      popEvents = await res.json();
+    } catch(e) { popEvents = []; }
+    popRender();
+  }
+
+  function popRender() {
+    var label = new Date(popYear, popMonth, 1)
+      .toLocaleString('default', { month: 'long', year: 'numeric' });
+    document.getElementById('fopl-pop-month-label').textContent = label;
+
+    var now          = new Date();
+    var todayStr     = now.getFullYear() + '-' +
+                       String(now.getMonth()+1).padStart(2,'0') + '-' +
+                       String(now.getDate()).padStart(2,'0');
+    var firstDay     = new Date(popYear, popMonth, 1).getDay();
+    var daysInMonth  = new Date(popYear, popMonth + 1, 0).getDate();
+    var prevDays     = new Date(popYear, popMonth, 0).getDate();
+
+    var dows = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+    var html = dows.map(function(d) { return '<div class="fopl-pop-dow">' + d + '</div>'; }).join('');
+
+    var cells = [];
+    for (var i = firstDay - 1; i >= 0; i--) cells.push({ day: prevDays - i, cur: false });
+    for (var d = 1; d <= daysInMonth; d++)  cells.push({ day: d, cur: true });
+    var next = 1;
+    while (cells.length % 7 !== 0) cells.push({ day: next++, cur: false });
+
+    cells.forEach(function(cell) {
+      var dateStr = cell.cur
+        ? popYear + '-' + String(popMonth+1).padStart(2,'0') + '-' + String(cell.day).padStart(2,'0')
+        : '';
+      var isToday = dateStr === todayStr;
+      var events  = cell.cur ? popEvents.filter(function(e) { return e.date === dateStr; }) : [];
+      var dots    = events.map(function(e) {
+        return '<span class="fopl-pop-dot" style="background:' + e.color + '" title="' + e.title + '"></span>';
+      }).join('');
+      html += '<div class="fopl-pop-cell' + (!cell.cur ? ' other' : '') + (isToday ? ' today' : '') + '">' +
+              '<span class="fopl-pop-day">' + cell.day + '</span>' + dots + '</div>';
+    });
+
+    document.getElementById('fopl-pop-grid').innerHTML = html;
+  }
+
+  window.foplPopCalPrev = function() {
+    if (--popMonth < 0) { popMonth = 11; popYear--; }
+    popRender();
+  };
+  window.foplPopCalNext = function() {
+    if (++popMonth > 11) { popMonth = 0; popYear++; }
+    popRender();
+  };
+})();
+
 // ── Day-ID helper (shared across all daily games) ──
 window.foplGetDayId = function() {
   var epoch = new Date('2024-01-01T00:00:00');

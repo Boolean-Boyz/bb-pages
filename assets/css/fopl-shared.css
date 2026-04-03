@@ -62,10 +62,107 @@ body {
   align-items: center;
   justify-content: center;
   padding: 18px 14px !important;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #fff;
 }
-.fopl-nav-cal-icon svg {
+.fopl-nav-cal-icon svg { display: block; }
+
+/* ── Calendar popup ── */
+.fopl-cal-popup {
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 500;
+  background: #fff;
+  border: 1px solid rgba(2,59,15,0.2);
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.22);
+  width: 300px;
+  padding: 14px;
+}
+.fopl-cal-popup.open { display: block; }
+
+.fopl-pop-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.fopl-pop-month {
+  font-family: 'Cabin', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #023b0f;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.fopl-pop-nav {
+  background: none;
+  border: 1px solid rgba(2,59,15,0.3);
+  color: #023b0f;
+  border-radius: 3px;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+.fopl-pop-nav:hover { background: #e8f5eb; }
+
+.fopl-pop-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+.fopl-pop-dow {
+  text-align: center;
+  font-family: 'Cabin', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: #023b0f;
+  text-transform: uppercase;
+  padding: 3px 0 5px;
+}
+.fopl-pop-cell {
+  min-height: 30px;
+  padding: 3px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.fopl-pop-cell.other { opacity: 0.3; }
+.fopl-pop-cell.today .fopl-pop-day {
+  background: #023b0f;
+  color: #fff;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.fopl-pop-day {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #333;
+  line-height: 1;
+}
+.fopl-pop-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
   display: block;
-  vertical-align: middle;
+  flex-shrink: 0;
 }
 
 /* ── Nav dropdown ── */
