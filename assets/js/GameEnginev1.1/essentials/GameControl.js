@@ -221,9 +221,9 @@ class GameControl {
 
         // Alert the user that the level has ended
         if (this.currentLevelIndex < this.levelClasses.length - 1) {
-            alert("Level ended.");
+            console.log("Level ended.");
         } else {
-            alert("All levels completed.");
+            console.log("All levels completed.");
         }
         
         // Clean up any lingering interaction handlers

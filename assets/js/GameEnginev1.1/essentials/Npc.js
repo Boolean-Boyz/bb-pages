@@ -116,31 +116,14 @@ class Npc extends Character {
         const players = this.gameEnv.gameObjects.filter(
             obj => obj && obj.state && obj.state.collisionEvents && obj.state.collisionEvents.includes(this.spriteData.id)
         );
-        const hasInteract = this.interact !== undefined;
-
-        // Only trigger interaction if:
-        // 1. Player is in collision with this NPC
-        // 2. NPC has an interact function
-        // 3. Not already interacting
-        if (players.length > 0 && hasInteract && !this.isInteracting) {
+        if (players.length > 0 && !this.isInteracting) {
             this.isInteracting = true;
-            
-            // Store a reference to this NPC's interact function
-            const originalInteract = this.interact;
-            
-            // Execute the interact function
-            originalInteract.call(this);
-            
-            // Check if we're still in the same game level after interaction
-            // This is important for transitions to other levels
-            if (this.gameEnv && this.gameEnv.gameControl && 
-                !this.gameEnv.gameControl.isPaused) {
-                // Reset interaction state after a short delay
-                // This prevents multiple rapid interactions
-                setTimeout(() => {
-                    this.isInteracting = false;
-                }, 500);
+            if (this.interact !== undefined) {
+                this.interact.call(this);
+            } else {
+                this.showRandomDialogue();
             }
+            setTimeout(() => { this.isInteracting = false; }, 500);
         }
     }
     

@@ -53,17 +53,17 @@ class GameEnv {
         this.setBottom();
         
         // Check if dimensions are overridden in environment (for game-runner/builder)
-        // Otherwise use window dimensions
+        // Otherwise use container dimensions, falling back to window dimensions
         if (this.game?.environment?.innerWidth !== undefined) {
             this.innerWidth = this.game.environment.innerWidth;
         } else {
-            this.innerWidth = window.innerWidth;
+            this.innerWidth = this.container ? this.container.clientWidth : window.innerWidth;
         }
-        
+
         if (this.game?.environment?.innerHeight !== undefined) {
             this.innerHeight = this.game.environment.innerHeight;
         } else {
-            this.innerHeight = window.innerHeight - this.top - this.bottom;
+            this.innerHeight = this.container ? this.container.clientHeight : (window.innerHeight - this.top - this.bottom);
         }
         
         this.size();
@@ -77,7 +77,12 @@ class GameEnv {
     setCanvas() {
         // Use the container reference if provided (from environment), otherwise search by ID
         this.container = this.gameContainer || document.getElementById('gameContainer') || document.body;
-        
+
+        // Remove old canvas before creating a new one to prevent canvas leak on resize
+        if (this.canvas && this.canvas.parentNode) {
+            this.canvas.parentNode.removeChild(this.canvas);
+        }
+
         // Create canvas dynamically with unique ID
         this.canvasId = `gameCanvas-${GameEnv.canvasCounter++}`;
         this.canvas = document.createElement('canvas');
