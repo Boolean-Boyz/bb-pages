@@ -15,73 +15,95 @@ body {
 
 /* ── Nav bar ── */
 .fopl-nav {
-  background: linear-gradient(180deg, #02450f 0%, #023b0f 100%);
+  background: #023b0f;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 30px;
-  flex-wrap: wrap;
-  border-bottom: 3px solid #2db84d;
-  box-shadow: 0 2px 14px rgba(45,184,77,0.18);
+  padding: 0 24px;
+  height: 48px;
+  border-bottom: 2px solid #2db84d;
+}
+
+.fopl-nav-left,
+.fopl-nav-right {
+  display: flex;
+  align-items: center;
+  height: 100%;
 }
 
 .fopl-logo-wrap img {
-  height: 104px;
+  height: 32px;
   width: auto;
-  padding: 10px 0;
   display: block;
 }
 
 .fopl-nav-links {
   display: flex;
+  align-items: center;
   list-style: none;
   margin: 0;
   padding: 0;
+  height: 100%;
+}
+
+.fopl-nav-links--right {
+  gap: 2px;
 }
 
 .fopl-nav-links li a {
-  display: block;
+  display: flex;
+  align-items: center;
   color: #fff;
   text-decoration: none;
   font-family: 'Cabin', sans-serif;
-  font-size: 0.95rem;
+  font-size: 0.88rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
-  padding: 18px 20px;
-  transition: background 0.2s;
+  letter-spacing: 0.05em;
+  padding: 0 16px;
+  height: 48px;
+  transition: background 0.2s, color 0.2s;
 }
 
 .fopl-nav-links li a:hover,
 .fopl-nav-links li.active a {
-  background: rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.1);
 }
 
 .fopl-nav-cal-icon {
   display: flex !important;
   align-items: center;
   justify-content: center;
-  padding: 18px 14px !important;
+  padding: 0 12px !important;
+  height: 48px;
   background: none;
   border: none;
   cursor: pointer;
   color: #fff;
+  transition: color 0.2s;
 }
+.fopl-nav-cal-icon:hover { color: #58e87a; }
 .fopl-nav-cal-icon svg { display: block; }
+
+/* Ensure icon li items are vertically centered */
+.fopl-nav-links li {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
 
 /* ── Calendar popup ── */
 .fopl-cal-popup {
   display: none;
   position: absolute;
   top: calc(100% + 4px);
-  left: 50%;
-  transform: translateX(-50%);
+  right: -60px;
   z-index: 500;
   background: #fff;
   border: 1px solid rgba(2,59,15,0.2);
   border-radius: 8px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.22);
-  width: 420px;
+  width: 380px;
   padding: 18px;
 }
 .fopl-cal-popup.open { display: block; }
@@ -248,27 +270,32 @@ body {
 .fopl-nav-dropdown li a:hover { background: #f4f8f4 !important; }
 
 /* ── Auth nav pill ── */
+#nav-auth-item {
+  position: relative;
+}
 #nav-auth-item a#nav-auth-link {
-  background: rgba(255,255,255,0.15);
-  border: 1.5px solid rgba(255,255,255,0.45);
+  background: rgba(255,255,255,0.12);
+  border: 1.5px solid rgba(255,255,255,0.35);
   border-radius: 20px;
-  padding: 8px 18px;
-  margin: 8px 0;
-  font-size: 0.85rem;
+  padding: 6px 16px;
+  margin: 0;
+  font-size: 0.8rem;
   letter-spacing: 0.05em;
+  height: auto;
 }
 
 #nav-auth-item a#nav-auth-link:hover {
-  background: rgba(255,255,255,0.28);
+  background: rgba(255,255,255,0.25);
 }
 
 /* ── Footer ── */
 .fopl-footer {
   background: #023b0f;
-  color: rgba(255,255,255,0.7);
+  color: rgba(255,255,255,0.6);
   text-align: center;
-  padding: 22px 20px;
-  font-size: 0.85rem;
+  padding: 20px 20px;
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
 }
 
 .fopl-footer a {
@@ -299,7 +326,7 @@ body {
 .fopl-deco-scene {
   position: relative;
   width: 100%;
-  background: linear-gradient(180deg, #d4edda 0%, #a8d5b5 60%, #6ab87f 100%);
+  background: #a8d5b5;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
@@ -354,30 +381,90 @@ body {
   margin-bottom: 24px;
 }
 
-/* ── Nav fun: subtle shimmer underline on active ── */
+/* ── Nav active state ── */
 .fopl-nav-links li.active a {
-  background: rgba(255,255,255,0.16);
-  border-bottom: 3px solid #58e87a;
+  background: rgba(255,255,255,0.1);
+  border-bottom: 2px solid #58e87a;
 }
-
-/* ── Nav fun: hover leaf-pop effect ── */
-.fopl-nav-links li a:hover {
-  background: rgba(255,255,255,0.14);
-  color: #a8f5b8;
-  transition: background 0.2s, color 0.2s;
-}
-
 
 /* ── Responsive nav ── */
 @media (max-width: 640px) {
   .fopl-nav {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 0 16px;
+    height: auto;
+    padding: 8px 16px;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .fopl-nav-left,
+  .fopl-nav-right {
+    height: auto;
   }
   .fopl-nav-links { flex-wrap: wrap; }
   .fopl-nav-links li a {
-    padding: 12px 14px;
-    font-size: 0.85rem;
+    padding: 0 12px;
+    height: 36px;
+    font-size: 0.82rem;
   }
+  .fopl-nav-cal-icon { height: 36px; }
 }
+
+/* ── Dark mode toggle button ── */
+.fopl-nav-dark-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  height: 48px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  transition: color 0.2s;
+}
+.fopl-nav-dark-toggle:hover { color: #58e87a; }
+.fopl-nav-dark-toggle svg { display: block; }
+
+/* ── Dark mode overrides (site-wide shared) ── */
+body.fopl-dark {
+  background: #121212 !important;
+}
+body.fopl-dark .fopl-nav {
+  background: #111;
+  border-bottom-color: #58e87a;
+}
+body.fopl-dark .fopl-footer {
+  background: #111;
+}
+body.fopl-dark .fopl-deco-scene {
+  background: #1a2e1f;
+}
+body.fopl-dark .fopl-deco-scene::before {
+  background: #111;
+}
+body.fopl-dark .fopl-cal-popup {
+  background: #1e1e1e;
+  border-color: rgba(88,232,122,0.2);
+}
+body.fopl-dark .fopl-pop-month,
+body.fopl-dark .fopl-pop-dow,
+body.fopl-dark .fopl-pop-detail-date { color: #58e87a; }
+body.fopl-dark .fopl-pop-nav {
+  color: #e8f5e9;
+  border-color: rgba(255,255,255,0.2);
+}
+body.fopl-dark .fopl-pop-nav:hover { background: #2a3d2e; }
+body.fopl-dark .fopl-pop-day { color: #ddd; }
+body.fopl-dark .fopl-pop-cell:not(.other):hover { background: #2a3d2e; }
+body.fopl-dark .fopl-pop-cell.selected { background: #1a3d1f; }
+body.fopl-dark .fopl-pop-event-row { color: #ddd; border-bottom-color: rgba(255,255,255,0.08); }
+body.fopl-dark .fopl-pop-event-desc { color: #aaa; }
+body.fopl-dark .fopl-nav-dropdown {
+  background: #1e1e1e;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+}
+body.fopl-dark .fopl-nav-dropdown li a { color: #e8f5e9; }
+body.fopl-dark .fopl-nav-dropdown li a:hover { background: #2a3d2e !important; }
+
+/* Dark mode icon swap */
+body.fopl-dark .fopl-dark-icon-moon { display: none !important; }
+body.fopl-dark .fopl-dark-icon-sun { display: block !important; }

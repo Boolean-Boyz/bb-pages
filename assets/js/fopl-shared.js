@@ -8,6 +8,18 @@ window.FOPL_BACKEND = (location.hostname === 'localhost' || location.hostname ==
   ? 'http://localhost:8321'
   : 'https://fopl-flask.opencodingsociety.com';
 
+// ── Dark mode toggle (persisted via localStorage) ──
+(function() {
+  // Apply saved preference immediately (before DOMContentLoaded)
+  if (localStorage.getItem('fopl_dark') === '1') {
+    document.body.classList.add('fopl-dark');
+  }
+  window.foplToggleDark = function() {
+    var isDark = document.body.classList.toggle('fopl-dark');
+    localStorage.setItem('fopl_dark', isDark ? '1' : '0');
+  };
+})();
+
 // ── Auth nav dropdown (runs on every page) ──
 document.addEventListener('DOMContentLoaded', function initAuthNav() {
   var foplUser = JSON.parse(localStorage.getItem('fopl_user') || 'null');

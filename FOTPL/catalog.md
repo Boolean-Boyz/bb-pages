@@ -7,38 +7,47 @@ fopl_nav_active: catalog
 ---
 
 <style>
-  body { background: #f4f8f4; }
+  body { background: #f0f2f5; }
 
   .fopl-logo-wrap img { height: 90px; }
 
   /* ── Hero ── */
   .catalog-hero {
-    background: #023b0f; padding: 36px 32px 32px; color: #fff;
+    background: linear-gradient(135deg, #0d4a1a 0%, #023b0f 40%, #012d0b 100%);
+    padding: 44px 32px 40px; color: #fff;
+    text-align: center;
   }
   .catalog-hero h1 {
-    font-family: 'Cabin', sans-serif; font-size: 1.8rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.04em; margin: 0 0 16px; border: none; color: #fff;
+    font-family: 'Cabin', sans-serif; font-size: 2rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.04em; margin: 0 0 8px; border: none; color: #fff;
   }
-  .catalog-search-wrap { display: flex; gap: 10px; max-width: 600px; }
+  .catalog-hero-sub {
+    font-size: 0.9rem; color: rgba(255,255,255,0.6); margin: 0 0 20px;
+    letter-spacing: 0.02em;
+  }
+  .catalog-search-wrap { display: flex; gap: 10px; max-width: 600px; margin: 0 auto; }
   .catalog-search {
-    flex: 1; padding: 12px 16px; border: none; border-radius: 4px;
+    flex: 1; padding: 14px 18px; border: none; border-radius: 8px;
     font-family: 'Lato', sans-serif; font-size: 1rem; outline: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
   }
   .catalog-search-btn {
-    padding: 12px 24px; background: #f0c341; color: #1a2e1a; border: none;
-    border-radius: 4px; font-family: 'Cabin', sans-serif; font-weight: 700;
+    padding: 14px 28px; background: #f0c341; color: #1a2e1a; border: none;
+    border-radius: 8px; font-family: 'Cabin', sans-serif; font-weight: 700;
     font-size: 0.88rem; text-transform: uppercase; letter-spacing: 0.05em; cursor: pointer;
-    transition: background 0.2s;
+    transition: background 0.2s, transform 0.15s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
   }
-  .catalog-search-btn:hover { background: #f5d777; }
+  .catalog-search-btn:hover { background: #f5d777; transform: translateY(-1px); }
 
   /* ── Layout ── */
   .catalog-body { display: flex; gap: 0; min-height: 60vh; }
 
   /* ── Sidebar ── */
   .catalog-sidebar {
-    width: 220px; min-width: 220px; background: #fff;
-    border-right: 1px solid #e0e0e0; padding: 24px 20px;
+    width: 230px; min-width: 230px; background: #fff;
+    border-right: 1px solid #e8e8e8; padding: 28px 22px;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.03);
   }
   .filter-section { margin-bottom: 24px; }
   .filter-title {
@@ -51,8 +60,8 @@ fopl_nav_active: catalog
     font-family: 'Lato', sans-serif; font-size: 0.9rem; color: #444;
     transition: background 0.15s; margin-bottom: 2px;
   }
-  .filter-btn:hover { background: #f4f8f4; }
-  .filter-btn.active { background: #023b0f; color: #fff; font-weight: 700; }
+  .filter-btn:hover { background: #edf5ee; }
+  .filter-btn.active { background: linear-gradient(135deg, #023b0f, #045218); color: #fff; font-weight: 700; box-shadow: 0 2px 6px rgba(2,59,15,0.2); }
   .filter-count {
     float: right; font-size: 0.78rem; opacity: 0.7;
     background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 10px;
@@ -68,9 +77,11 @@ fopl_nav_active: catalog
   .catalog-count { font-size: 0.9rem; color: #666; }
   .catalog-count strong { color: #023b0f; }
   .catalog-sort {
-    padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px;
+    padding: 9px 14px; border: 1px solid #ddd; border-radius: 8px;
     font-family: 'Lato', sans-serif; font-size: 0.9rem; background: #fff; cursor: pointer;
+    transition: border-color 0.2s;
   }
+  .catalog-sort:focus { border-color: #023b0f; outline: none; }
 
   /* ── Book Grid ── */
   .catalog-grid {
@@ -79,12 +90,13 @@ fopl_nav_active: catalog
     gap: 20px;
   }
   .book-card {
-    background: #fff; border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(2,59,15,0.08);
+    background: #fff; border-radius: 12px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 4px 16px rgba(2,59,15,0.06);
     overflow: hidden; display: flex; flex-direction: column;
-    transition: transform 0.15s, box-shadow 0.15s; cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease; cursor: pointer;
+    border: 1px solid rgba(0,0,0,0.04);
   }
-  .book-card:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(2,59,15,0.14); }
+  .book-card:hover { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(2,59,15,0.14); }
   .book-cover {
     height: 160px; display: flex; align-items: center; justify-content: center;
     font-family: 'Cabin', sans-serif; font-size: 1.4rem; font-weight: 700;
@@ -96,7 +108,7 @@ fopl_nav_active: catalog
     position: absolute; inset: 0; width: 100%; height: 100%;
     object-fit: cover; object-position: top;
   }
-  .book-info { padding: 14px 14px 16px; flex: 1; display: flex; flex-direction: column; gap: 5px; }
+  .book-info { padding: 16px 16px 18px; flex: 1; display: flex; flex-direction: column; gap: 6px; }
   .book-title {
     font-family: 'Cabin', sans-serif; font-size: 0.92rem; font-weight: 700;
     color: #023b0f; line-height: 1.3; margin: 0;
@@ -126,8 +138,9 @@ fopl_nav_active: catalog
   }
   .book-overlay.open { display: flex; }
   .book-modal {
-    background: #fff; border-radius: 8px; width: 90%; max-width: 520px;
+    background: #fff; border-radius: 14px; width: 90%; max-width: 520px;
     max-height: 88vh; overflow-y: auto; position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
   }
   .book-modal-top { padding: 24px 28px 0; }
   .book-modal-close {
@@ -172,8 +185,9 @@ fopl_nav_active: catalog
   }
   .form-overlay.open { display: flex; }
   .form-modal {
-    background: #fff; border-radius: 8px; width: 90%; max-width: 460px;
+    background: #fff; border-radius: 14px; width: 90%; max-width: 460px;
     max-height: 90vh; overflow-y: auto; padding: 28px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
   }
   .form-modal h2 {
     font-family: 'Cabin', sans-serif; font-size: 1rem; font-weight: 700;
@@ -185,37 +199,38 @@ fopl_nav_active: catalog
     text-transform: uppercase; letter-spacing: 0.06em; color: #555; margin-bottom: 4px;
   }
   .form-field input, .form-field select, .form-field textarea {
-    width: 100%; padding: 9px 12px; border: 1px solid #ccc; border-radius: 4px;
+    width: 100%; padding: 10px 14px; border: 1px solid #ddd; border-radius: 8px;
     font-family: 'Lato', sans-serif; font-size: 0.95rem; outline: none;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, box-shadow 0.2s;
   }
   .form-field input:focus, .form-field select:focus, .form-field textarea:focus {
-    border-color: #023b0f;
+    border-color: #023b0f; box-shadow: 0 0 0 3px rgba(2,59,15,0.1);
   }
   .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   .form-actions { display: flex; gap: 10px; margin-top: 20px; }
   .form-submit {
-    flex: 1; padding: 11px; background: #023b0f; color: #fff; border: none;
-    border-radius: 4px; font-family: 'Cabin', sans-serif; font-weight: 700;
-    font-size: 0.88rem; text-transform: uppercase; cursor: pointer; transition: background 0.2s;
+    flex: 1; padding: 12px; background: linear-gradient(135deg, #023b0f, #045218); color: #fff; border: none;
+    border-radius: 8px; font-family: 'Cabin', sans-serif; font-weight: 700;
+    font-size: 0.88rem; text-transform: uppercase; cursor: pointer; transition: background 0.2s, transform 0.15s;
   }
-  .form-submit:hover { background: #045218; }
+  .form-submit:hover { background: linear-gradient(135deg, #045218, #056b24); transform: translateY(-1px); }
   .form-cancel {
-    padding: 11px 20px; background: none; border: 1px solid #ccc; border-radius: 4px;
+    padding: 12px 20px; background: none; border: 1px solid #ddd; border-radius: 8px;
     font-family: 'Cabin', sans-serif; font-weight: 700; font-size: 0.88rem;
-    text-transform: uppercase; cursor: pointer; color: #666;
+    text-transform: uppercase; cursor: pointer; color: #666; transition: background 0.15s;
   }
+  .form-cancel:hover { background: #f5f5f5; }
 
   /* ── AI Chat ── */
   .ai-fab {
     position: fixed; bottom: 28px; right: 28px; z-index: 300;
-    background: #023b0f; color: #fff; border: none; border-radius: 50px;
-    padding: 14px 22px; font-family: 'Cabin', sans-serif; font-weight: 700;
+    background: linear-gradient(135deg, #023b0f, #045218); color: #fff; border: none; border-radius: 50px;
+    padding: 14px 24px; font-family: 'Cabin', sans-serif; font-weight: 700;
     font-size: 0.88rem; text-transform: uppercase; letter-spacing: 0.05em;
-    cursor: pointer; box-shadow: 0 4px 20px rgba(2,59,15,0.35);
-    display: flex; align-items: center; gap: 8px; transition: background 0.2s;
+    cursor: pointer; box-shadow: 0 4px 24px rgba(2,59,15,0.35);
+    display: flex; align-items: center; gap: 8px; transition: transform 0.2s, box-shadow 0.2s;
   }
-  .ai-fab:hover { background: #045218; }
+  .ai-fab:hover { transform: translateY(-2px); box-shadow: 0 6px 30px rgba(2,59,15,0.45); }
   .ai-fab-dot {
     width: 8px; height: 8px; border-radius: 50%; background: #f0c341;
     animation: pulse 2s infinite;
@@ -224,14 +239,14 @@ fopl_nav_active: catalog
 
   .ai-panel {
     display: none; position: fixed; bottom: 90px; right: 28px; z-index: 300;
-    width: 360px; max-width: calc(100vw - 40px);
-    background: #fff; border-radius: 12px;
-    box-shadow: 0 8px 40px rgba(0,0,0,0.18); overflow: hidden;
+    width: 380px; max-width: calc(100vw - 40px);
+    background: #fff; border-radius: 16px;
+    box-shadow: 0 12px 48px rgba(0,0,0,0.2); overflow: hidden;
     flex-direction: column;
   }
   .ai-panel.open { display: flex; }
   .ai-panel-header {
-    background: #023b0f; color: #fff; padding: 14px 18px;
+    background: linear-gradient(135deg, #023b0f, #045218); color: #fff; padding: 16px 20px;
     display: flex; align-items: center; justify-content: space-between;
   }
   .ai-panel-title {
@@ -279,6 +294,7 @@ fopl_nav_active: catalog
 <!-- Hero / search -->
 <div class="catalog-hero">
   <h1>📚 Browse Our Books</h1>
+  <p class="catalog-hero-sub">Search our collection of gently used books, puzzles, DVDs, and more</p>
   <div class="catalog-search-wrap">
     <input class="catalog-search" id="search-input" type="text"
            placeholder="Search by title, author, or series…" autocomplete="off" />

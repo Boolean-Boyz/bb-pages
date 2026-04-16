@@ -16,7 +16,7 @@ fopl_nav_active: bookstore
 
   .fopl-page {
     font-family: 'Lato', sans-serif;
-    color: #333;
+    color: #e0e0e0;
     width: 100vw;
     position: relative;
     left: 50%;
@@ -25,11 +25,12 @@ fopl_nav_active: bookstore
     margin-right: -50vw;
     padding: 0;
     box-sizing: border-box;
+    background: #0a0a0a;
   }
 
   /* ── Hero / heading ── */
   .fopl-hero {
-    background-color: #023b0f;
+    background: linear-gradient(135deg, #0d4a1a 0%, #023b0f 40%, #012d0b 100%);
     color: #fff;
     text-align: center;
     padding: 48px 24px 40px;
@@ -37,74 +38,86 @@ fopl_nav_active: bookstore
 
   .fopl-hero h1 {
     font-family: 'Cabin', sans-serif;
-    font-size: 2.1rem;
+    font-size: 2rem;
     font-weight: 700;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    margin: 0;
+    margin: 0 0 8px;
     line-height: 1.25;
     color: #fff;
     border: none;
   }
 
+  .fopl-hero-sub {
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.6);
+    margin: 0;
+    letter-spacing: 0.03em;
+  }
+
   /* ── Main content card ── */
   .fopl-content {
-    background: #fff;
-    color: #333;
-    padding: 40px 40px 32px;
+    background: transparent;
+    color: #e0e0e0;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 40px 40px 36px;
   }
 
   .fopl-intro {
-    font-size: 1.15rem;
+    font-size: 1.05rem;
     line-height: 1.75;
-    max-width: 780px;
+    max-width: 640px;
     margin: 0 auto 36px;
     text-align: center;
+    color: rgba(255,255,255,0.7);
   }
 
   /* ── Info row (address / phone) ── */
   .fopl-info-row {
     display: flex;
     justify-content: center;
-    gap: 48px;
+    gap: 36px;
     flex-wrap: wrap;
-    margin-bottom: 40px;
-    padding: 20px 24px;
-    background: #f4f8f4;
-    border-left: 5px solid #023b0f;
-    border-radius: 4px;
+    margin: 0 auto 36px;
+    padding: 22px 28px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+    max-width: 720px;
+    border: 1px solid rgba(255,255,255,0.08);
   }
 
   .fopl-info-item {
     display: flex;
     align-items: flex-start;
-    gap: 12px;
+    gap: 10px;
+    text-align: left;
   }
 
   .fopl-info-icon {
-    font-size: 1.5rem;
-    color: #023b0f;
+    font-size: 1.3rem;
+    color: #f0c341;
     flex-shrink: 0;
     margin-top: 2px;
   }
 
   .fopl-info-item .fopl-label {
     font-weight: 700;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: #023b0f;
-    margin-bottom: 2px;
+    letter-spacing: 0.12em;
+    color: #f0c341;
+    margin-bottom: 3px;
   }
 
   .fopl-info-item .fopl-value {
-    font-size: 1rem;
-    color: #333;
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.7);
     line-height: 1.4;
   }
 
   .fopl-info-item a {
-    color: #023b0f;
+    color: #f0c341;
     text-decoration: none;
     font-weight: 600;
   }
@@ -116,42 +129,44 @@ fopl_nav_active: bookstore
   /* ── Divider ── */
   .fopl-divider {
     border: none;
-    border-top: 2px solid #e5e5e5;
-    margin: 0 0 32px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    margin: 4px auto 32px;
+    max-width: 500px;
   }
 
   /* ── Gallery ── */
   .fopl-gallery-title {
     font-family: 'Cabin', sans-serif;
-    font-size: 1.25rem;
+    font-size: 1.15rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: #023b0f;
+    letter-spacing: 0.06em;
+    color: #fff;
     text-align: center;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
   }
 
   .fopl-gallery {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
-    margin-bottom: 40px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 0 auto 36px;
+    max-width: 800px;
   }
 
   .fopl-gallery-item {
-    border-radius: 6px;
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.12);
     display: flex;
     flex-direction: column;
-    background: #fff;
-    transition: transform 0.25s, box-shadow 0.25s;
+    background: rgba(255,255,255,0.05);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    border: 1px solid rgba(255,255,255,0.08);
   }
 
   .fopl-gallery-item:hover {
     transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(2,59,15,0.2);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.3);
   }
 
   .fopl-gallery-item img {
@@ -162,84 +177,91 @@ fopl_nav_active: bookstore
   }
 
   .fopl-gallery-caption {
-    padding: 12px 14px;
-    font-size: 0.88rem;
-    color: #444;
+    padding: 10px 14px;
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.6);
     line-height: 1.45;
     flex: 1;
     font-style: italic;
-    border-top: 3px solid #023b0f;
+    text-align: center;
   }
 
   /* ── Volunteer banner ── */
   .fopl-volunteer {
-    background: #023b0f;
+    background: linear-gradient(135deg, #0d4a1a, #023b0f);
     color: #fff;
     text-align: center;
-    padding: 28px 24px;
-    border-radius: 6px;
-    margin-bottom: 32px;
+    padding: 32px 28px;
+    border-radius: 12px;
+    margin: 0 auto 28px;
+    max-width: 720px;
+    border: 1px solid rgba(255,255,255,0.1);
   }
 
   .fopl-volunteer h3 {
     font-family: 'Cabin', sans-serif;
-    font-size: 1.25rem;
+    font-size: 1.15rem;
     font-weight: 700;
-    margin: 0 0 10px;
+    margin: 0 0 8px;
     color: #fff;
     border: none;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.05em;
   }
 
   .fopl-volunteer p {
-    margin: 0 0 16px;
-    font-size: 1rem;
-    opacity: 0.9;
+    margin: 0 0 18px;
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.75);
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 18px;
+    line-height: 1.6;
   }
 
   .fopl-btn {
     display: inline-block;
-    background: #fff;
-    color: #023b0f;
+    background: #f0c341;
+    color: #1a2e1a;
     font-family: 'Cabin', sans-serif;
     font-weight: 700;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    padding: 12px 30px;
-    border-radius: 3px;
+    padding: 11px 28px;
+    border-radius: 6px;
     text-decoration: none;
-    border: 2px solid #fff;
-    transition: background 0.2s, color 0.2s;
+    border: none;
+    transition: background 0.2s, transform 0.2s;
   }
 
   .fopl-btn:hover {
-    background: #023b0f;
-    color: #fff;
+    background: #f5d777;
+    transform: translateY(-1px);
   }
 
   /* ── Inline catalog ── */
   .fopl-catalog-section {
-    margin-bottom: 36px;
+    margin: 0 auto 36px;
+    max-width: 800px;
   }
 
   .fopl-catalog-header {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-bottom: 18px;
+    gap: 14px;
+    margin-bottom: 20px;
   }
 
   .fopl-catalog-header h3 {
     font-family: 'Cabin', sans-serif;
-    font-size: 1.25rem;
+    font-size: 1.15rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: #023b0f;
+    letter-spacing: 0.06em;
+    color: #fff;
     margin: 0;
     border: none;
   }
@@ -249,53 +271,65 @@ fopl_nav_active: bookstore
     gap: 8px;
     flex-wrap: wrap;
     align-items: center;
+    justify-content: center;
   }
 
   .fopl-catalog-controls input {
-    padding: 8px 14px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 0.9rem;
+    padding: 9px 14px;
+    border: 1.5px solid rgba(255,255,255,0.15);
+    border-radius: 8px;
+    font-size: 0.88rem;
     font-family: 'Lato', sans-serif;
     outline: none;
     width: 220px;
     transition: border-color 0.2s;
+    background: rgba(255,255,255,0.06);
+    color: #e0e0e0;
   }
 
-  .fopl-catalog-controls input:focus { border-color: #023b0f; }
+  .fopl-catalog-controls input:focus {
+    border-color: #f0c341;
+    background: rgba(255,255,255,0.08);
+  }
 
   .fopl-catalog-controls select {
-    padding: 8px 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 0.9rem;
+    padding: 9px 12px;
+    border: 1.5px solid rgba(255,255,255,0.15);
+    border-radius: 8px;
+    font-size: 0.88rem;
     font-family: 'Lato', sans-serif;
-    background: #fff;
+    background: rgba(255,255,255,0.06);
+    color: #e0e0e0;
     outline: none;
     cursor: pointer;
+    transition: border-color 0.2s;
+  }
+
+  .fopl-catalog-controls select:focus {
+    border-color: #f0c341;
   }
 
   .fopl-catalog-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
     gap: 16px;
     margin-bottom: 16px;
   }
 
   .fopl-book-card {
-    background: #fff;
-    border: 1px solid #e0e0e0;
-    border-radius: 6px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
     cursor: pointer;
   }
 
   .fopl-book-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(2,59,15,0.15);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.3);
   }
 
   .fopl-book-cover {
@@ -305,6 +339,7 @@ fopl_nav_active: bookstore
     justify-content: center;
     font-size: 2.2rem;
     flex-shrink: 0;
+    background: rgba(255,255,255,0.03);
   }
 
   .fopl-book-cover img {
@@ -324,15 +359,15 @@ fopl_nav_active: bookstore
 
   .fopl-book-title {
     font-family: 'Cabin', sans-serif;
-    font-size: 0.85rem;
+    font-size: 0.84rem;
     font-weight: 700;
-    color: #111;
+    color: #eee;
     line-height: 1.3;
   }
 
   .fopl-book-author {
-    font-size: 0.78rem;
-    color: #666;
+    font-size: 0.76rem;
+    color: rgba(255,255,255,0.5);
   }
 
   .fopl-book-meta {
@@ -345,12 +380,12 @@ fopl_nav_active: bookstore
   .fopl-book-price {
     font-family: 'Cabin', sans-serif;
     font-weight: 700;
-    font-size: 0.9rem;
-    color: #023b0f;
+    font-size: 0.88rem;
+    color: #f0c341;
   }
 
   .fopl-book-age {
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     padding: 2px 7px;
     border-radius: 10px;
     font-weight: 600;
@@ -365,123 +400,130 @@ fopl_nav_active: bookstore
 
   .fopl-catalog-footer {
     text-align: center;
-    margin-top: 4px;
+    margin-top: 8px;
   }
 
   .fopl-catalog-footer a {
-    color: #023b0f;
+    color: #f0c341;
     font-family: 'Cabin', sans-serif;
     font-weight: 700;
-    font-size: 0.88rem;
+    font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     text-decoration: none;
-    border-bottom: 2px solid #023b0f;
+    border-bottom: 2px solid #f0c341;
     padding-bottom: 1px;
+    transition: opacity 0.2s;
   }
 
-  .fopl-catalog-footer a:hover { opacity: 0.7; }
+  .fopl-catalog-footer a:hover { opacity: 0.6; }
 
   .fopl-catalog-empty {
     text-align: center;
-    color: #888;
+    color: rgba(255,255,255,0.4);
     font-style: italic;
-    padding: 32px 0;
-    font-size: 0.95rem;
+    padding: 28px 0;
+    font-size: 0.92rem;
   }
 
   /* ── Book request section ── */
   .fopl-request {
-    background: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 6px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
     padding: 28px 32px;
-    margin-bottom: 32px;
+    margin: 0 auto 32px;
+    max-width: 720px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.08);
   }
 
   .fopl-request h3 {
     font-family: 'Cabin', sans-serif;
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     font-weight: 700;
-    color: #023b0f;
+    color: #fff;
     margin: 0 0 6px;
     border: none;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.05em;
   }
 
   .fopl-request p {
-    font-size: 0.95rem;
-    color: #555;
+    font-size: 0.92rem;
+    color: rgba(255,255,255,0.6);
     margin: 0 0 18px;
+    line-height: 1.5;
   }
 
   .fopl-request-form {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     flex-wrap: wrap;
+    justify-content: center;
   }
 
   .fopl-request-form input[type="text"],
   .fopl-request-form input[type="email"],
   .fopl-request-form input[type="tel"] {
     flex: 1;
-    min-width: 160px;
-    padding: 10px 14px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 0.95rem;
+    min-width: 150px;
+    padding: 9px 14px;
+    border: 1.5px solid rgba(255,255,255,0.15);
+    border-radius: 8px;
+    font-size: 0.92rem;
     font-family: 'Lato', sans-serif;
     outline: none;
     transition: border-color 0.2s;
+    background: rgba(255,255,255,0.06);
+    color: #e0e0e0;
   }
 
   .fopl-request-form input:focus {
-    border-color: #023b0f;
+    border-color: #f0c341;
   }
 
   .fopl-request-form button {
-    padding: 10px 24px;
-    background: #023b0f;
+    padding: 9px 24px;
+    background: linear-gradient(135deg, #023b0f, #045218);
     color: #fff;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     font-family: 'Cabin', sans-serif;
     font-weight: 700;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.05em;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: background 0.2s, transform 0.15s;
   }
 
   .fopl-request-form button:hover {
-    background: #045218;
+    background: linear-gradient(135deg, #045218, #056b24);
+    transform: translateY(-1px);
   }
 
   .fopl-request-msg {
     margin-top: 10px;
-    font-size: 0.9rem;
-    color: #023b0f;
+    font-size: 0.88rem;
+    color: #f0c341;
     font-weight: 600;
     display: none;
   }
 
+  /* ── Dark mode overrides for shop ── */
+  body.fopl-dark .fopl-hero { background: linear-gradient(135deg, #1a1a1a, #121212); }
+  body.fopl-dark .fopl-page { background: #121212; }
+  body.fopl-dark .fopl-volunteer { background: linear-gradient(135deg, #0a1f0e, #121212); }
+  body.fopl-dark .fopl-catalog-footer a { color: #58e87a; border-bottom-color: #58e87a; }
+
   /* ── Responsive ── */
   @media (max-width: 640px) {
-    .fopl-hero h1 {
-      font-size: 1.45rem;
-    }
-    .fopl-content {
-      padding: 28px 18px;
-    }
-    .fopl-info-row {
-      flex-direction: column;
-      gap: 20px;
-    }
-    .fopl-gallery {
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    }
+    .fopl-hero h1 { font-size: 1.4rem; }
+    .fopl-content { padding: 24px 16px; }
+    .fopl-info-row { flex-direction: column; gap: 16px; }
+    .fopl-gallery { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .fopl-catalog-controls input { width: 100%; }
+    .fopl-catalog-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
   }
 </style>
 
@@ -489,18 +531,8 @@ fopl_nav_active: bookstore
 
   <!-- Hero -->
   <div class="fopl-hero">
-    <h1>Our Bookstore Has Unique Books for Sale</h1>
-    <div aria-hidden="true" style="display:flex;justify-content:center;align-items:center;gap:6px;margin-top:18px;opacity:0.75;">
-      <div style="width:14px;height:26px;background:linear-gradient(135deg,#66bb6a,#1b5e20);border-radius:60% 40% 40% 60%/50% 50% 50% 50%;transform:rotate(-40deg);"></div>
-      <div style="width:10px;height:20px;background:linear-gradient(135deg,#81c784,#2e7d32);border-radius:60% 40% 40% 60%/50% 50% 50% 50%;transform:rotate(-65deg);"></div>
-      <div style="width:7px;height:14px;background:linear-gradient(135deg,#a5d6a7,#388e3c);border-radius:60% 40% 40% 60%/50% 50% 50% 50%;transform:rotate(-80deg);"></div>
-      <div style="width:50px;height:1.5px;background:rgba(255,255,255,0.35);"></div>
-      <div style="width:20px;height:20px;background:#2e7d32;border-radius:50%;"></div>
-      <div style="width:50px;height:1.5px;background:rgba(255,255,255,0.35);"></div>
-      <div style="width:7px;height:14px;background:linear-gradient(135deg,#a5d6a7,#388e3c);border-radius:60% 40% 40% 60%/50% 50% 50% 50%;transform:rotate(80deg);"></div>
-      <div style="width:10px;height:20px;background:linear-gradient(135deg,#81c784,#2e7d32);border-radius:60% 40% 40% 60%/50% 50% 50% 50%;transform:rotate(65deg);"></div>
-      <div style="width:14px;height:26px;background:linear-gradient(135deg,#66bb6a,#1b5e20);border-radius:60% 40% 40% 60%/50% 50% 50% 50%;transform:rotate(40deg);"></div>
-    </div>
+    <h1>Our Bookstore</h1>
+    <p class="fopl-hero-sub">Unique gently used books, magazines, DVDs, CDs, puzzles and more</p>
   </div>
 
   <!-- Main content -->
