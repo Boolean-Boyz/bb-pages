@@ -32,6 +32,25 @@ fopl_nav_active: puzzles
   .run-intro {
     margin: 0 0 12px; color: #324132; line-height: 1.5;
   }
+  .run-mode-banner {
+    margin: 0 0 12px;
+    border: 1px solid #b9d6bf;
+    background: linear-gradient(90deg, #edf8ef, #f7fcf8);
+    border-radius: 8px;
+    padding: 10px 12px;
+    color: #1c4724;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    font-weight: 700;
+  }
+  .run-mode-banner strong {
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.72rem;
+    display: inline-block;
+    margin-right: 8px;
+    color: #12401c;
+  }
   .run-explain {
     margin: 0 0 12px;
     border: 1px solid #d3e3d5;
@@ -44,8 +63,42 @@ fopl_nav_active: puzzles
   }
   .run-explain strong { color: #1c3f1f; }
 
+  .run-learning {
+    margin: 0 0 12px;
+    border: 1px solid #d3e3d5;
+    background: #f8fbf8;
+    border-radius: 7px;
+    padding: 10px 12px;
+  }
+  .run-learning-title {
+    margin: 0 0 8px;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 700;
+    color: #1f3f22;
+  }
+  .run-learning-list {
+    display: grid;
+    gap: 6px;
+  }
+  .learning-item {
+    border: 1px solid #dce8dc;
+    border-radius: 6px;
+    background: #fff;
+    padding: 8px 9px;
+    font-size: 0.84rem;
+    color: #425543;
+    line-height: 1.45;
+  }
+  .learning-item.done {
+    border-color: #8fc59a;
+    background: #eef9f0;
+    color: #1e4a24;
+  }
+
   .run-hud {
-    display: grid; grid-template-columns: repeat(6, minmax(0, 1fr));
+    display: grid; grid-template-columns: repeat(8, minmax(0, 1fr));
     gap: 8px; margin-bottom: 12px;
   }
   .hud-box {
@@ -112,6 +165,16 @@ fopl_nav_active: puzzles
     font-size: 0.92rem;
     color: #274127;
   }
+  .run-objective {
+    margin: 0 0 12px;
+    border: 1px solid #d3e3d5;
+    background: #f8fbf8;
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 0.9rem;
+    color: #2a492d;
+    line-height: 1.5;
+  }
 
   .run-pad {
     display: none;
@@ -169,7 +232,7 @@ fopl_nav_active: puzzles
 
 <div class="run-wrap">
   <div class="run-header">
-    <div class="run-title">Library Shelf Run</div>
+    <div class="run-title">Library Shelf Run: 3-Level Learning Challenge</div>
     <a class="run-btn-link" href="/puzzles" title="All Puzzles">All Games</a>
   </div>
 
@@ -179,22 +242,37 @@ fopl_nav_active: puzzles
       then bring it to the matching shelf zone.
     </p>
 
+    <div class="run-mode-banner"><strong>Learning Mode</strong>Sort by real library section labels (FIC, 900, 500), learn what each call-number group means, and level up from beginner to advanced rounds.</div>
+
     <div class="run-hud">
+      <div class="hud-box"><div class="hud-label">Level</div><div class="hud-num" id="hud-level">1 / 3</div></div>
       <div class="hud-box"><div class="hud-label">Sorted</div><div class="hud-num" id="hud-sorted">0 / 4</div></div>
       <div class="hud-box"><div class="hud-label">Moves</div><div class="hud-num" id="hud-moves">0</div></div>
       <div class="hud-box"><div class="hud-label">Time Left</div><div class="hud-num" id="hud-time">01:30</div></div>
       <div class="hud-box"><div class="hud-label">Strikes</div><div class="hud-num" id="hud-strikes">0 / 3</div></div>
       <div class="hud-box"><div class="hud-label">Score</div><div class="hud-num" id="hud-score">0</div></div>
+      <div class="hud-box"><div class="hud-label">Powerup</div><div class="hud-num" id="hud-power">None</div></div>
       <div class="hud-box"><div class="hud-label">Best Score</div><div class="hud-num" id="hud-best">--</div></div>
     </div>
 
     <div class="run-task" id="run-task">Current job: Pick up the highlighted book, then drive it to the highlighted shelf.</div>
+    <div class="run-objective" id="run-objective">Current objective: Learn and apply call-number grouping while sorting.</div>
+    <div class="run-objective" id="run-level-goal">Level goal: Sort 4 books this level.</div>
 
     <div class="run-explain">
       <strong>What is this?</strong> A quick library sorting game where you fix misplaced books.<br>
       <strong>Why it relates:</strong> Libraries use call-number sections (like FIC, 900, 500) to organize shelves.<br>
       <strong>How to play:</strong> Move with arrow keys/WASD, collect the highlighted book, and drop it at the matching shelf label.<br>
-      <strong>How to win:</strong> Sort all books before time runs out and before you hit 3 strikes.
+      <strong>How to win:</strong> Clear every level before time runs out and before you hit 3 strikes. Grab powerups for help.
+    </div>
+
+    <div class="run-learning">
+      <p class="run-learning-title">Library Skills Learned (<span id="learn-count">0</span>/3)</p>
+      <div class="run-learning-list">
+        <div class="learning-item" id="learn-fiction">FIC shelving: Fiction titles are grouped by author name after the FIC prefix.</div>
+        <div class="learning-item" id="learn-history">900s shelving: Dewey 900 range is history/biography and should stay in that section.</div>
+        <div class="learning-item" id="learn-science">500s shelving: Dewey 500 range is science and belongs in the science stacks.</div>
+      </div>
     </div>
 
     <div class="shelf-map" id="shelf-map"></div>
@@ -225,10 +303,14 @@ fopl_nav_active: puzzles
 const BACKEND = window.FOPL_BACKEND;
 const COLS = 10;
 const ROWS = 7;
-const BOOK_COUNT = 4;
-const ROUND_SECONDS = 90;
 const MAX_STRIKES = 3;
 const BEST_KEY = 'fopl_shelf_run_best';
+const LEVELS = [
+  { books: 4, seconds: 90 },
+  { books: 5, seconds: 80 },
+  { books: 6, seconds: 75 }
+];
+const POWERUP_TYPES = ['time', 'shield'];
 
 const zones = [
   { id: 'fiction', label: 'FIC', x: 1, y: 0, width: 2, css: 'zone-fiction' },
@@ -251,10 +333,19 @@ let moves = 0;
 let sorted = 0;
 let score = 0;
 let isRunning = false;
-let startTime = 0;
+let runStartTime = 0;
+let levelDeadline = 0;
 let timerId = null;
 let roundComplete = false;
 let strikes = 0;
+let currentLevel = 1;
+let powerup = null;
+let shieldCharges = 0;
+let learned = {
+  fiction: false,
+  history: false,
+  science: false
+};
 
 function randomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -286,11 +377,58 @@ function setStatus(msg) {
   document.getElementById('run-status').textContent = msg;
 }
 
+function learningCount() {
+  let count = 0;
+  if (learned.fiction) count += 1;
+  if (learned.history) count += 1;
+  if (learned.science) count += 1;
+  return count;
+}
+
+function setLearningHud() {
+  document.getElementById('learn-count').textContent = String(learningCount());
+  document.getElementById('learn-fiction').classList.toggle('done', learned.fiction);
+  document.getElementById('learn-history').classList.toggle('done', learned.history);
+  document.getElementById('learn-science').classList.toggle('done', learned.science);
+}
+
+function lessonForZone(zoneId) {
+  if (zoneId === 'fiction') {
+    return 'Learning unlock: FIC call numbers are fiction titles shelved by author name.';
+  }
+  if (zoneId === 'history') {
+    return 'Learning unlock: Dewey 900 range is used for history and biography materials.';
+  }
+  return 'Learning unlock: Dewey 500 range covers natural sciences and related topics.';
+}
+
+function currentObjectiveText() {
+  const task = currentTaskBook();
+  if (!task) {
+    return `Level ${currentLevel} complete. Start next sorting objective.`;
+  }
+  if (task.zoneId === 'fiction') {
+    return `Learning objective: Identify fiction call numbers and shelve FIC titles by author label.`;
+  }
+  if (task.zoneId === 'history') {
+    return `Learning objective: Use Dewey 900 classification for history/biography shelves.`;
+  }
+  return `Learning objective: Place Dewey 500 science materials in the correct science section.`;
+}
+
+function updateObjectiveText() {
+  document.getElementById('run-objective').textContent = currentObjectiveText();
+}
+
 function setHud() {
-  document.getElementById('hud-sorted').textContent = `${sorted} / ${BOOK_COUNT}`;
+  const levelCfg = LEVELS[currentLevel - 1];
+  document.getElementById('hud-level').textContent = `${currentLevel} / ${LEVELS.length}`;
+  document.getElementById('hud-sorted').textContent = `${sorted} / ${levelCfg.books}`;
+  document.getElementById('run-level-goal').textContent = `Level goal: Sort ${levelCfg.books} books in ${levelCfg.seconds} seconds.`;
   document.getElementById('hud-moves').textContent = String(moves);
   document.getElementById('hud-score').textContent = String(score);
   document.getElementById('hud-strikes').textContent = `${strikes} / ${MAX_STRIKES}`;
+  document.getElementById('hud-power').textContent = shieldCharges > 0 ? `Shield x${shieldCharges}` : 'None';
 }
 
 function setBestHud() {
@@ -304,8 +442,7 @@ function setBestHud() {
 
 function updateTimer() {
   if (!isRunning) return;
-  const elapsed = Date.now() - startTime;
-  const leftMs = Math.max(0, ROUND_SECONDS * 1000 - elapsed);
+  const leftMs = Math.max(0, levelDeadline - Date.now());
   document.getElementById('hud-time').textContent = formatTime(leftMs);
   if (leftMs <= 0 && !roundComplete) {
     loseRound('Time ran out. Start a new round and try again.');
@@ -315,7 +452,11 @@ function updateTimer() {
 function startTimer() {
   if (isRunning || roundComplete) return;
   isRunning = true;
-  startTime = Date.now();
+  if (!runStartTime) runStartTime = Date.now();
+  if (!levelDeadline) {
+    const levelCfg = LEVELS[currentLevel - 1];
+    levelDeadline = Date.now() + levelCfg.seconds * 1000;
+  }
   timerId = setInterval(updateTimer, 250);
 }
 
@@ -326,6 +467,12 @@ function stopTimer() {
 }
 
 function addStrike(message) {
+  if (shieldCharges > 0) {
+    shieldCharges -= 1;
+    setHud();
+    setStatus(`${message} Shield absorbed the strike.`);
+    return;
+  }
   strikes += 1;
   setHud();
   if (strikes >= MAX_STRIKES) {
@@ -360,13 +507,16 @@ function updateTaskText() {
   const task = currentTaskBook();
   if (!task) {
     taskEl.textContent = 'All books sorted. Start a new round to play again.';
+    updateObjectiveText();
     return;
   }
   if (carrying && carrying.id === task.id) {
     taskEl.textContent = `Deliver ${task.call} to shelf ${zoneLabel(task.zoneId)}.`;
+    updateObjectiveText();
     return;
   }
   taskEl.textContent = `Pick up ${task.call}, then drive it to shelf ${zoneLabel(task.zoneId)}.`;
+  updateObjectiveText();
 }
 
 function openCells() {
@@ -383,15 +533,15 @@ function openCells() {
   return cells;
 }
 
-function generateBooks() {
+function generateBooks(bookCount) {
   const cells = openCells();
   const selected = [];
-  while (selected.length < BOOK_COUNT && cells.length) {
+  while (selected.length < bookCount && cells.length) {
     const idx = randomInt(0, cells.length - 1);
     selected.push(cells.splice(idx, 1)[0]);
   }
 
-  const zoneIds = ['fiction', 'history', 'science', 'fiction'];
+  const zoneIds = ['fiction', 'history', 'science'];
   const usedCalls = { fiction: new Set(), history: new Set(), science: new Set() };
   books = selected.map((pos, i) => {
     const zoneId = zoneIds[i % zoneIds.length];
@@ -411,6 +561,21 @@ function generateBooks() {
   });
   taskOrder = shuffle(books.map((b) => b.id));
   taskIndex = 0;
+}
+
+function spawnPowerup() {
+  const cells = openCells().filter((c) => {
+    if (c.x === player.x && c.y === player.y) return false;
+    if (bookAt(c.x, c.y)) return false;
+    return true;
+  });
+  if (!cells.length) {
+    powerup = null;
+    return;
+  }
+  const pick = cells[randomInt(0, cells.length - 1)];
+  const type = POWERUP_TYPES[randomInt(0, POWERUP_TYPES.length - 1)];
+  powerup = { x: pick.x, y: pick.y, type };
 }
 
 function drawMap() {
@@ -438,6 +603,14 @@ function drawMap() {
         const task = currentTaskBook();
         if (task && task.id === book.id) cell.classList.add('active-book');
         cell.textContent = book.call;
+      }
+
+      if (powerup && powerup.x === x && powerup.y === y) {
+        cell.className = 'cell';
+        cell.style.background = '#fff6d6';
+        cell.style.borderColor = '#c9a235';
+        cell.style.color = '#6b550a';
+        cell.textContent = powerup.type === 'time' ? '+15s' : 'SHLD';
       }
 
       if (player.x === x && player.y === y) {
@@ -468,6 +641,48 @@ function pickUpIfPresent() {
   updateTaskText();
 }
 
+function collectPowerupIfPresent() {
+  if (!powerup) return;
+  if (player.x !== powerup.x || player.y !== powerup.y) return;
+  if (powerup.type === 'time') {
+    levelDeadline += 15000;
+    score += 15;
+    setStatus('Powerup collected: +15 seconds.');
+  } else {
+    shieldCharges += 1;
+    score += 10;
+    setStatus('Powerup collected: strike shield ready.');
+  }
+  powerup = null;
+  setHud();
+}
+
+function startLevel(levelUp) {
+  stopTimer();
+  isRunning = false;
+  levelDeadline = 0;
+  player = { x: 4, y: 6 };
+  books = [];
+  taskOrder = [];
+  taskIndex = 0;
+  carrying = null;
+  sorted = 0;
+
+  const levelCfg = LEVELS[currentLevel - 1];
+  document.getElementById('hud-time').textContent = formatTime(levelCfg.seconds * 1000);
+
+  generateBooks(levelCfg.books);
+  spawnPowerup();
+  setHud();
+  if (levelUp) {
+    setStatus(`Level ${currentLevel} started. New objective: sort ${levelCfg.books} books and collect powerups.`);
+  } else {
+    setStatus('Learning challenge started: Level 1 of 3. Sort highlighted books into the correct library sections.');
+  }
+  updateTaskText();
+  drawMap();
+}
+
 function dropIfOnZone() {
   if (!carrying) return;
   const zone = zoneAt(player.x, player.y);
@@ -477,23 +692,36 @@ function dropIfOnZone() {
   if (!task || carrying.id !== task.id) return;
 
   if (zone.id === carrying.zoneId) {
+    const learnedBefore = learned[carrying.zoneId];
     carrying.sorted = true;
     carrying = null;
     sorted += 1;
     taskIndex += 1;
     score += 120;
-    setStatus('Nice. Book sorted correctly. Next job is highlighted.');
+    if (!learnedBefore) {
+      learned[zone.id] = true;
+      setLearningHud();
+      setStatus(`Nice. Book sorted correctly. ${lessonForZone(zone.id)}`);
+    } else {
+      setStatus('Nice. Book sorted correctly. Next job is highlighted.');
+    }
     setHud();
     updateTaskText();
     if (window.charScene) { const rm=['Perfectly shelved!','Dewey Decimal approved!','The stacks are pleased!']; window.charScene.npcRight(rm[Math.floor(Math.random()*rm.length)]); window.charScene.aiComment(true); }
 
-    if (sorted >= BOOK_COUNT) {
-      finishRound();
+    if (sorted >= LEVELS[currentLevel - 1].books) {
+      if (currentLevel < LEVELS.length) {
+        currentLevel += 1;
+        score += 100;
+        startLevel(true);
+      } else {
+        finishRound();
+      }
     }
   } else {
     score = Math.max(0, score - 10);
     setHud();
-    addStrike('Wrong shelf section. Match the call number label.');
+    addStrike(`Wrong shelf section. ${carrying.call} belongs in ${zoneLabel(carrying.zoneId)}, not ${zone.label}.`);
     if (window.charScene) { window.charScene.npcWrong('Wrong section, cart!'); window.charScene.aiComment(false); }
   }
 }
@@ -514,6 +742,7 @@ function movePlayer(dx, dy) {
   setHud();
   startTimer();
 
+  collectPowerupIfPresent();
   pickUpIfPresent();
   dropIfOnZone();
   drawMap();
@@ -536,11 +765,11 @@ async function finishRound() {
   if (roundComplete) return;
   stopTimer();
   roundComplete = true;
-  const timeMs = Date.now() - startTime;
+  const timeMs = Date.now() - runStartTime;
   const timeBonus = Math.max(0, 180 - Math.floor(timeMs / 1000));
   score += timeBonus;
   setHud();
-  setStatus(`You win. Score ${score} (${moves} moves, ${formatTime(timeMs)}).`);
+  setStatus(`You win all ${LEVELS.length} levels. Score ${score} (${moves} moves, ${formatTime(timeMs)}).`);
   maybeSaveBest(timeMs, moves);
   addOverallProgress('library_shelf_run', score, true);
   await postResult(true);
@@ -558,22 +787,18 @@ async function loseRound(message) {
 function resetRound() {
   stopTimer();
   roundComplete = false;
-  player = { x: 4, y: 6 };
-  books = [];
-  taskOrder = [];
-  taskIndex = 0;
-  carrying = null;
+  currentLevel = 1;
+  powerup = null;
+  shieldCharges = 0;
+  runStartTime = 0;
+  levelDeadline = 0;
   moves = 0;
-  sorted = 0;
   score = 0;
   strikes = 0;
-  document.getElementById('hud-time').textContent = formatTime(ROUND_SECONDS * 1000);
+  learned = { fiction: false, history: false, science: false };
+  setLearningHud();
 
-  generateBooks();
-  setHud();
-  setStatus('Move with arrow keys/WASD. Pick up highlighted book, then deliver it to highlighted shelf.');
-  updateTaskText();
-  drawMap();
+  startLevel(false);
 }
 
 function bindControls() {
@@ -600,7 +825,7 @@ function bindControls() {
   });
 
   document.getElementById('show-rules-btn').addEventListener('click', () => {
-    setStatus('Rules: sort all books before time runs out. Wrong pickups or shelf drops add strikes (3 strikes = game over).');
+    setStatus('Rules: clear Levels 1-3. Wrong pickups or shelf drops add strikes (3 = game over). Collect +15s or shield powerups.');
   });
 
   document.getElementById('pad-up').addEventListener('click', () => movePlayer(0, -1));
@@ -611,6 +836,7 @@ function bindControls() {
 
 setBestHud();
 bindControls();
+setLearningHud();
 resetRound();
 }
 

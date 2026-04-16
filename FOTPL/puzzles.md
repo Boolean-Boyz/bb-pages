@@ -15,7 +15,7 @@ fopl_nav_active: puzzles
     background:
       radial-gradient(1100px 340px at 8% -20%, rgba(255,255,255,0.14), rgba(255,255,255,0) 60%),
       radial-gradient(900px 260px at 92% 0%, rgba(255,255,255,0.11), rgba(255,255,255,0) 55%),
-      #023b0f;
+      #21cc49;
     color: #fff;
     text-align: center;
     padding: 58px 24px 50px;
