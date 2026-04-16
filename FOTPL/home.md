@@ -7,7 +7,7 @@ fopl_nav_active: home
 ---
 
 <style>
-  body { background: #0a0a0a; }
+  body { background: #023b0f; }
 
   /* ── Scroll-reveal animation ── */
   .fopl-reveal {
@@ -37,7 +37,7 @@ fopl_nav_active: home
 
   /* ── Hero ── */
   .fopl-hero {
-    background: linear-gradient(135deg, #0d4a1a 0%, #023b0f 40%, #012d0b 100%);
+    background: #023b0f;
     color: #fff;
     padding: 48px 24px 44px;
     display: flex;
@@ -122,7 +122,7 @@ fopl_nav_active: home
 
   /* ── Stats counter strip ── */
   .fopl-stats {
-    background: linear-gradient(135deg, #012d0b 0%, #01380d 100%);
+    background: #012d0b;
     padding: 36px 40px;
     display: flex;
     justify-content: center;
@@ -229,7 +229,7 @@ fopl_nav_active: home
     box-shadow: 0 1px 8px rgba(0,0,0,0.3);
   }
   .fopl-card-back {
-    background: linear-gradient(135deg, #012d0b, #023b0f);
+    background: #012d0b;
     color: #fff;
     transform: rotateY(180deg);
     border: 1px solid rgba(255,255,255,0.1);
@@ -329,7 +329,7 @@ fopl_nav_active: home
 
   /* ── Quick Links section ── */
   .fopl-quick-links {
-    background: linear-gradient(135deg, #012d0b 0%, #01380d 100%);
+    background: #012d0b;
     padding: 40px 40px;
     text-align: center;
     border-top: 1px solid rgba(255,255,255,0.06);
@@ -392,7 +392,7 @@ fopl_nav_active: home
 
   /* ── Dark mode body overrides ── */
   body.fopl-dark { background: #121212 !important; }
-  body.fopl-dark .fopl-hero { background: linear-gradient(135deg, #1a1a1a, #121212); }
+  body.fopl-dark .fopl-hero { background: #121212; }
   body.fopl-dark .fopl-about { color: #fff; }
 
   @media (max-width: 900px) {
@@ -414,7 +414,7 @@ fopl_nav_active: home
 
 <!-- Hero -->
 <div class="fopl-hero">
-  <div class="fopl-hero-center" style="text-align:center;padding:0 24px;max-width:680px;">
+  <div class="fopl-hero-center" style="text-align:center;padding:0 24px;max-width:680px;margin:0 auto;">
     <p class="fopl-hero-tagline">Supporting literacy since 1978</p>
     <div class="fopl-hero-row">
       <img class="fopl-hero-logo" src="{{ '/FOTPL/Images/fopllogo.png' | relative_url }}" alt="FOPL Logo">

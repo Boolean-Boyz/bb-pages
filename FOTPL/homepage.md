@@ -25,12 +25,12 @@ fopl_nav_active: bookstore
     margin-right: -50vw;
     padding: 0;
     box-sizing: border-box;
-    background: #0a0a0a;
+    background: #023b0f;
   }
 
   /* ── Hero / heading ── */
   .fopl-hero {
-    background: linear-gradient(135deg, #0d4a1a 0%, #023b0f 40%, #012d0b 100%);
+    background: #023b0f;
     color: #fff;
     text-align: center;
     padding: 48px 24px 40px;
@@ -188,7 +188,7 @@ fopl_nav_active: bookstore
 
   /* ── Volunteer banner ── */
   .fopl-volunteer {
-    background: linear-gradient(135deg, #0d4a1a, #023b0f);
+    background: #023b0f;
     color: #fff;
     text-align: center;
     padding: 32px 28px;
@@ -498,7 +498,7 @@ fopl_nav_active: bookstore
   }
 
   .fopl-request-form button:hover {
-    background: linear-gradient(135deg, #045218, #056b24);
+    background: #045218;
     transform: translateY(-1px);
   }
 
@@ -511,9 +511,9 @@ fopl_nav_active: bookstore
   }
 
   /* ── Dark mode overrides for shop ── */
-  body.fopl-dark .fopl-hero { background: linear-gradient(135deg, #1a1a1a, #121212); }
+  body.fopl-dark .fopl-hero { background: #121212; }
   body.fopl-dark .fopl-page { background: #121212; }
-  body.fopl-dark .fopl-volunteer { background: linear-gradient(135deg, #0a1f0e, #121212); }
+  body.fopl-dark .fopl-volunteer { background: #0a1f0e; }
   body.fopl-dark .fopl-catalog-footer a { color: #58e87a; border-bottom-color: #58e87a; }
 
   /* ── Responsive ── */

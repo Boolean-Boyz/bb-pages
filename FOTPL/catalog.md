@@ -13,7 +13,7 @@ fopl_nav_active: catalog
 
   /* ── Hero ── */
   .catalog-hero {
-    background: linear-gradient(135deg, #0d4a1a 0%, #023b0f 40%, #012d0b 100%);
+    background: #023b0f;
     padding: 44px 32px 40px; color: #fff;
     text-align: center;
   }
@@ -61,7 +61,7 @@ fopl_nav_active: catalog
     transition: background 0.15s; margin-bottom: 2px;
   }
   .filter-btn:hover { background: #edf5ee; }
-  .filter-btn.active { background: linear-gradient(135deg, #023b0f, #045218); color: #fff; font-weight: 700; box-shadow: 0 2px 6px rgba(2,59,15,0.2); }
+  .filter-btn.active { background: #023b0f; color: #fff; font-weight: 700; box-shadow: 0 2px 6px rgba(2,59,15,0.2); }
   .filter-count {
     float: right; font-size: 0.78rem; opacity: 0.7;
     background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 10px;
@@ -209,11 +209,11 @@ fopl_nav_active: catalog
   .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   .form-actions { display: flex; gap: 10px; margin-top: 20px; }
   .form-submit {
-    flex: 1; padding: 12px; background: linear-gradient(135deg, #023b0f, #045218); color: #fff; border: none;
+    flex: 1; padding: 12px; background: #023b0f; color: #fff; border: none;
     border-radius: 8px; font-family: 'Cabin', sans-serif; font-weight: 700;
     font-size: 0.88rem; text-transform: uppercase; cursor: pointer; transition: background 0.2s, transform 0.15s;
   }
-  .form-submit:hover { background: linear-gradient(135deg, #045218, #056b24); transform: translateY(-1px); }
+  .form-submit:hover { background: #045218; transform: translateY(-1px); }
   .form-cancel {
     padding: 12px 20px; background: none; border: 1px solid #ddd; border-radius: 8px;
     font-family: 'Cabin', sans-serif; font-weight: 700; font-size: 0.88rem;
@@ -224,7 +224,7 @@ fopl_nav_active: catalog
   /* ── AI Chat ── */
   .ai-fab {
     position: fixed; bottom: 28px; right: 28px; z-index: 300;
-    background: linear-gradient(135deg, #023b0f, #045218); color: #fff; border: none; border-radius: 50px;
+    background: #023b0f; color: #fff; border: none; border-radius: 50px;
     padding: 14px 24px; font-family: 'Cabin', sans-serif; font-weight: 700;
     font-size: 0.88rem; text-transform: uppercase; letter-spacing: 0.05em;
     cursor: pointer; box-shadow: 0 4px 24px rgba(2,59,15,0.35);
@@ -246,7 +246,7 @@ fopl_nav_active: catalog
   }
   .ai-panel.open { display: flex; }
   .ai-panel-header {
-    background: linear-gradient(135deg, #023b0f, #045218); color: #fff; padding: 16px 20px;
+    background: #023b0f; color: #fff; padding: 16px 20px;
     display: flex; align-items: center; justify-content: space-between;
   }
   .ai-panel-title {
