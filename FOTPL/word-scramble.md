@@ -87,6 +87,7 @@ fopl_nav_active: puzzles
     color: #5d695e;
     font-weight: 700;
   }
+
   .scramble-actions {
     margin-top: 12px;
     display: flex;
@@ -149,6 +150,7 @@ fopl_nav_active: puzzles
   .scramble-feedback.show { display: block; }
   .scramble-feedback.ok { background: #d7f1db; border: 1px solid #2e7d32; color: #1f4a20; }
   .scramble-feedback.err { background: #fae1e1; border: 1px solid #a52c2c; color: #6c1e1e; }
+
 
   .stats-row {
     display: grid; grid-template-columns: repeat(4, minmax(0,1fr));
