@@ -341,6 +341,7 @@ let strikes = 0;
 let currentLevel = 1;
 let powerup = null;
 let shieldCharges = 0;
+let mapCells = [];
 let learned = {
   fiction: false,
   history: false,
@@ -579,29 +580,50 @@ function spawnPowerup() {
 }
 
 function drawMap() {
-  const map = document.getElementById('shelf-map');
-  map.innerHTML = '';
+  if (!mapCells.length) {
+    const map = document.getElementById('shelf-map');
+    map.innerHTML = '';
+    for (let y = 0; y < ROWS; y++) {
+      for (let x = 0; x < COLS; x++) {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        map.appendChild(cell);
+        mapCells.push(cell);
+      }
+    }
+  }
+
+  const task = currentTaskBook();
+  const activeTaskId = task ? task.id : null;
+  const activeZoneId = task && carrying && carrying.id === task.id ? task.zoneId : null;
+  const booksByPos = new Map();
+  books.forEach((b) => {
+    if (!b.sorted && b.x >= 0 && b.y >= 0) {
+      booksByPos.set(`${b.x},${b.y}`, b);
+    }
+  });
 
   for (let y = 0; y < ROWS; y++) {
     for (let x = 0; x < COLS; x++) {
-      const cell = document.createElement('div');
+      const idx = y * COLS + x;
+      const cell = mapCells[idx];
       cell.className = 'cell';
+      cell.removeAttribute('style');
+      cell.textContent = '';
 
       const zone = zoneAt(x, y);
       if (zone) {
         cell.classList.add('zone', zone.css);
-        const task = currentTaskBook();
-        if (task && task.zoneId === zone.id && carrying && carrying.id === task.id) {
+        if (activeZoneId && activeZoneId === zone.id) {
           cell.classList.add('active-zone');
         }
         cell.textContent = zone.label;
       }
 
-      const book = bookAt(x, y);
+      const book = booksByPos.get(`${x},${y}`);
       if (book) {
         cell.className = 'cell book';
-        const task = currentTaskBook();
-        if (task && task.id === book.id) cell.classList.add('active-book');
+        if (activeTaskId && activeTaskId === book.id) cell.classList.add('active-book');
         cell.textContent = book.call;
       }
 
@@ -617,8 +639,6 @@ function drawMap() {
         cell.className = 'cell cart' + (carrying ? ' loaded' : '');
         cell.textContent = carrying ? 'LOAD' : 'CART';
       }
-
-      map.appendChild(cell);
     }
   }
 }
@@ -859,7 +879,14 @@ function loop(){tick++;nAT=Math.max(0,nAT-1);nMT=Math.max(0,nMT-1);aBT=Math.max(
 window.charScene={
   npcRight(m){nA='happy';nAT=80;nM=m;nMT=200;},
   npcWrong(m){nA='shake';nAT=50;nM=m;nMT=180;},
-  async aiComment(ok){aLoad=true;aB='...';aBT=9999;try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:100,system:'You are a fun game character in a library game. Give one short (max 15 words), encouraging or playful comment based on whether the player just got something right or wrong. Be fun and library-themed.',messages:[{role:'user',content:ok?'The player correctly shelved a book!':'The player put a book on the wrong shelf.'}]})});const d=await r.json();aB=d.content?.[0]?.text||(ok?'Shelved perfectly!':'Wrong section!');}catch{aB=ok?'Nice shelving!':'Check the call numbers!';}aLoad=false;aBT=300;}
+  async aiComment(ok){
+    const good=['Stacks superstar!','Catalog says: perfect placement!','Shelf wizardry unlocked!','Dewey approves that move!'];
+    const bad=['Try matching the section label.','Close, but check the call number first.','Wrong shelf lane. Recheck the prefix.','The stacks need a better match.'];
+    const source = ok ? good : bad;
+    aLoad = false;
+    aB = source[Math.floor(Math.random() * source.length)];
+    aBT = 300;
+  }
 };
 resize();new ResizeObserver(resize).observe(cvs.parentElement);loop();
 })();
