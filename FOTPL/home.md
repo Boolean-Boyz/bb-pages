@@ -45,6 +45,30 @@ fopl_nav_active: home
     align-items: center;
     justify-content: center;
     width: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Floating book silhouettes in hero */
+  .fopl-hero::before {
+    content: '\1F4DA';
+    position: absolute;
+    top: 22px;
+    left: 5%;
+    font-size: 3rem;
+    opacity: 0.06;
+    transform: rotate(-15deg);
+    pointer-events: none;
+  }
+  .fopl-hero::after {
+    content: '\1F4D6';
+    position: absolute;
+    bottom: 18px;
+    right: 6%;
+    font-size: 2.5rem;
+    opacity: 0.06;
+    transform: rotate(10deg);
+    pointer-events: none;
   }
 
   .fopl-hero-row {
@@ -306,6 +330,22 @@ fopl_nav_active: home
   }
   body.fopl-dark .fopl-card-flip-hint { color: rgba(255,255,255,0.2); }
 
+  /* ── Book shelf decorative divider ── */
+  .fopl-shelf-divider {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 4px;
+    padding: 20px 0 0;
+    opacity: 0.15;
+    pointer-events: none;
+  }
+  .fopl-shelf-book {
+    display: inline-block;
+    border-radius: 2px 2px 0 0;
+    width: 14px;
+  }
+
   /* ── About strip ── */
   .fopl-about {
     padding: 44px 40px;
@@ -509,6 +549,18 @@ fopl_nav_active: home
       </div>
     </div>
   </div>
+</div>
+
+<!-- Shelf decoration -->
+<div class="fopl-shelf-divider">
+  <span class="fopl-shelf-book" style="height:32px;background:#2e7d32"></span>
+  <span class="fopl-shelf-book" style="height:38px;background:#1b5e20"></span>
+  <span class="fopl-shelf-book" style="height:28px;background:#4caf50"></span>
+  <span class="fopl-shelf-book" style="height:35px;background:#388e3c"></span>
+  <span class="fopl-shelf-book" style="height:30px;background:#66bb6a"></span>
+  <span class="fopl-shelf-book" style="height:40px;background:#1b5e20"></span>
+  <span class="fopl-shelf-book" style="height:26px;background:#43a047"></span>
+  <span class="fopl-shelf-book" style="height:36px;background:#2e7d32"></span>
 </div>
 
 <!-- About -->

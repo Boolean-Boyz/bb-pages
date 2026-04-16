@@ -34,6 +34,30 @@ fopl_nav_active: bookstore
     color: #fff;
     text-align: center;
     padding: 48px 24px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Floating book silhouettes in hero */
+  .fopl-hero::before {
+    content: '\1F4DA';
+    position: absolute;
+    top: 20px;
+    left: 5%;
+    font-size: 3rem;
+    opacity: 0.06;
+    transform: rotate(-15deg);
+    pointer-events: none;
+  }
+  .fopl-hero::after {
+    content: '\1F4D6';
+    position: absolute;
+    bottom: 15px;
+    right: 6%;
+    font-size: 2.5rem;
+    opacity: 0.06;
+    transform: rotate(10deg);
+    pointer-events: none;
   }
 
   .fopl-hero h1 {
@@ -61,7 +85,7 @@ fopl_nav_active: bookstore
     color: #e0e0e0;
     max-width: 960px;
     margin: 0 auto;
-    padding: 40px 40px 36px;
+    padding: 32px 40px;
   }
 
   .fopl-intro {
@@ -74,17 +98,24 @@ fopl_nav_active: bookstore
   }
 
   /* ── Info row (address / phone) ── */
+  .fopl-info-strip {
+    background: #012d0b;
+    padding: 36px 40px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
   .fopl-info-row {
     display: flex;
     justify-content: center;
     gap: 36px;
     flex-wrap: wrap;
-    margin: 0 auto 36px;
-    padding: 22px 28px;
-    background: rgba(255,255,255,0.05);
-    border-radius: 12px;
+    margin: 0 auto;
+    padding: 0;
+    background: transparent;
+    border-radius: 0;
     max-width: 720px;
-    border: 1px solid rgba(255,255,255,0.08);
+    border: none;
   }
 
   .fopl-info-item {
@@ -134,6 +165,14 @@ fopl_nav_active: bookstore
     max-width: 500px;
   }
 
+  /* ── Gallery section ── */
+  .fopl-gallery-strip {
+    background: #012d0b;
+    padding: 40px 40px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
   /* ── Gallery ── */
   .fopl-gallery-title {
     font-family: 'Cabin', sans-serif;
@@ -150,7 +189,7 @@ fopl_nav_active: bookstore
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 16px;
-    margin: 0 auto 36px;
+    margin: 0 auto;
     max-width: 800px;
   }
 
@@ -187,15 +226,21 @@ fopl_nav_active: bookstore
   }
 
   /* ── Volunteer banner ── */
+  .fopl-volunteer-strip {
+    background: #012d0b;
+    padding: 40px 40px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+
   .fopl-volunteer {
-    background: #023b0f;
+    background: transparent;
     color: #fff;
     text-align: center;
-    padding: 32px 28px;
-    border-radius: 12px;
-    margin: 0 auto 28px;
+    padding: 0;
+    border-radius: 0;
+    margin: 0 auto;
     max-width: 720px;
-    border: 1px solid rgba(255,255,255,0.1);
+    border: none;
   }
 
   .fopl-volunteer h3 {
@@ -426,12 +471,28 @@ fopl_nav_active: bookstore
     font-size: 0.92rem;
   }
 
+  /* ── Book shelf decorative divider ── */
+  .fopl-shelf-divider {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 4px;
+    padding: 20px 0 0;
+    opacity: 0.15;
+    pointer-events: none;
+  }
+  .fopl-shelf-book {
+    display: inline-block;
+    border-radius: 2px 2px 0 0;
+    width: 14px;
+  }
+
   /* ── Book request section ── */
   .fopl-request {
     background: rgba(255,255,255,0.05);
     border-radius: 12px;
     padding: 28px 32px;
-    margin: 0 auto 32px;
+    margin: 0 auto;
     max-width: 720px;
     text-align: center;
     border: 1px solid rgba(255,255,255,0.08);
@@ -534,13 +595,14 @@ fopl_nav_active: bookstore
 
   <!-- Main content -->
   <div class="fopl-content">
-
     <p class="fopl-intro">
       Our bookstore offers gently used books of all kinds, along with
       magazines, DVDs, CDs, puzzles and more. We also take requests from patrons.
     </p>
+  </div>
 
-    <!-- Address / Phone -->
+  <!-- Address / Phone -->
+  <div class="fopl-info-strip">
     <div class="fopl-info-row">
       <div class="fopl-info-item">
         <div class="fopl-info-icon">📍</div>
@@ -569,10 +631,22 @@ fopl_nav_active: bookstore
         </div>
       </div>
     </div>
+  </div>
 
-    <hr class="fopl-divider">
+  <!-- Shelf decoration -->
+  <div class="fopl-shelf-divider">
+    <span class="fopl-shelf-book" style="height:32px;background:#2e7d32"></span>
+    <span class="fopl-shelf-book" style="height:38px;background:#1b5e20"></span>
+    <span class="fopl-shelf-book" style="height:28px;background:#4caf50"></span>
+    <span class="fopl-shelf-book" style="height:35px;background:#388e3c"></span>
+    <span class="fopl-shelf-book" style="height:30px;background:#66bb6a"></span>
+    <span class="fopl-shelf-book" style="height:40px;background:#1b5e20"></span>
+    <span class="fopl-shelf-book" style="height:26px;background:#43a047"></span>
+    <span class="fopl-shelf-book" style="height:36px;background:#2e7d32"></span>
+  </div>
 
-    <!-- Gallery -->
+  <!-- Gallery -->
+  <div class="fopl-gallery-strip">
     <div class="fopl-gallery-title">Browse Our Bookstore</div>
     <div class="fopl-gallery">
       <div class="fopl-gallery-item">
@@ -623,10 +697,10 @@ fopl_nav_active: bookstore
         <div class="fopl-gallery-caption">Find us at 13137 Poway Rd — look for our sign!</div>
       </div>
     </div>
+  </div>
 
-    <hr class="fopl-divider">
-
-    <!-- Inline Catalog -->
+  <!-- Inline Catalog -->
+  <div class="fopl-content">
     <div class="fopl-catalog-section">
       <div class="fopl-catalog-header">
         <h3>Browse Our Inventory</h3>
@@ -656,7 +730,15 @@ fopl_nav_active: bookstore
       </div>
     </div>
 
-    <hr class="fopl-divider">
+    <!-- Shelf decoration -->
+    <div class="fopl-shelf-divider">
+      <span class="fopl-shelf-book" style="height:30px;background:#43a047"></span>
+      <span class="fopl-shelf-book" style="height:36px;background:#1b5e20"></span>
+      <span class="fopl-shelf-book" style="height:26px;background:#2e7d32"></span>
+      <span class="fopl-shelf-book" style="height:40px;background:#66bb6a"></span>
+      <span class="fopl-shelf-book" style="height:32px;background:#388e3c"></span>
+      <span class="fopl-shelf-book" style="height:38px;background:#1b5e20"></span>
+    </div>
 
     <!-- Book request form -->
     <div class="fopl-request">
@@ -673,8 +755,10 @@ fopl_nav_active: bookstore
       </div>
       <div class="fopl-request-msg" id="fopl-req-msg"></div>
     </div>
+  </div>
 
-    <!-- Volunteer banner -->
+  <!-- Volunteer -->
+  <div class="fopl-volunteer-strip">
     <div class="fopl-volunteer">
       <h3>Become a Volunteer</h3>
       <p>
@@ -683,7 +767,6 @@ fopl_nav_active: bookstore
       </p>
       <a class="fopl-btn" href="/bookstore/contact">Get Involved</a>
     </div>
-
   </div>
 
 </div>
