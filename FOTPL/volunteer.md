@@ -441,8 +441,7 @@ fopl_nav_active: volunteer
 
 <script>
 (function () {
-  const SUPABASE_URL      = 'https://homnbekbwqfzmutyhkpq.supabase.co';
-  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhvbW5iZWtid3Fmem11dHloa3BxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYyNzg2NDQsImV4cCI6MjA5MTg1NDY0NH0.A8pXHtUY_Njwk_AHvns7d9ZBnmqq7KKKzn9MWXIgJYs';
+  const API = 'https://flask.opencodingsociety.com/volunteer-api';
 
   const form   = document.getElementById('vol-application-form');
   const status = document.getElementById('vol-form-status');
@@ -488,18 +487,12 @@ fopl_nav_active: volunteer
       experience:  form.querySelector('#vol-experience').value.trim(),
       why,
       other:       form.querySelector('#vol-other').value.trim(),
-      status:      'new',
     };
 
     try {
-      const res = await fetch(SUPABASE_URL + '/rest/v1/volunteer_applications', {
+      const res = await fetch(API + '/applications', {
         method: 'POST',
-        headers: {
-          'apikey':        SUPABASE_ANON_KEY,
-          'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
-          'Content-Type':  'application/json',
-          'Prefer':        'return=minimal',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
 

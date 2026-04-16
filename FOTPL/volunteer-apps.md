@@ -211,11 +211,9 @@ fopl_nav_active: admin
 <script>
 (function () {
   /* ── Config ── */
-  const SUPABASE_URL      = 'https://homnbekbwqfzmutyhkpq.supabase.co';
-  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhvbW5iZWtid3Fmem11dHloa3BxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYyNzg2NDQsImV4cCI6MjA5MTg1NDY0NH0.A8pXHtUY_Njwk_AHvns7d9ZBnmqq7KKKzn9MWXIgJYs';
-  const ADMIN_PASSWORD    = 'fopl2025';
-  const SESSION_KEY       = 'fopl_va_authed';
-  const TABLE             = 'volunteer_applications';
+  const API            = 'https://flask.opencodingsociety.com/volunteer-api';
+  const ADMIN_PASSWORD = 'fopl2025';
+  const SESSION_KEY    = 'fopl_va_authed';
 
   /* ── DOM refs ── */
   const gate    = document.getElementById('va-auth-gate');
@@ -232,15 +230,6 @@ fopl_nav_active: admin
   let currentFilter = 'all';
   let allApps = [];
 
-  /* ── Supabase helpers ── */
-  function sbHeaders() {
-    return {
-      'apikey':        SUPABASE_ANON_KEY,
-      'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
-      'Content-Type':  'application/json',
-    };
-  }
-
   async function fetchApps() {
     loading.style.display = 'block';
     errMsg.style.display  = 'none';
@@ -248,10 +237,9 @@ fopl_nav_active: admin
     list.innerHTML        = '';
 
     try {
-      const res = await fetch(
-        SUPABASE_URL + '/rest/v1/' + TABLE + '?select=*&order=submitted_at.desc',
-        { headers: sbHeaders() }
-      );
+      const res = await fetch(API + '/applications', {
+        headers: { 'Content-Type': 'application/json' },
+      });
       if (!res.ok) throw new Error(res.status);
       allApps = await res.json();
       loading.style.display = 'none';
@@ -265,14 +253,11 @@ fopl_nav_active: admin
   async function updateStatus(id, status, card) {
     card.querySelectorAll('.va-action-btn').forEach(b => b.disabled = true);
     try {
-      const res = await fetch(
-        SUPABASE_URL + '/rest/v1/' + TABLE + '?id=eq.' + id,
-        {
-          method: 'PATCH',
-          headers: Object.assign({}, sbHeaders(), { 'Prefer': 'return=minimal' }),
-          body: JSON.stringify({ status }),
-        }
-      );
+      const res = await fetch(API + '/applications/' + id, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status }),
+      });
       if (!res.ok) throw new Error(res.status);
       const app = allApps.find(a => a.id === id);
       if (app) app.status = status;
@@ -286,10 +271,10 @@ fopl_nav_active: admin
   async function deleteApp(id, name) {
     if (!confirm('Delete application from ' + name + '? This cannot be undone.')) return;
     try {
-      const res = await fetch(
-        SUPABASE_URL + '/rest/v1/' + TABLE + '?id=eq.' + id,
-        { method: 'DELETE', headers: sbHeaders() }
-      );
+      const res = await fetch(API + '/applications/' + id, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+      });
       if (!res.ok) throw new Error(res.status);
       allApps = allApps.filter(a => a.id !== id);
       renderList();
