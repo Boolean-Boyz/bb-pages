@@ -66,6 +66,7 @@ fopl_nav_active: home
     font-size: 2.4rem;
     font-weight: 700;
     margin: 0;
+    min-height: 1.2em;
     letter-spacing: 0.02em;
     color: #fff;
     border: none;

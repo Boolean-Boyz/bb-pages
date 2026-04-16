@@ -484,7 +484,7 @@ fopl_nav_active: bookstore
 
   .fopl-request-form button {
     padding: 9px 24px;
-    background: linear-gradient(135deg, #023b0f, #045218);
+    background: #023b0f;
     color: #fff;
     border: none;
     border-radius: 8px;
@@ -511,9 +511,6 @@ fopl_nav_active: bookstore
   }
 
   /* ── Dark mode overrides for shop ── */
-  body.fopl-dark .fopl-hero { background: #121212; }
-  body.fopl-dark .fopl-page { background: #121212; }
-  body.fopl-dark .fopl-volunteer { background: #0a1f0e; }
   body.fopl-dark .fopl-catalog-footer a { color: #58e87a; border-bottom-color: #58e87a; }
 
   /* ── Responsive ── */
