@@ -373,7 +373,7 @@ fopl_nav_active: admin
 
   async function lookupForRemove(isbn) {
     try {
-      const res   = await fetch(BACKEND + '/api/fopl/books?q=' + isbn, { credentials: 'include' });
+      const res   = await fetch(BACKEND + '/api/fopl/books?isbn=' + isbn, { credentials: 'include' });
       const books = await res.json();
       const match = books.find(b => b.isbn === isbn);
 
