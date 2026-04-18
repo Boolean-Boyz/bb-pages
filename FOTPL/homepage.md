@@ -25,366 +25,328 @@ fopl_nav_active: bookstore
     margin-right: -50vw;
     padding: 0;
     box-sizing: border-box;
-    background: #023b0f;
+    background: #0f1a12;
   }
 
-  /* ── Hero / heading ── */
-  .fopl-hero {
-    background: #023b0f;
+  /* ── Grain overlay (matches home) ── */
+  .shop-grain {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 200px 200px;
+  }
+
+  /* ── Floating letter particles ── */
+  .shop-particles {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .shop-particle {
+    position: absolute;
+    font-family: 'Libre Baskerville', serif;
+    color: rgba(212,168,83,0.10);
+    animation: shop-float linear infinite;
+    will-change: transform;
+    user-select: none;
+    pointer-events: none;
+  }
+  @keyframes shop-float {
+    0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+  }
+
+  /* ── Scroll-reveal ── */
+  .shop-reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .shop-reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── Hero ── */
+  .shop-hero {
+    background: #0f1a12;
     color: #fff;
     text-align: center;
-    padding: 48px 24px 40px;
+    padding: 80px 24px 64px;
     position: relative;
     overflow: hidden;
-  }
-
-  /* Floating book silhouettes in hero */
-  .fopl-hero::before {
-    content: '\1F4DA';
-    position: absolute;
-    top: 20px;
-    left: 5%;
-    font-size: 3rem;
-    opacity: 0.06;
-    transform: rotate(-15deg);
-    pointer-events: none;
-  }
-  .fopl-hero::after {
-    content: '\1F4D6';
-    position: absolute;
-    bottom: 15px;
-    right: 6%;
-    font-size: 2.5rem;
-    opacity: 0.06;
-    transform: rotate(10deg);
-    pointer-events: none;
-  }
-
-  .fopl-hero h1 {
-    font-family: 'Cabin', sans-serif;
-    font-size: 2rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    margin: 0 0 8px;
-    line-height: 1.25;
-    color: #fff;
-    border: none;
-  }
-
-  .fopl-hero-sub {
-    font-size: 0.95rem;
-    color: rgba(255,255,255,0.6);
-    margin: 0;
-    letter-spacing: 0.03em;
-  }
-
-  /* ── Main content card ── */
-  .fopl-content {
-    background: transparent;
-    color: #e0e0e0;
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 32px 40px;
-  }
-
-  .fopl-intro {
-    font-size: 1.05rem;
-    line-height: 1.75;
-    max-width: 640px;
-    margin: 0 auto 36px;
-    text-align: center;
-    color: rgba(255,255,255,0.7);
-  }
-
-  /* ── Info row (address / phone) ── */
-  .fopl-info-strip {
-    background: #012d0b;
-    padding: 36px 40px;
-    border-top: 1px solid rgba(255,255,255,0.06);
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-  }
-
-  .fopl-info-row {
-    display: flex;
-    justify-content: center;
-    gap: 36px;
-    flex-wrap: wrap;
-    margin: 0 auto;
-    padding: 0;
-    background: transparent;
-    border-radius: 0;
-    max-width: 720px;
-    border: none;
-  }
-
-  .fopl-info-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    text-align: left;
-  }
-
-  .fopl-info-icon {
-    font-size: 1.3rem;
-    color: #f0c341;
-    flex-shrink: 0;
-    margin-top: 2px;
-  }
-
-  .fopl-info-item .fopl-label {
-    font-weight: 700;
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: #f0c341;
-    margin-bottom: 3px;
-  }
-
-  .fopl-info-item .fopl-value {
-    font-size: 0.9rem;
-    color: rgba(255,255,255,0.7);
-    line-height: 1.4;
-  }
-
-  .fopl-info-item a {
-    color: #f0c341;
-    text-decoration: none;
-    font-weight: 600;
-  }
-
-  .fopl-info-item a:hover {
-    text-decoration: underline;
-  }
-
-  /* ── Divider ── */
-  .fopl-divider {
-    border: none;
-    border-top: 1px solid rgba(255,255,255,0.08);
-    margin: 4px auto 32px;
-    max-width: 500px;
-  }
-
-  /* ── Gallery section ── */
-  .fopl-gallery-strip {
-    background: #012d0b;
-    padding: 40px 40px;
-    border-top: 1px solid rgba(255,255,255,0.06);
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-  }
-
-  /* ── Gallery ── */
-  .fopl-gallery-title {
-    font-family: 'Cabin', sans-serif;
-    font-size: 1.15rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: #fff;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-
-  .fopl-gallery {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    margin: 0 auto;
-    max-width: 800px;
-  }
-
-  .fopl-gallery-item {
-    border-radius: 12px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    background: rgba(255,255,255,0.05);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-    border: 1px solid rgba(255,255,255,0.08);
-  }
-
-  .fopl-gallery-item:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 28px rgba(0,0,0,0.3);
-  }
-
-  .fopl-gallery-item img {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-    display: block;
-  }
-
-  .fopl-gallery-caption {
-    padding: 10px 14px;
-    font-size: 0.82rem;
-    color: rgba(255,255,255,0.6);
-    line-height: 1.45;
-    flex: 1;
-    font-style: italic;
-    text-align: center;
-  }
-
-  /* ── Volunteer banner ── */
-  .fopl-volunteer-strip {
-    background: #012d0b;
-    padding: 40px 40px;
-    border-top: 1px solid rgba(255,255,255,0.06);
-  }
-
-  .fopl-volunteer {
-    background: transparent;
-    color: #fff;
-    text-align: center;
-    padding: 0;
-    border-radius: 0;
-    margin: 0 auto;
-    max-width: 720px;
-    border: none;
-  }
-
-  .fopl-volunteer h3 {
-    font-family: 'Cabin', sans-serif;
-    font-size: 1.15rem;
-    font-weight: 700;
-    margin: 0 0 8px;
-    color: #fff;
-    border: none;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .fopl-volunteer p {
-    margin: 0 0 18px;
-    font-size: 0.95rem;
-    color: rgba(255,255,255,0.75);
-    max-width: 500px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 18px;
-    line-height: 1.6;
-  }
-
-  .fopl-btn {
-    display: inline-block;
-    background: #f0c341;
-    color: #1a2e1a;
-    font-family: 'Cabin', sans-serif;
-    font-weight: 700;
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    padding: 11px 28px;
-    border-radius: 6px;
-    text-decoration: none;
-    border: none;
-    transition: background 0.2s, transform 0.2s;
-  }
-
-  .fopl-btn:hover {
-    background: #f5d777;
-    transform: translateY(-1px);
-  }
-
-  /* ── Inline catalog ── */
-  .fopl-catalog-section {
-    margin: 0 auto 36px;
-    max-width: 800px;
-  }
-
-  .fopl-catalog-header {
+    min-height: 40vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 14px;
-    margin-bottom: 20px;
+    justify-content: center;
   }
+  /* Subtle gradient mesh */
+  .shop-hero::before {
+    content: '';
+    position: absolute;
+    inset: -50%;
+    background:
+      radial-gradient(ellipse at 25% 40%, rgba(212,168,83,0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 75% 60%, rgba(45,184,77,0.04) 0%, transparent 50%);
+    animation: shop-mesh 18s ease-in-out infinite alternate;
+    pointer-events: none;
+    z-index: 0;
+  }
+  @keyframes shop-mesh {
+    0% { transform: scale(1) rotate(0deg); }
+    100% { transform: scale(1.08) rotate(1.5deg); }
+  }
+  .shop-hero > * { position: relative; z-index: 2; }
 
-  .fopl-catalog-header h3 {
+  .shop-hero-label {
     font-family: 'Cabin', sans-serif;
-    font-size: 1.15rem;
+    font-size: 0.65rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.35em;
+    color: rgba(212,168,83,0.5);
+    margin: 0 0 20px;
+  }
+
+  .shop-hero h1 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 3.2rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 16px;
+    line-height: 1.1;
     color: #fff;
-    margin: 0;
     border: none;
   }
 
-  .fopl-catalog-controls {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .fopl-catalog-controls input {
-    padding: 9px 14px;
-    border: 1.5px solid rgba(255,255,255,0.15);
-    border-radius: 8px;
-    font-size: 0.88rem;
+  .shop-hero-sub {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.4);
+    margin: 0;
     font-family: 'Lato', sans-serif;
-    outline: none;
-    width: 220px;
-    transition: border-color 0.2s;
-    background: rgba(255,255,255,0.06);
-    color: #e0e0e0;
+    font-weight: 300;
+    max-width: 460px;
+    line-height: 1.8;
   }
 
-  .fopl-catalog-controls input:focus {
-    border-color: #f0c341;
+  /* ── Info strip (address/phone/hours) ── */
+  .shop-info-strip {
+    background: rgba(0,0,0,0.18);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    padding: 48px 40px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    position: relative;
+    z-index: 2;
+  }
+
+  .shop-info-row {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 0;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    max-width: 800px;
+  }
+
+  .shop-info-item {
+    text-align: center;
+    padding: 0 44px;
+    position: relative;
+  }
+
+  .shop-info-item + .shop-info-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 40px;
     background: rgba(255,255,255,0.08);
   }
 
-  .fopl-catalog-controls select {
-    padding: 9px 12px;
-    border: 1.5px solid rgba(255,255,255,0.15);
-    border-radius: 8px;
+  .shop-info-icon {
+    font-size: 1.1rem;
+    color: rgba(212,168,83,0.6);
+    margin-bottom: 10px;
+  }
+
+  .shop-info-item .shop-label {
+    font-family: 'Cabin', sans-serif;
+    font-weight: 700;
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: rgba(212,168,83,0.5);
+    margin-bottom: 8px;
+  }
+
+  .shop-info-item .shop-value {
     font-size: 0.88rem;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.6;
     font-family: 'Lato', sans-serif;
-    background: rgba(255,255,255,0.06);
-    color: #e0e0e0;
+    font-weight: 300;
+  }
+
+  .shop-info-item a {
+    color: #d4a853;
+    text-decoration: none;
+    font-weight: 400;
+    transition: color 0.2s;
+  }
+  .shop-info-item a:hover { color: #e0bd70; }
+
+  /* ── Section divider (open book) ── */
+  .shop-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 40px;
+    position: relative;
+    z-index: 2;
+  }
+  .shop-divider-inner {
+    width: 100%;
+    max-width: 600px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(212,168,83,0.2), transparent);
+    position: relative;
+  }
+  .shop-divider-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 4px 14px;
+    background: #0f1a12;
+  }
+  body.fopl-dark .shop-divider-icon { background: #0a0c0a; }
+
+  /* ── Content wrapper ── */
+  .shop-content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 48px 40px;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ── Catalog section ── */
+  .shop-catalog-header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .shop-catalog-header h2 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 8px;
+    border: none;
+  }
+
+  .shop-catalog-header p {
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.4);
+    margin: 0 0 24px;
+  }
+
+  .shop-catalog-controls {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .shop-catalog-controls input,
+  .shop-catalog-controls select {
+    padding: 10px 16px;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 24px;
+    font-size: 0.82rem;
+    font-family: 'Lato', sans-serif;
     outline: none;
-    cursor: pointer;
-    transition: border-color 0.2s;
+    transition: border-color 0.3s, background 0.3s;
+    background: rgba(255,255,255,0.04);
+    color: #e0e0e0;
+    letter-spacing: 0.02em;
   }
 
-  .fopl-catalog-controls select:focus {
-    border-color: #f0c341;
+  .shop-catalog-controls input { width: 240px; }
+
+  .shop-catalog-controls input:focus,
+  .shop-catalog-controls select:focus {
+    border-color: rgba(212,168,83,0.4);
+    background: rgba(255,255,255,0.06);
   }
 
-  .fopl-catalog-grid {
+  .shop-catalog-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-    gap: 16px;
-    margin-bottom: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 18px;
+    margin-bottom: 20px;
   }
 
+  /* ── Book card (glassmorphism) ── */
   .fopl-book-card {
     background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 12px;
+    border-radius: 14px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s, border-color 0.4s;
     cursor: pointer;
+    position: relative;
+  }
+
+  .fopl-book-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(212,168,83,0.06) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity 0.4s;
+    pointer-events: none;
   }
 
   .fopl-book-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 28px rgba(0,0,0,0.3);
+    transform: translateY(-6px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+    border-color: rgba(212,168,83,0.2);
   }
+  .fopl-book-card:hover::before { opacity: 1; }
 
   .fopl-book-cover {
-    height: 180px;
+    height: 200px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 2.2rem;
     flex-shrink: 0;
-    background: rgba(255,255,255,0.03);
+    background: rgba(255,255,255,0.02);
+    position: relative;
+    overflow: hidden;
   }
 
   .fopl-book-cover img {
@@ -392,380 +354,410 @@ fopl_nav_active: bookstore
     height: 100%;
     object-fit: cover;
     display: block;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .fopl-book-card:hover .fopl-book-cover img {
+    transform: scale(1.04);
   }
 
   .fopl-book-info {
-    padding: 10px 12px;
+    padding: 14px 16px;
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 4px;
   }
 
   .fopl-book-title {
-    font-family: 'Cabin', sans-serif;
+    font-family: 'Libre Baskerville', serif;
     font-size: 0.84rem;
     font-weight: 700;
     color: #eee;
-    line-height: 1.3;
+    line-height: 1.35;
   }
 
   .fopl-book-author {
-    font-size: 0.76rem;
-    color: rgba(255,255,255,0.5);
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.4);
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
   }
 
   .fopl-book-meta {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 6px;
+    margin-top: 8px;
   }
 
   .fopl-book-price {
     font-family: 'Cabin', sans-serif;
     font-weight: 700;
     font-size: 0.88rem;
-    color: #f0c341;
+    color: #d4a853;
   }
 
   .fopl-book-age {
-    font-size: 0.7rem;
-    padding: 2px 7px;
-    border-radius: 10px;
+    font-size: 0.62rem;
+    padding: 3px 8px;
+    border-radius: 12px;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.06em;
+    font-family: 'Cabin', sans-serif;
   }
 
-  .age-kids      { background: #fff3cd; color: #856404; }
-  .age-middle    { background: #d1ecf1; color: #0c5460; }
-  .age-ya        { background: #d4edda; color: #155724; }
-  .age-adult     { background: #f8d7da; color: #721c24; }
+  .age-kids      { background: rgba(255,243,205,0.15); color: #f0c341; }
+  .age-middle    { background: rgba(209,236,241,0.12); color: #7ecbd6; }
+  .age-ya        { background: rgba(212,237,218,0.12); color: #7ed49b; }
+  .age-adult     { background: rgba(248,215,218,0.12); color: #e8878c; }
 
-  .fopl-catalog-footer {
+  .shop-catalog-footer {
     text-align: center;
-    margin-top: 8px;
+    margin-top: 16px;
   }
 
-  .fopl-catalog-footer a {
-    color: #f0c341;
+  .shop-catalog-footer a {
+    color: rgba(212,168,83,0.7);
     font-family: 'Cabin', sans-serif;
     font-weight: 700;
-    font-size: 0.85rem;
+    font-size: 0.72rem;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.14em;
     text-decoration: none;
-    border-bottom: 2px solid #f0c341;
-    padding-bottom: 1px;
-    transition: opacity 0.2s;
+    padding-bottom: 2px;
+    border-bottom: 1px solid rgba(212,168,83,0.3);
+    transition: color 0.3s, border-color 0.3s;
   }
-
-  .fopl-catalog-footer a:hover { opacity: 0.6; }
+  .shop-catalog-footer a:hover {
+    color: #d4a853;
+    border-color: #d4a853;
+  }
 
   .fopl-catalog-empty {
     text-align: center;
-    color: rgba(255,255,255,0.4);
+    color: rgba(255,255,255,0.35);
     font-style: italic;
-    padding: 28px 0;
-    font-size: 0.92rem;
+    padding: 40px 0;
+    font-size: 0.9rem;
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
   }
 
-  /* ── Book shelf decorative divider ── */
-  .fopl-shelf-divider {
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    gap: 4px;
-    padding: 20px 0 0;
-    opacity: 0.15;
-    pointer-events: none;
-  }
-  .fopl-shelf-book {
-    display: inline-block;
-    border-radius: 2px 2px 0 0;
-    width: 14px;
-  }
-
-  /* ── Book request section ── */
-  .fopl-request {
-    background: rgba(255,255,255,0.05);
-    border-radius: 12px;
-    padding: 28px 32px;
+  /* ── Book request (glass card) ── */
+  .shop-request {
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 18px;
+    padding: 40px 36px;
     margin: 0 auto;
     max-width: 720px;
     text-align: center;
     border: 1px solid rgba(255,255,255,0.08);
+    transition: border-color 0.4s;
+    position: relative;
+    z-index: 2;
+  }
+  .shop-request:hover {
+    border-color: rgba(212,168,83,0.15);
   }
 
-  .fopl-request h3 {
-    font-family: 'Cabin', sans-serif;
-    font-size: 1.05rem;
+  .shop-request h3 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.3rem;
     font-weight: 700;
     color: #fff;
-    margin: 0 0 6px;
+    margin: 0 0 8px;
     border: none;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
   }
 
-  .fopl-request p {
-    font-size: 0.92rem;
-    color: rgba(255,255,255,0.6);
-    margin: 0 0 18px;
-    line-height: 1.5;
+  .shop-request p {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.45);
+    margin: 0 0 24px;
+    line-height: 1.7;
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 24px;
   }
 
-  .fopl-request-form {
+  .shop-request-form {
     display: flex;
-    gap: 8px;
+    gap: 10px;
     flex-wrap: wrap;
     justify-content: center;
   }
 
-  .fopl-request-form input[type="text"],
-  .fopl-request-form input[type="email"],
-  .fopl-request-form input[type="tel"] {
+  .shop-request-form input[type="text"],
+  .shop-request-form input[type="email"],
+  .shop-request-form input[type="tel"] {
     flex: 1;
     min-width: 150px;
-    padding: 9px 14px;
-    border: 1.5px solid rgba(255,255,255,0.15);
-    border-radius: 8px;
-    font-size: 0.92rem;
+    padding: 11px 16px;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 24px;
+    font-size: 0.85rem;
     font-family: 'Lato', sans-serif;
     outline: none;
-    transition: border-color 0.2s;
-    background: rgba(255,255,255,0.06);
+    transition: border-color 0.3s, background 0.3s;
+    background: rgba(255,255,255,0.04);
     color: #e0e0e0;
   }
 
-  .fopl-request-form input:focus {
-    border-color: #f0c341;
+  .shop-request-form input:focus {
+    border-color: rgba(212,168,83,0.4);
+    background: rgba(255,255,255,0.06);
   }
 
-  .fopl-request-form button {
-    padding: 9px 24px;
-    background: #023b0f;
-    color: #fff;
+  .shop-request-form button {
+    padding: 11px 28px;
+    background: #d4a853;
+    color: #1a1a12;
     border: none;
-    border-radius: 8px;
+    border-radius: 24px;
     font-family: 'Cabin', sans-serif;
     font-weight: 700;
-    font-size: 0.85rem;
+    font-size: 0.72rem;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.12em;
     cursor: pointer;
-    transition: background 0.2s, transform 0.15s;
+    transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
   }
 
-  .fopl-request-form button:hover {
-    background: #045218;
-    transform: translateY(-1px);
+  .shop-request-form button:hover {
+    background: #e0bd70;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(212,168,83,0.2);
   }
 
-  .fopl-request-msg {
-    margin-top: 10px;
-    font-size: 0.88rem;
-    color: #f0c341;
+  .shop-request-msg {
+    margin-top: 14px;
+    font-size: 0.85rem;
+    color: #d4a853;
     font-weight: 600;
+    font-family: 'Cabin', sans-serif;
     display: none;
   }
 
-  /* ── Dark mode overrides for shop ── */
-  body.fopl-dark .fopl-catalog-footer a { color: #58e87a; border-bottom-color: #58e87a; }
+  /* ── Volunteer CTA ── */
+  .shop-volunteer-strip {
+    padding: 56px 40px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  .shop-volunteer {
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  .shop-volunteer-label {
+    font-family: 'Cabin', sans-serif;
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    color: rgba(212,168,83,0.5);
+    margin: 0 0 16px;
+  }
+
+  .shop-volunteer h3 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 12px;
+    color: #fff;
+    border: none;
+  }
+
+  .shop-volunteer p {
+    margin: 0 0 28px;
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.45);
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 28px;
+    line-height: 1.8;
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+  }
+
+  .shop-btn {
+    display: inline-block;
+    background: transparent;
+    color: rgba(255,255,255,0.8);
+    font-family: 'Cabin', sans-serif;
+    font-weight: 700;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    padding: 12px 28px;
+    border-radius: 28px;
+    text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.18);
+    transition: background 0.3s, transform 0.3s, border-color 0.3s, color 0.3s;
+  }
+
+  .shop-btn:hover {
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(255,255,255,0.5);
+    color: #fff;
+    transform: translateY(-2px);
+  }
+
+  /* ── Dark mode ── */
+  body.fopl-dark .fopl-page { background: #0a0c0a; }
+  body.fopl-dark .shop-hero { background: #0a0c0a; }
+  body.fopl-dark .shop-info-strip { background: rgba(0,0,0,0.35); }
+  body.fopl-dark .shop-grain { opacity: 0.04; }
+  body.fopl-dark .shop-catalog-footer a { color: #d4a853; border-bottom-color: rgba(212,168,83,0.3); }
 
   /* ── Responsive ── */
+  @media (max-width: 900px) {
+    .shop-hero h1 { font-size: 2.4rem; }
+    .shop-hero { padding: 64px 20px 48px; }
+  }
   @media (max-width: 640px) {
-    .fopl-hero h1 { font-size: 1.4rem; }
-    .fopl-content { padding: 24px 16px; }
-    .fopl-info-row { flex-direction: column; gap: 16px; }
-    .fopl-gallery { grid-template-columns: 1fr 1fr; gap: 12px; }
-    .fopl-catalog-controls input { width: 100%; }
-    .fopl-catalog-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+    .shop-hero h1 { font-size: 1.8rem; }
+    .shop-hero { padding: 48px 16px 36px; min-height: 30vh; }
+    .shop-content { padding: 32px 18px; }
+    .shop-info-row { flex-direction: column; align-items: center; gap: 28px; }
+    .shop-info-item + .shop-info-item::before { display: none; }
+    .shop-catalog-controls input { width: 100%; }
+    .shop-catalog-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+    .shop-request { padding: 28px 20px; }
   }
 </style>
 
 <div class="fopl-page">
 
-  <!-- Hero -->
-  <div class="fopl-hero">
-    <h1>Our Bookstore</h1>
-    <p class="fopl-hero-sub">Unique gently used books, magazines, DVDs, CDs, puzzles and more</p>
-  </div>
+  <!-- Overlays -->
+  <div class="shop-grain"></div>
+  <div class="shop-particles" id="shop-particles"></div>
 
-  <!-- Main content -->
-  <div class="fopl-content">
-    <p class="fopl-intro">
-      Our bookstore offers gently used books of all kinds, along with
-      magazines, DVDs, CDs, puzzles and more. We also take requests from patrons.
+  <!-- Hero -->
+  <div class="shop-hero">
+    <p class="shop-hero-label shop-reveal">Friends of the Poway Library</p>
+    <h1 class="shop-reveal">Our Bookstore</h1>
+    <p class="shop-hero-sub shop-reveal">
+      Gently used books, magazines, DVDs, puzzles and more — all at great prices, all supporting your local library.
     </p>
   </div>
 
-  <!-- Address / Phone -->
-  <div class="fopl-info-strip">
-    <div class="fopl-info-row">
-      <div class="fopl-info-item">
-        <div class="fopl-info-icon">📍</div>
+  <!-- Info strip -->
+  <div class="shop-info-strip">
+    <div class="shop-info-row shop-reveal">
+      <div class="shop-info-item">
+        <div class="shop-info-icon">📍</div>
         <div>
-          <div class="fopl-label">Location</div>
-          <div class="fopl-value">
-            13137 Poway Rd<br>
-            Poway, CA 92064
-          </div>
+          <div class="shop-label">Location</div>
+          <div class="shop-value">13137 Poway Rd<br>Poway, CA 92064</div>
         </div>
       </div>
-      <div class="fopl-info-item">
-        <div class="fopl-info-icon">📞</div>
+      <div class="shop-info-item">
+        <div class="shop-info-icon">📞</div>
         <div>
-          <div class="fopl-label">Phone</div>
-          <div class="fopl-value">
-            <a href="tel:8585132862">858-513-2862</a>
-          </div>
+          <div class="shop-label">Phone</div>
+          <div class="shop-value"><a href="tel:8585132862">858-513-2862</a></div>
         </div>
       </div>
-      <div class="fopl-info-item">
-        <div class="fopl-info-icon">🕐</div>
+      <div class="shop-info-item">
+        <div class="shop-info-icon">🕐</div>
         <div>
-          <div class="fopl-label">Hours</div>
-          <div class="fopl-value" id="fopl-hours">Loading...</div>
+          <div class="shop-label">Hours</div>
+          <div class="shop-value" id="fopl-hours">Loading...</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Shelf decoration -->
-  <div class="fopl-shelf-divider">
-    <span class="fopl-shelf-book" style="height:32px;background:#2e7d32"></span>
-    <span class="fopl-shelf-book" style="height:38px;background:#1b5e20"></span>
-    <span class="fopl-shelf-book" style="height:28px;background:#4caf50"></span>
-    <span class="fopl-shelf-book" style="height:35px;background:#388e3c"></span>
-    <span class="fopl-shelf-book" style="height:30px;background:#66bb6a"></span>
-    <span class="fopl-shelf-book" style="height:40px;background:#1b5e20"></span>
-    <span class="fopl-shelf-book" style="height:26px;background:#43a047"></span>
-    <span class="fopl-shelf-book" style="height:36px;background:#2e7d32"></span>
-  </div>
-
-  <!-- Gallery -->
-  <div class="fopl-gallery-strip">
-    <div class="fopl-gallery-title">Browse Our Bookstore</div>
-    <div class="fopl-gallery">
-      <div class="fopl-gallery-item">
-        <img
-          src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop"
-          alt="Bookstore entrance"
-          onerror="this.src='https://via.placeholder.com/400x300?text=Come+On+In'"
-        />
-        <div class="fopl-gallery-caption">Come on in and browse!</div>
-      </div>
-      <div class="fopl-gallery-item">
-        <img
-          src="https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=400&h=300&fit=crop"
-          alt="Fiction, non-fiction, videos"
-          onerror="this.src='https://via.placeholder.com/400x300?text=Fiction+%26+More'"
-        />
-        <div class="fopl-gallery-caption">We have fiction, non-fiction, videos...</div>
-      </div>
-      <div class="fopl-gallery-item">
-        <img
-          src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400&h=300&fit=crop"
-          alt="Free items"
-          onerror="this.src='https://via.placeholder.com/400x300?text=Some+Items+Are+Free'"
-        />
-        <div class="fopl-gallery-caption">Some items are free!</div>
-      </div>
-      <div class="fopl-gallery-item">
-        <img
-          src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=400&h=300&fit=crop"
-          alt="New stock all the time"
-          onerror="this.src='https://via.placeholder.com/400x300?text=New+Items+All+the+Time'"
-        />
-        <div class="fopl-gallery-caption">You never know what you might find. We get new things all the time.</div>
-      </div>
-      <div class="fopl-gallery-item">
-        <img
-          src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=300&fit=crop"
-          alt="Stop by and chat"
-          onerror="this.src='https://via.placeholder.com/400x300?text=Stop+By+%26+Chat'"
-        />
-        <div class="fopl-gallery-caption">Stop by and chat. We just might have what you are looking for.</div>
-      </div>
-      <div class="fopl-gallery-item">
-        <img
-          src="/FOTPL/Images/bookstoresign.png"
-          alt="Friends of the Poway Library Bookstore Sign"
-        />
-        <div class="fopl-gallery-caption">Find us at 13137 Poway Rd — look for our sign!</div>
+  <!-- Divider -->
+  <div class="shop-divider">
+    <div class="shop-divider-inner">
+      <div class="shop-divider-icon">
+        <svg width="20" height="16" viewBox="0 0 24 20" fill="none" stroke="rgba(212,168,83,0.5)" stroke-width="1.5">
+          <path d="M2 3h6a4 4 0 0 1 4 4 4 4 0 0 1 4-4h6"/>
+          <path d="M2 3v14a1 1 0 0 0 1 1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 0 1-1V3"/>
+        </svg>
       </div>
     </div>
   </div>
 
-  <!-- Inline Catalog -->
-  <div class="fopl-content">
-    <div class="fopl-catalog-section">
-      <div class="fopl-catalog-header">
-        <h3>Browse Our Inventory</h3>
-        <div class="fopl-catalog-controls">
-          <input type="text" id="bc-search" placeholder="Search title, author, series..." oninput="bcFilter()" />
-          <select id="bc-age" onchange="bcFilter()">
-            <option value="">All Ages</option>
-            <option value="Kids">Kids</option>
-            <option value="Middle Grade">Middle Grade</option>
-            <option value="YA">YA</option>
-          </select>
-          <select id="bc-condition" onchange="bcFilter()">
-            <option value="">Any Condition</option>
-            <option value="Like New">Like New</option>
-            <option value="Good">Good</option>
-            <option value="Fair">Fair</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="fopl-catalog-grid" id="bc-grid">
-        <div class="fopl-catalog-empty">Loading inventory…</div>
-      </div>
-
-      <div class="fopl-catalog-footer">
-        <a href="/catalog">View Full Catalog &rarr;</a>
+  <!-- Catalog -->
+  <div class="shop-content">
+    <div class="shop-catalog-header shop-reveal">
+      <h2>Browse Our Inventory</h2>
+      <p>New titles arrive weekly from generous community donations</p>
+      <div class="shop-catalog-controls">
+        <input type="text" id="bc-search" placeholder="Search title, author, series..." oninput="bcFilter()" />
+        <select id="bc-age" onchange="bcFilter()">
+          <option value="">All Ages</option>
+          <option value="Kids">Kids</option>
+          <option value="Middle Grade">Middle Grade</option>
+          <option value="YA">YA</option>
+        </select>
+        <select id="bc-condition" onchange="bcFilter()">
+          <option value="">Any Condition</option>
+          <option value="Like New">Like New</option>
+          <option value="Good">Good</option>
+          <option value="Fair">Fair</option>
+        </select>
       </div>
     </div>
 
-    <!-- Shelf decoration -->
-    <div class="fopl-shelf-divider">
-      <span class="fopl-shelf-book" style="height:30px;background:#43a047"></span>
-      <span class="fopl-shelf-book" style="height:36px;background:#1b5e20"></span>
-      <span class="fopl-shelf-book" style="height:26px;background:#2e7d32"></span>
-      <span class="fopl-shelf-book" style="height:40px;background:#66bb6a"></span>
-      <span class="fopl-shelf-book" style="height:32px;background:#388e3c"></span>
-      <span class="fopl-shelf-book" style="height:38px;background:#1b5e20"></span>
+    <div class="shop-catalog-grid" id="bc-grid">
+      <div class="fopl-catalog-empty">Loading inventory…</div>
     </div>
 
-    <!-- Book request form -->
-    <div class="fopl-request">
+    <div class="shop-catalog-footer shop-reveal">
+      <a href="/catalog">View Full Catalog &rarr;</a>
+    </div>
+  </div>
+
+  <!-- Divider -->
+  <div class="shop-divider">
+    <div class="shop-divider-inner">
+      <div class="shop-divider-icon">
+        <svg width="20" height="16" viewBox="0 0 24 20" fill="none" stroke="rgba(212,168,83,0.5)" stroke-width="1.5">
+          <path d="M2 3h6a4 4 0 0 1 4 4 4 4 0 0 1 4-4h6"/>
+          <path d="M2 3v14a1 1 0 0 0 1 1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 0 1-1V3"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Request -->
+  <div class="shop-content" style="padding-top: 0;">
+    <div class="shop-request shop-reveal">
       <h3>Request a Book</h3>
       <p>
-        Don't see what you're looking for? Submit a request and we'll keep an
-        eye out for it the next time donations arrive.
+        Don't see what you're looking for? Submit a request and we'll keep an eye out the next time donations arrive.
       </p>
-      <div class="fopl-request-form">
+      <div class="shop-request-form">
         <input type="text"  id="fopl-req-title"  placeholder="Book title or author" />
         <input type="text"  id="fopl-req-name"   placeholder="Your name" />
         <input type="tel"   id="fopl-req-phone"  placeholder="Phone (optional)" />
-        <button onclick="submitBookRequest()">Submit</button>
+        <button onclick="submitBookRequest()">Submit Request</button>
       </div>
-      <div class="fopl-request-msg" id="fopl-req-msg"></div>
+      <div class="shop-request-msg" id="fopl-req-msg"></div>
     </div>
   </div>
 
   <!-- Volunteer -->
-  <div class="fopl-volunteer-strip">
-    <div class="fopl-volunteer">
+  <div class="shop-volunteer-strip shop-reveal">
+    <div class="shop-volunteer">
+      <p class="shop-volunteer-label">Make a Difference</p>
       <h3>Become a Volunteer</h3>
       <p>
-        We rely on volunteers to sort donations, staff the bookstore, and keep
-        things running. Join us and make a difference in your community!
+        We rely on volunteers to sort donations, staff the bookstore, and keep things running. Join us and support your community.
       </p>
-      <a class="fopl-btn" href="/bookstore/contact">Get Involved</a>
+      <a class="shop-btn" href="/bookstore/contact">Get Involved</a>
     </div>
   </div>
 
@@ -775,6 +767,43 @@ fopl_nav_active: bookstore
 {
   const BACKEND_URL = window.FOPL_BACKEND;
 
+  // ── Floating letter particles ────────────────────────────────────────────
+  (function() {
+    var pc = document.getElementById('shop-particles');
+    if (!pc) return;
+    var glyphs = ['B','p','§','&','L','r','k','d','R','\u00b6','N','S','W','m'];
+    for (var i = 0; i < 14; i++) {
+      var p = document.createElement('div');
+      p.className = 'shop-particle';
+      p.textContent = glyphs[i % glyphs.length];
+      p.style.fontSize = (10 + Math.random() * 14) + 'px';
+      p.style.left = Math.random() * 100 + '%';
+      p.style.animationDuration = (20 + Math.random() * 25) + 's';
+      p.style.animationDelay = -(Math.random() * 30) + 's';
+      p.style.opacity = 0.05 + Math.random() * 0.08;
+      pc.appendChild(p);
+    }
+  })();
+
+  // ── Scroll reveal ────────────────────────────────────────────────────────
+  (function() {
+    var els = document.querySelectorAll('.shop-reveal');
+    if ('IntersectionObserver' in window) {
+      var obs = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+          if (e.isIntersecting) {
+            e.target.classList.add('visible');
+            obs.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+      els.forEach(function(el) { obs.observe(el); });
+    } else {
+      els.forEach(function(el) { el.classList.add('visible'); });
+    }
+  })();
+
+  // ── Load hours ───────────────────────────────────────────────────────────
   async function loadHours() {
     const el = document.getElementById('fopl-hours');
     try {
@@ -791,7 +820,7 @@ fopl_nav_active: bookstore
     }
   }
 
-  // ── Book request form ───────────────────────────────────────────────────────
+  // ── Book request form ───────────────────────────────────────────────────
   async function submitBookRequest() {
     const title = document.getElementById('fopl-req-title').value.trim();
     const name  = document.getElementById('fopl-req-name').value.trim();
@@ -800,7 +829,7 @@ fopl_nav_active: bookstore
 
     if (!title || !name) {
       msg.style.display = 'block';
-      msg.style.color = '#c00';
+      msg.style.color = '#e8878c';
       msg.textContent = 'Please fill in the book title and your name.';
       return;
     }
@@ -813,24 +842,22 @@ fopl_nav_active: bookstore
       });
       const data = await res.json();
       msg.style.display = 'block';
-      msg.style.color = '#023b0f';
+      msg.style.color = '#d4a853';
       msg.textContent = data.message || 'Thank you! Your request has been submitted.';
       document.getElementById('fopl-req-title').value = '';
       document.getElementById('fopl-req-name').value  = '';
       document.getElementById('fopl-req-phone').value = '';
     } catch {
       msg.style.display = 'block';
-      msg.style.color = '#023b0f';
+      msg.style.color = '#d4a853';
       msg.textContent = 'Thank you! Your request has been noted. We will contact you if we find it.';
     }
   }
 
-  // expose for onclick
   window.submitBookRequest = submitBookRequest;
-
   loadHours();
 
-  // ── Inline catalog ──────────────────────────────────────────────────────────
+  // ── Inline catalog ──────────────────────────────────────────────────────
   let bcAllBooks = [];
 
   const AGE_COLORS = {
@@ -878,7 +905,7 @@ fopl_nav_active: bookstore
       bcRender(bcAllBooks);
     } catch {
       document.getElementById('bc-grid').innerHTML =
-        '<div class="fopl-catalog-empty">Could not load inventory. <a href="/catalog">Try the full catalog page.</a></div>';
+        '<div class="fopl-catalog-empty">Could not load inventory. <a href="/catalog" style="color:#d4a853">Try the full catalog page.</a></div>';
     }
   }
 

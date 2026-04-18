@@ -3,25 +3,25 @@
    Single source of truth for site-wide chrome
    ═══════════════════════════════════════════ */
 
-@import url('https://fonts.googleapis.com/css2?family=Cabin:wght@400;600;700&family=Lato:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cabin:wght@400;600;700&family=Lato:wght@300;400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
 
 *, *::before, *::after { box-sizing: border-box; }
 
 body {
   margin: 0;
   font-family: 'Lato', sans-serif;
-  background: #023b0f !important;
+  background: #0f1a12 !important;
 }
 
 /* ── Nav bar ── */
 .fopl-nav {
-  background: #023b0f;
+  background: #0f1a12;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 24px;
   height: 48px;
-  border-bottom: 2px solid #2db84d;
+  border-bottom: 1px solid rgba(212,168,83,0.2);
 }
 
 .fopl-nav-left,
@@ -82,7 +82,7 @@ body {
   color: #fff;
   transition: color 0.2s;
 }
-.fopl-nav-cal-icon:hover { color: #58e87a; }
+.fopl-nav-cal-icon:hover { color: #d4a853; }
 .fopl-nav-cal-icon svg { display: block; }
 
 /* Ensure icon li items are vertically centered */
@@ -290,7 +290,7 @@ body {
 
 /* ── Footer ── */
 .fopl-footer {
-  background: #023b0f;
+  background: #0f1a12;
   color: rgba(255,255,255,0.6);
   text-align: center;
   padding: 20px 20px;
@@ -341,7 +341,7 @@ body {
   position: absolute;
   bottom: 0; left: 0; right: 0;
   height: 28px;
-  background: #023b0f;
+  background: #0f1a12;
   border-radius: 60% 60% 0 0 / 100% 100% 0 0;
 }
 
@@ -384,7 +384,7 @@ body {
 /* ── Nav active state ── */
 .fopl-nav-links li.active a {
   background: rgba(255,255,255,0.1);
-  border-bottom: 2px solid #58e87a;
+  border-bottom: 2px solid #d4a853;
 }
 
 /* ── Responsive nav ── */
@@ -421,7 +421,7 @@ body {
   color: #fff;
   transition: color 0.2s;
 }
-.fopl-nav-dark-toggle:hover { color: #58e87a; }
+.fopl-nav-dark-toggle:hover { color: #d4a853; }
 .fopl-nav-dark-toggle svg { display: block; }
 
 /* ── Dark mode overrides (site-wide shared) ── */
@@ -430,7 +430,7 @@ body.fopl-dark {
 }
 body.fopl-dark .fopl-nav {
   background: #111;
-  border-bottom-color: #58e87a;
+  border-bottom-color: rgba(212,168,83,0.3);
 }
 body.fopl-dark .fopl-footer {
   background: #111;
@@ -447,7 +447,7 @@ body.fopl-dark .fopl-cal-popup {
 }
 body.fopl-dark .fopl-pop-month,
 body.fopl-dark .fopl-pop-dow,
-body.fopl-dark .fopl-pop-detail-date { color: #58e87a; }
+body.fopl-dark .fopl-pop-detail-date { color: #d4a853; }
 body.fopl-dark .fopl-pop-nav {
   color: #e8f5e9;
   border-color: rgba(255,255,255,0.2);
