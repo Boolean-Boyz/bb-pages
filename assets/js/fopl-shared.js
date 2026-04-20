@@ -133,7 +133,15 @@ document.addEventListener('DOMContentLoaded', function initAuthNav() {
 
     document.getElementById('fopl-pop-grid').innerHTML = html;
 
-    // re-render detail if a date is already selected
+    // Auto-select today if on current month and nothing else is selected
+    if (!popSelectedDate && popYear === now.getFullYear() && popMonth === now.getMonth()) {
+      popSelectedDate = todayStr;
+      // Mark today's cell as selected
+      var todayCell = document.querySelector('.fopl-pop-cell.today');
+      if (todayCell) todayCell.classList.add('selected');
+    }
+
+    // re-render detail if a date is selected
     if (popSelectedDate) popShowDetail(popSelectedDate);
   }
 
