@@ -7,27 +7,19 @@ fopl_nav_active: puzzles
 ---
 
 <style>
-  body { background: #f4f8f4; }
+  body { background: #0f1a12; }
 
   .fopl-hero {
     position: relative;
     overflow: hidden;
     background:
-      radial-gradient(1100px 340px at 8% -20%, rgba(255,255,255,0.14), rgba(255,255,255,0) 60%),
-      radial-gradient(900px 260px at 92% 0%, rgba(255,255,255,0.11), rgba(255,255,255,0) 55%),
-      #21cc49;
+      radial-gradient(ellipse at 20% 50%, rgba(212,168,83,0.07) 0%, transparent 55%),
+      radial-gradient(ellipse at 80% 20%, rgba(45,184,77,0.04) 0%, transparent 50%),
+      #0f1a12;
     color: #fff;
     text-align: center;
     padding: 58px 24px 50px;
-  }
-  .fopl-hero::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 1px;
-    background: rgba(255,255,255,0.25);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
   }
   .hero-kicker {
     display: inline-block;
@@ -55,20 +47,18 @@ fopl_nav_active: puzzles
     padding: 0 40px;
   }
   .overall-card {
-    background: #ffffff;
-    border: 1px solid #d6e2d6;
-    border-top: 4px solid #023b0f;
-    border-radius: 8px;
-    box-shadow: 0 2px 12px rgba(2,59,15,0.09);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
     padding: 18px 20px;
   }
   .overall-title {
     margin: 0 0 10px;
     font-family: 'Cabin', sans-serif;
-    color: #023b0f;
+    color: rgba(212,168,83,0.7);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    font-size: 0.95rem;
+    letter-spacing: 0.1em;
+    font-size: 0.72rem;
     border: none;
   }
   .overall-grid {
@@ -78,30 +68,30 @@ fopl_nav_active: puzzles
     margin-bottom: 12px;
   }
   .overall-stat {
-    background: #f1f7f1;
-    border: 1px solid #dce8dc;
-    border-radius: 7px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
     text-align: center;
     padding: 10px;
   }
   .overall-stat-num {
     font-family: 'Cabin', sans-serif;
     font-size: 1.28rem;
-    color: #023b0f;
+    color: #d4a853;
     font-weight: 700;
     line-height: 1;
   }
   .overall-stat-lbl {
     margin-top: 4px;
-    font-size: 0.72rem;
+    font-size: 0.68rem;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    color: #687468;
+    color: rgba(255,255,255,0.4);
     font-weight: 700;
   }
   .overall-progress {
-    border: 1px solid #dbe7db;
-    background: #f7fbf7;
+    border: 1px solid rgba(255,255,255,0.07);
+    background: rgba(255,255,255,0.03);
     border-radius: 7px;
     padding: 10px;
   }
@@ -109,98 +99,100 @@ fopl_nav_active: puzzles
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-size: 0.78rem;
-    color: #476047;
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.45);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     margin-bottom: 6px;
   }
   .overall-progress-track {
-    height: 10px;
+    height: 8px;
     border-radius: 999px;
-    background: #dce9dc;
+    background: rgba(255,255,255,0.08);
     overflow: hidden;
   }
   .overall-progress-fill {
     height: 100%;
     width: 0%;
-    background: linear-gradient(90deg, #1f7a32, #58a86a);
+    background: linear-gradient(90deg, #d4a853, #e8c97a);
     transition: width 0.45s ease;
   }
 
   .fopl-games {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 24px; padding: 48px 40px; max-width: 1100px; margin: 0 auto;
+    gap: 20px; padding: 40px 40px; max-width: 1100px; margin: 0 auto;
   }
 
   .game-card {
-    background: #fff; border-radius: 8px;
-    box-shadow: 0 2px 12px rgba(2,59,15,0.09);
-    border-top: 4px solid #023b0f;
-    padding: 28px 24px 24px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 14px;
+    padding: 24px 22px 22px;
     display: flex; flex-direction: column; gap: 12px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s;
   }
-  .game-card:hover { transform: translateY(-4px); box-shadow: 0 8px 22px rgba(2,59,15,0.16); }
-  .game-card.coming-soon { border-top-color: #bbb; opacity: 0.7; }
+  .game-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.3);
+    border-color: rgba(212,168,83,0.25);
+  }
+  .game-card.coming-soon { opacity: 0.5; }
   .game-card-icon {
-    width: 52px; height: 52px;
+    width: 48px; height: 48px;
     border-radius: 50%;
-    background: #e8f5e9;
-    color: #023b0f;
+    background: rgba(212,168,83,0.1);
+    border: 1px solid rgba(212,168,83,0.2);
+    color: #d4a853;
     font-family: 'Cabin', sans-serif;
-    font-size: 0.92rem;
+    font-size: 0.82rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.04em;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 1.3rem;
   }
-  
   .game-card h2 {
-    font-family: 'Cabin', sans-serif; font-size: 1.15rem; font-weight: 700;
-    color: #023b0f; text-transform: uppercase; letter-spacing: 0.04em;
+    font-family: 'Cabin', sans-serif; font-size: 1rem; font-weight: 700;
+    color: #fff; text-transform: uppercase; letter-spacing: 0.04em;
     margin: 0; border: none;
   }
-  .game-card p { font-size: 0.95rem; color: #555; line-height: 1.6; margin: 0; }
-  .game-meta {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-  }
+  .game-card p { font-size: 0.88rem; color: rgba(255,255,255,0.5); line-height: 1.6; margin: 0; }
+  .game-meta { display: flex; gap: 6px; flex-wrap: wrap; }
   .game-chip {
-    font-size: 0.68rem;
+    font-size: 0.65rem;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     font-weight: 700;
     border-radius: 999px;
-    padding: 3px 8px;
-    background: #f1f7f1;
-    color: #2b4b2e;
-    border: 1px solid #d7e5d8;
+    padding: 3px 9px;
+    background: rgba(255,255,255,0.06);
+    color: rgba(255,255,255,0.55);
+    border: 1px solid rgba(255,255,255,0.1);
   }
   .game-card-badge {
-    display: inline-block; font-size: 0.72rem; font-weight: 700;
+    display: inline-block; font-size: 0.65rem; font-weight: 700;
     text-transform: uppercase; letter-spacing: 0.06em; padding: 3px 10px;
-    border-radius: 20px; background: #e8f5e9; color: #023b0f;
+    border-radius: 20px; background: rgba(212,168,83,0.15); color: #d4a853;
+    border: 1px solid rgba(212,168,83,0.25);
   }
-  .game-card-badge.soon { background: #eee; color: #888; }
+  .game-card-badge.soon { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.3); border-color: rgba(255,255,255,0.08); }
   .game-card a.play-btn {
     display: inline-block; margin-top: auto;
-    padding: 10px 24px; background: #023b0f; color: #fff; text-decoration: none;
-    border-radius: 4px; font-family: 'Cabin', sans-serif; font-weight: 700;
-    font-size: 0.88rem; text-transform: uppercase; letter-spacing: 0.05em;
-    transition: background 0.2s; text-align: center;
+    padding: 10px 24px; background: #d4a853; color: #1a1200; text-decoration: none;
+    border-radius: 6px; font-family: 'Cabin', sans-serif; font-weight: 700;
+    font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.07em;
+    transition: background 0.2s, transform 0.2s; text-align: center;
   }
-  .game-card a.play-btn:hover { background: #045218; }
+  .game-card a.play-btn:hover { background: #e0bd70; transform: translateY(-1px); }
   .game-card .disabled-btn {
     display: inline-block; margin-top: auto;
-    padding: 10px 24px; background: #ddd; color: #999;
-    border-radius: 4px; font-family: 'Cabin', sans-serif; font-weight: 700;
-    font-size: 0.88rem; text-transform: uppercase; letter-spacing: 0.05em;
+    padding: 10px 24px; background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.25);
+    border-radius: 6px; font-family: 'Cabin', sans-serif; font-weight: 700;
+    font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.07em;
     text-align: center; cursor: not-allowed;
   }
 
@@ -323,6 +315,19 @@ fopl_nav_active: puzzles
       <span class="game-chip">Networking</span>
     </div>
     <a class="play-btn" href="/osi-layers-quest">Play Now</a>
+  </div>
+
+  <div class="game-card">
+    <div class="game-card-icon">📸</div>
+    <span class="game-card-badge">New</span>
+    <h2>Famous Face Match</h2>
+    <p>Scan your face and discover which famous author you resemble — then find their book at the library!</p>
+    <div class="game-meta">
+      <span class="game-chip">Camera</span>
+      <span class="game-chip">Fun</span>
+      <span class="game-chip">Books</span>
+    </div>
+    <a class="play-btn" href="/face-match">Play Now</a>
   </div>
 
   <div class="game-card">
