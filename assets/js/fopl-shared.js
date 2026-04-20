@@ -205,6 +205,76 @@ window.foplAddOverallProgress = function(game, points, won) {
   localStorage.setItem('fopl_games_overall_v1', JSON.stringify(overall));
 };
 
+// ── Shaking tree book-drop easter egg ──
+(function() {
+  var BOOK_EMOJIS = ['📚','📖','📕','📗','📘','📙'];
+  var BOOK_COUNT  = 9;
+
+  function spawnBooks(tree) {
+    var scene = tree.closest('.fopl-deco-scene') || tree.parentElement;
+    var treeRect  = tree.getBoundingClientRect();
+    var sceneRect = scene.getBoundingClientRect();
+
+    // Canopy region: top 65% of the tree image, spanning 80% of its width
+    var canopyTop    = treeRect.top  - sceneRect.top;
+    var canopyHeight = treeRect.height * 0.65;
+    var canopyLeft   = treeRect.left - sceneRect.left + treeRect.width * 0.10;
+    var canopyWidth  = treeRect.width * 0.80;
+
+    for (var i = 0; i < BOOK_COUNT; i++) {
+      (function(i) {
+        var delay = i * 55;
+        setTimeout(function() {
+          var book = document.createElement('span');
+          book.className = 'deco-falling-book';
+          book.textContent = BOOK_EMOJIS[Math.floor(Math.random() * BOOK_EMOJIS.length)];
+
+          // Random spot within the canopy
+          var x = canopyLeft + Math.random() * canopyWidth;
+          var y = canopyTop  + Math.random() * canopyHeight;
+
+          book.style.left = x + 'px';
+          book.style.top  = y + 'px';
+
+          var rotStart = (Math.random() - 0.5) * 40;
+          var rotEnd   = (Math.random() - 0.5) * 90 + (Math.random() > 0.5 ? 30 : -30);
+          var fallDist = 60 + Math.random() * 80;
+          var fallDur  = (0.8 + Math.random() * 0.5).toFixed(2) + 's';
+
+          book.style.setProperty('--rot-start',  rotStart + 'deg');
+          book.style.setProperty('--rot-end',    rotEnd   + 'deg');
+          book.style.setProperty('--fall-dist',  fallDist + 'px');
+          book.style.setProperty('--fall-dur',   fallDur);
+
+          scene.appendChild(book);
+          setTimeout(function() { book.remove(); }, 1400);
+        }, delay);
+      })(i);
+    }
+  }
+
+  function initPalmClicks() {
+    document.querySelectorAll('.deco-palm').forEach(function(tree) {
+      tree.style.cursor = 'pointer';
+      tree.addEventListener('click', function() {
+        if (tree.classList.contains('palm-shaking')) return;
+        tree.classList.add('palm-shaking');
+        spawnBooks(tree);
+        tree.addEventListener('animationend', function handler() {
+          tree.classList.remove('palm-shaking');
+          tree.removeEventListener('animationend', handler);
+        });
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPalmClicks);
+  } else {
+    initPalmClicks();
+  }
+})();
+
 // ── Post puzzle result to backend (shared across all games) ──
 window.foplPostResult = async function(game, won, guesses) {
   var user = JSON.parse(localStorage.getItem('fopl_user') || 'null');
