@@ -163,7 +163,7 @@ fopl_nav_active: admin
 
     <!-- Books breakdown -->
     <div class="admin-card">
-      <h2>Book Catalog</h2>
+      <h2>Used Book Catalog</h2>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
         <div>
           <p style="font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:#6b756b;margin:0 0 10px;">By Age Group</p>

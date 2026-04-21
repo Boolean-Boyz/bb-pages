@@ -1,6 +1,6 @@
 ---
 layout: fopl
-title: Book Catalog — Friends of the Poway Library
+title: Used Book Catalog — Friends of the Poway Library
 permalink: /catalog
 description: Browse and search all available books at the Friends of the Poway Library bookstore.
 fopl_nav_active: catalog
@@ -293,7 +293,7 @@ fopl_nav_active: catalog
 
 <!-- Hero / search -->
 <div class="catalog-hero">
-  <h1>📚 Browse Our Books</h1>
+  <h1>📚 Used Book Catalog</h1>
   <p class="catalog-hero-sub">Search our collection of gently used books, puzzles, DVDs, and more</p>
   <div class="catalog-search-wrap">
     <input class="catalog-search" id="search-input" type="text"
