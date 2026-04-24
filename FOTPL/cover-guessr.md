@@ -118,9 +118,7 @@ fopl_nav_active: puzzles
     }
 
     .hero {
-      display: grid;
-      grid-template-columns: minmax(0, 1.6fr) minmax(280px, 0.9fr);
-      gap: 18px;
+      display: block;
       margin-bottom: 18px;
     }
 
@@ -132,7 +130,7 @@ fopl_nav_active: puzzles
     }
 
     .hero-copy {
-      padding: 28px 28px 24px;
+      padding: 18px 20px 16px;
       position: relative;
       overflow: hidden;
       border-top: 4px solid #023b0f;
@@ -176,14 +174,34 @@ fopl_nav_active: puzzles
 
     .hero-copy p {
       margin: 0;
-      max-width: 62ch;
+      max-width: 100%;
       color: var(--muted);
-      font-size: 0.98rem;
-      line-height: 1.7;
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+
+    .quick-rules {
+      margin: 12px 0 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .quick-rules li {
+      border: 1px solid #d4e2d5;
+      background: #f6fbf6;
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: #2f5133;
+      letter-spacing: 0.02em;
     }
 
     .hero-aside {
-      padding: 20px;
+      padding: 16px;
       display: grid;
       gap: 12px;
     }
@@ -338,9 +356,17 @@ fopl_nav_active: puzzles
 
     .game-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1.3fr) minmax(320px, 0.9fr);
+      grid-template-columns: minmax(0, 1fr) minmax(300px, 340px);
       gap: 18px;
       align-items: start;
+    }
+
+    .game-sidebar {
+      display: grid;
+      gap: 14px;
+      position: sticky;
+      top: 16px;
+      align-self: start;
     }
 
     .game-panel {
@@ -402,6 +428,79 @@ fopl_nav_active: puzzles
       color: var(--muted);
       font-size: 0.92rem;
       line-height: 1.5;
+    }
+
+    .playbook {
+      margin-bottom: 14px;
+      border: 1px solid #d7e4d7;
+      border-radius: 12px;
+      background: #f7fbf7;
+      padding: 12px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .playbook-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .playbook-now {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #1d4a24;
+    }
+
+    .playbook-steps {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .play-step {
+      border: 1px solid #d6e3d6;
+      border-radius: 10px;
+      background: #fff;
+      color: #587258;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      padding: 9px 8px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      line-height: 1.35;
+    }
+
+    .play-step-num {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: #edf4ee;
+      color: #2f5133;
+      font-size: 0.7rem;
+      font-weight: 800;
+      flex: 0 0 auto;
+    }
+
+    .play-step.active {
+      border-color: #8cb992;
+      background: #eef8ef;
+      color: #1f4b26;
+      box-shadow: 0 0 0 1px rgba(2, 59, 15, 0.05) inset;
+    }
+
+    .play-step.active .play-step-num {
+      background: #023b0f;
+      color: #fff;
     }
 
     .stage {
@@ -806,10 +905,9 @@ fopl_nav_active: puzzles
     }
 
     .leaderboard {
-      padding: 18px;
-      position: sticky;
-      top: 16px;
-      align-self: start;
+      padding: 16px;
+      position: static;
+      align-self: auto;
     }
 
     .leaderboard-list {
@@ -877,12 +975,13 @@ fopl_nav_active: puzzles
     }
 
     @media (max-width: 1080px) {
-      .hero,
       .game-grid {
         grid-template-columns: 1fr;
       }
 
-      .leaderboard { position: static; }
+      .game-sidebar {
+        position: static;
+      }
     }
 
     @media (max-width: 720px) {
@@ -892,8 +991,10 @@ fopl_nav_active: puzzles
       .hero-aside,
       .game-panel,
       .leaderboard { padding: 16px; }
+      .hero-copy { padding: 14px; }
       .hud { grid-template-columns: 1fr; }
       .hud-center { order: -1; }
+      .playbook-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .guess-actions { flex-direction: column; align-items: stretch; }
       .guess-actions .primary-btn { width: 100%; }
       .cover-frame { min-height: 300px; height: 58vh; }
@@ -926,37 +1027,13 @@ fopl_nav_active: puzzles
           unlock clue pills one by one, and pin the publication year as close as possible.
           The less help you use and the closer your year guess, the higher your score.
         </p>
+        <ul class="quick-rules">
+          <li>5 rounds total</li>
+          <li>Up to 5,000 each round</li>
+          <li>Reveal and clue actions reduce score</li>
+          <li>Closer year guess earns more</li>
+        </ul>
       </div>
-
-      <aside class="panel hero-aside">
-        <div class="mode-card">
-          <p class="mode-title">Game Settings</p>
-          <div class="mode-grid">
-            <div class="mode-row" id="mode-row">
-              <button class="seg-btn active" type="button" data-mode="classic">Classic</button>
-              <button class="seg-btn" type="button" data-mode="hard">Hard</button>
-              <button class="seg-btn" type="button" data-mode="expert">Expert</button>
-            </div>
-            <div class="toggle-row">
-              <div class="toggle-copy">
-                <strong>Timer mode</strong>
-                <span>30 seconds per round with a time bonus for quick guesses.</span>
-              </div>
-              <label class="switch" aria-label="Toggle timer mode">
-                <input id="timer-toggle" type="checkbox">
-                <span class="switch-ui"></span>
-              </label>
-            </div>
-          </div>
-        </div>
-        <div class="action-row">
-          <button class="primary-btn" id="restart-btn" type="button">New Game</button>
-          <button class="secondary-btn" id="share-final-btn" type="button" disabled>Share Score</button>
-        </div>
-        <div class="status-line">
-          Settings apply to the next game. New Game starts a fresh five-round run with a new book order.
-        </div>
-      </aside>
     </section>
 
     <div class="game-grid">
@@ -978,6 +1055,19 @@ fopl_nav_active: puzzles
         </div>
 
         <div class="subline" id="round-subline">Reveal the cover, read the clues, and pin the publication year as close as you can.</div>
+
+        <div class="playbook" aria-live="polite">
+          <div class="playbook-head">
+            <span class="hud-label">Round Playbook</span>
+            <span class="playbook-now" id="playbook-now">Step 1: Inspect the image first.</span>
+          </div>
+          <ol class="playbook-steps" id="playbook-steps">
+            <li class="play-step active" data-step="1"><span class="play-step-num">1</span><span>Inspect image</span></li>
+            <li class="play-step" data-step="2"><span class="play-step-num">2</span><span>Use reveals / clues</span></li>
+            <li class="play-step" data-step="3"><span class="play-step-num">3</span><span>Place year pin</span></li>
+            <li class="play-step" data-step="4"><span class="play-step-num">4</span><span>Lock and review</span></li>
+          </ol>
+        </div>
 
         <div class="stage">
           <div class="cover-shell">
@@ -1007,7 +1097,7 @@ fopl_nav_active: puzzles
 
           <div class="info-card">
             <div class="section-head">
-              <h2>Clues</h2>
+              <h2>Step 2: Optional clues</h2>
               <button class="secondary-btn" id="clue-btn" type="button">Reveal clue</button>
             </div>
             <div class="pill-row" id="clue-list"></div>
@@ -1015,7 +1105,7 @@ fopl_nav_active: puzzles
 
           <div class="info-card">
             <div class="section-head">
-              <h2>Place your year guess</h2>
+              <h2>Step 3: Place your year guess</h2>
               <span class="setting-pill" id="round-potential-pill">Round value 5,000</span>
             </div>
             <div class="year-guess">
@@ -1067,13 +1157,45 @@ fopl_nav_active: puzzles
         </div>
       </section>
 
-      <aside class="panel leaderboard">
-        <div class="section-head">
-          <h2>Local Leaderboard</h2>
-          <span class="setting-pill" id="best-score-pill">Best 0</span>
-        </div>
-        <div class="leaderboard-list" id="leaderboard-list"></div>
-        <div class="status-line">Saved in your browser with localStorage. Highest scores stay on top.</div>
+      <aside class="game-sidebar">
+        <section class="panel hero-aside">
+          <div class="mode-card">
+            <p class="mode-title">Game Controls</p>
+            <div class="mode-grid">
+              <div class="mode-row" id="mode-row">
+                <button class="seg-btn active" type="button" data-mode="classic">Classic</button>
+                <button class="seg-btn" type="button" data-mode="hard">Hard</button>
+                <button class="seg-btn" type="button" data-mode="expert">Expert</button>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-copy">
+                  <strong>Timer mode</strong>
+                  <span>30 seconds per round with a time bonus for quick guesses.</span>
+                </div>
+                <label class="switch" aria-label="Toggle timer mode">
+                  <input id="timer-toggle" type="checkbox">
+                  <span class="switch-ui"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="action-row">
+            <button class="primary-btn" id="restart-btn" type="button">New Game</button>
+            <button class="secondary-btn" id="share-final-btn" type="button" disabled>Share Score</button>
+          </div>
+          <div class="status-line">
+            Settings apply to the next game. Start a new run after changing mode.
+          </div>
+        </section>
+
+        <section class="panel leaderboard">
+          <div class="section-head">
+            <h2>Local Leaderboard</h2>
+            <span class="setting-pill" id="best-score-pill">Best 0</span>
+          </div>
+          <div class="leaderboard-list" id="leaderboard-list"></div>
+          <div class="status-line">Saved in your browser with localStorage. Highest scores stay on top.</div>
+        </section>
       </aside>
     </div>
   </div>
@@ -1394,7 +1516,9 @@ fopl_nav_active: puzzles
       resultNextBtn: document.getElementById("result-next-btn"),
       timerToggle: document.getElementById("timer-toggle"),
       modeButtons: Array.from(document.querySelectorAll("[data-mode]")),
-      coverNote: document.getElementById("cover-note")
+      coverNote: document.getElementById("cover-note"),
+      playbookNow: document.getElementById("playbook-now"),
+      playSteps: Array.from(document.querySelectorAll(".play-step"))
     };
 
     const state = {
@@ -1497,7 +1621,7 @@ fopl_nav_active: puzzles
       }
       showCoverFallback(
         `Could not load ${state.currentBook.title}`,
-        "This cover is unavailable right now, but you can still play the round with clues and choices."
+        "This cover is unavailable right now, but you can still play the round with clues and year guessing."
       );
     }
 
@@ -1520,7 +1644,7 @@ fopl_nav_active: puzzles
       } else {
         showCoverFallback(
           `No image available for ${book.title}`,
-          "This round still works with clues and title choices."
+          "This round still works with clues and year guessing."
         );
       }
     }
@@ -1561,6 +1685,26 @@ fopl_nav_active: puzzles
       els.feedback.innerHTML = `<strong>${title}</strong><span>${body}</span>`;
     }
 
+    function setPlayStep(step) {
+      const normalized = Math.max(1, Math.min(4, Number(step) || 1));
+      const labels = {
+        1: "Step 1: Inspect the image first.",
+        2: "Step 2: Use reveals or clues if needed.",
+        3: "Step 3: Place your best year pin.",
+        4: "Step 4: Lock and review the result."
+      };
+
+      if (els.playbookNow) {
+        els.playbookNow.textContent = labels[normalized];
+      }
+
+      if (Array.isArray(els.playSteps)) {
+        for (const item of els.playSteps) {
+          item.classList.toggle("active", Number(item.dataset.step) === normalized);
+        }
+      }
+    }
+
     function clearClues() {
       els.clueList.innerHTML = "";
     }
@@ -1583,6 +1727,7 @@ fopl_nav_active: puzzles
       }
       els.guessYear.value = String(state.guessYear);
       els.guessYearValue.textContent = String(state.guessYear);
+      els.guessYear.disabled = !state.currentBook || state.answered;
       els.guessBtn.disabled = !state.currentBook || state.answered;
     }
 
@@ -1704,6 +1849,7 @@ fopl_nav_active: puzzles
       renderGuessControl();
       updateCover();
       updateHUD();
+      setPlayStep(1);
       setFeedback("info", `Round ${state.roundIndex + 1} of ${TOTAL_ROUNDS}`, `Place the year as close as you can to the hidden publication year.`);
       els.coverNote.textContent = state.timerMode
         ? `Timer mode is active. Every second counts toward a stronger score multiplier.`
@@ -1729,6 +1875,7 @@ fopl_nav_active: puzzles
       state.revealClicks += 1;
       state.currentBlur = Math.max(0, state.currentBlur - mode.revealStep);
       state.roundPotential = Math.max(200, state.roundPotential - mode.revealPenalty);
+      setPlayStep(2);
       updateCover();
       updateHUD();
       setFeedback("info", "More of the cover is visible.", `Reveal clicks reduce this round by ${formatScore(mode.revealPenalty)} points.`);
@@ -1750,6 +1897,7 @@ fopl_nav_active: puzzles
 
       state.clueIndex += 1;
       state.roundPotential = Math.max(200, state.roundPotential - getMode().cluePenalty);
+      setPlayStep(2);
       renderClues();
       updateHUD();
       setFeedback("info", "A clue appeared.", `Text clues cost ${formatScore(getMode().cluePenalty)} points each.`);
@@ -1760,6 +1908,10 @@ fopl_nav_active: puzzles
       clearTimer();
       els.revealBtn.disabled = true;
       els.clueBtn.disabled = true;
+      els.guessBtn.disabled = true;
+      if (els.guessYear) {
+        els.guessYear.disabled = true;
+      }
       els.coverImage.classList.add("revealed");
       state.currentBlur = 0;
       updateCover();
@@ -1770,6 +1922,7 @@ fopl_nav_active: puzzles
       updateHUD();
 
       setFeedback(correct ? "good" : "bad", title, body);
+      setPlayStep(4);
 
       els.roundResult.className = `round-result show ${correct ? "good" : "bad"}`;
       els.resultKicker.textContent = `Round ${state.roundIndex + 1} Result`;
@@ -1793,6 +1946,7 @@ fopl_nav_active: puzzles
       const earnedScore = Math.max(200, Math.round(Math.max(200, state.roundPotential - distancePenalty) * timerMultiplier));
       const delta = earnedScore - state.roundPotential;
       state.roundPotential = earnedScore;
+      setPlayStep(4);
       finishRound(true, earnedScore, "Guess locked.", `You guessed ${guessedYear}. The actual year was ${actualYear}.`, delta);
     }
 
@@ -1863,6 +2017,9 @@ fopl_nav_active: puzzles
     els.guessYear.addEventListener("input", () => {
       state.guessYear = Number(els.guessYear.value);
       els.guessYearValue.textContent = String(state.guessYear);
+      if (state.gameActive && !state.answered) {
+        setPlayStep(3);
+      }
     });
     els.guessBtn.addEventListener("click", submitGuess);
 
@@ -1885,12 +2042,18 @@ fopl_nav_active: puzzles
     els.shareFinalBtn.addEventListener("click", shareScore);
     els.timerToggle.addEventListener("change", () => {
       state.timerMode = els.timerToggle.checked;
-      updateHUD();
-      if (!state.gameActive) {
-        els.coverNote.textContent = state.timerMode
-          ? `Timer mode is active. Every second counts toward a stronger score multiplier.`
-          : `Each reveal click reduces your final score, so guess early if you are confident.`;
+      if (state.gameActive && !state.answered) {
+        if (state.timerMode) {
+          startTimer();
+        } else {
+          clearTimer();
+          state.timerLeft = TIMER_SECONDS;
+        }
       }
+      updateHUD();
+      els.coverNote.textContent = state.timerMode
+        ? `Timer mode is active. Every second counts toward a stronger score multiplier.`
+        : `Each reveal click reduces your final score, so guess early if you are confident.`;
     });
 
     for (const button of els.modeButtons) {
