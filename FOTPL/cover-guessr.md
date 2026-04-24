@@ -625,54 +625,56 @@ fopl_nav_active: puzzles
       border-color: rgba(185, 129, 45, 0.22);
     }
 
-    .choice-grid {
+    .year-guess {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 12px;
     }
-
-    .choice-btn {
-      min-height: 74px;
-      border-radius: 18px;
-      border: 1px solid rgba(31, 45, 35, 0.12);
-      background: linear-gradient(180deg, #fff, #f8f5ee);
-      color: var(--ink);
-      text-align: left;
-      padding: 14px 14px 13px;
-      cursor: pointer;
-      font: inherit;
+    .year-scale {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 0.76rem;
       font-weight: 800;
-      line-height: 1.3;
-      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
-      box-shadow: 0 10px 20px rgba(31, 45, 35, 0.05);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
     }
-
-    .choice-btn:hover:not(:disabled) {
-      transform: translateY(-2px);
-      box-shadow: 0 14px 28px rgba(31, 45, 35, 0.08);
-      border-color: rgba(31, 99, 53, 0.24);
+    .year-readout {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(31, 45, 35, 0.10);
+      background: linear-gradient(180deg, #fff, #f8f5ee);
+      padding: 12px 14px;
     }
-
-    .choice-btn:disabled {
-      cursor: default;
-      opacity: 0.95;
-    }
-
-    .choice-btn.correct {
-      background: linear-gradient(180deg, #edf9f0, #dff0e6);
-      border-color: rgba(31, 99, 53, 0.38);
+    .year-readout strong {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 2rem;
+      line-height: 1;
       color: var(--green);
-      box-shadow: 0 0 0 1px rgba(31, 99, 53, 0.08) inset;
     }
-
-    .choice-btn.wrong {
-      background: linear-gradient(180deg, #fcefee, #f7dddc);
-      border-color: rgba(157, 44, 44, 0.35);
-      color: var(--red);
+    .year-readout span {
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
     }
-
-    .choice-btn.neutral {
-      opacity: 0.74;
+    .guess-slider {
+      width: 100%;
+      accent-color: var(--green);
+    }
+    .guess-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .guess-actions .primary-btn {
+      min-width: 170px;
     }
 
     .feedback {
@@ -894,7 +896,8 @@ fopl_nav_active: puzzles
       .leaderboard { padding: 16px; }
       .hud { grid-template-columns: 1fr; }
       .hud-center { order: -1; }
-      .choice-grid { grid-template-columns: 1fr; }
+      .guess-actions { flex-direction: column; align-items: stretch; }
+      .guess-actions .primary-btn { width: 100%; }
       .cover-frame { min-height: 300px; height: 58vh; }
       .mode-row { grid-template-columns: 1fr; }
       .cover-actions { flex-direction: column; align-items: stretch; }
@@ -967,7 +970,7 @@ fopl_nav_active: puzzles
               <span class="hud-value" id="score-value">0</span>
             </div>
           </div>
-          <div class="hud-center" id="game-title">Cover Guessr</div>
+          <div class="hud-center" id="game-title">Guess the Year</div>
           <div class="hud-pill">
             <div>
               <span class="hud-label">Round</span>
@@ -976,7 +979,7 @@ fopl_nav_active: puzzles
           </div>
         </div>
 
-        <div class="subline" id="round-subline">Reveal the cover, read the clues, and lock in your answer before the whole book is obvious.</div>
+        <div class="subline" id="round-subline">Reveal the cover, read the clues, and pin the publication year as close as you can.</div>
 
         <div class="stage">
           <div class="cover-shell">
@@ -1014,15 +1017,30 @@ fopl_nav_active: puzzles
 
           <div class="info-card">
             <div class="section-head">
-              <h2>Choose the title</h2>
+              <h2>Place your year guess</h2>
               <span class="setting-pill" id="round-potential-pill">Round value 5,000</span>
             </div>
-            <div class="choice-grid" id="choice-grid"></div>
+            <div class="year-guess">
+              <div class="year-readout">
+                <span>Guess</span>
+                <strong id="guess-year-value">1950</strong>
+                <span>Actual hidden</span>
+              </div>
+              <input class="guess-slider" id="guess-year" type="range" min="1800" max="2026" step="1" value="1950" aria-label="Guess the publication year">
+              <div class="year-scale">
+                <span>1800</span>
+                <span>2026</span>
+              </div>
+              <div class="guess-actions">
+                <button class="primary-btn" id="guess-btn" type="button">Lock in guess</button>
+                <div class="small-note">Drag the pin to your best year, then lock it in.</div>
+              </div>
+            </div>
           </div>
 
           <div class="feedback info" id="feedback">
             <strong>Ready.</strong>
-            <span>Make your first reveal or jump straight to a title guess.</span>
+            <span>Make your first reveal or pin your best year guess.</span>
           </div>
 
           <div class="round-result" id="round-result">
@@ -1031,7 +1049,7 @@ fopl_nav_active: puzzles
               <h3 class="result-title" id="result-title">Nice guess</h3>
               <div class="result-delta" id="result-delta">+0</div>
             </div>
-            <p class="result-answer" id="result-answer">The correct title was ...</p>
+            <p class="result-answer" id="result-answer">The correct year was ...</p>
             <button class="primary-btn" id="result-next-btn" type="button">Next Round</button>
           </div>
         </div>
@@ -1067,6 +1085,7 @@ fopl_nav_active: puzzles
       {
         title: "The Great Gatsby",
         author: "F. Scott Fitzgerald",
+        year: 1925,
         cover_id: 10590366,
         clues: [
           "A Jazz Age novel set on Long Island.",
@@ -1078,6 +1097,7 @@ fopl_nav_active: puzzles
       {
         title: "To Kill a Mockingbird",
         author: "Harper Lee",
+        year: 1960,
         cover_id: 14351077,
         clues: [
           "A Southern courtroom drama.",
@@ -1089,6 +1109,7 @@ fopl_nav_active: puzzles
       {
         title: "Pride and Prejudice",
         author: "Jane Austen",
+        year: 1813,
         cover_id: 13148521,
         clues: [
           "A sharp portrait of class and courtship.",
@@ -1100,6 +1121,7 @@ fopl_nav_active: puzzles
       {
         title: "The Hobbit",
         author: "J. R. R. Tolkien",
+        year: 1937,
         cover_id: 14627509,
         clues: [
           "A reluctant traveler leaves Bag End.",
@@ -1111,6 +1133,7 @@ fopl_nav_active: puzzles
       {
         title: "Jane Eyre",
         author: "Charlotte Bronte",
+        year: 1847,
         cover_id: 8235363,
         clues: [
           "A governess enters a brooding country house.",
@@ -1122,6 +1145,7 @@ fopl_nav_active: puzzles
       {
         title: "Moby-Dick",
         author: "Herman Melville",
+        year: 1851,
         cover_id: 10544254,
         clues: [
           "A whaling voyage becomes an obsession.",
@@ -1133,6 +1157,7 @@ fopl_nav_active: puzzles
       {
         title: "Frankenstein or The Modern Prometheus",
         author: "Mary Shelley",
+        year: 1818,
         cover_id: 12356249,
         clues: [
           "A scientist brings life to a stitched-together being.",
@@ -1144,6 +1169,7 @@ fopl_nav_active: puzzles
       {
         title: "The Picture of Dorian Gray",
         author: "Oscar Wilde",
+        year: 1890,
         cover_id: 14314858,
         clues: [
           "A portrait changes while the subject stays young.",
@@ -1155,6 +1181,7 @@ fopl_nav_active: puzzles
       {
         title: "Little Women",
         author: "Louisa May Alcott",
+        year: 1868,
         cover_id: 8775559,
         clues: [
           "Four sisters grow up during the Civil War era.",
@@ -1166,6 +1193,7 @@ fopl_nav_active: puzzles
       {
         title: "The Secret Garden",
         author: "Frances Hodgson Burnett",
+        year: 1911,
         cover_id: 12622062,
         clues: [
           "A locked garden helps heal lonely children.",
@@ -1177,6 +1205,7 @@ fopl_nav_active: puzzles
       {
         title: "The Adventures of Sherlock Holmes",
         author: "Arthur Conan Doyle",
+        year: 1892,
         cover_id: 6717853,
         clues: [
           "A consulting detective lives on Baker Street.",
@@ -1188,6 +1217,7 @@ fopl_nav_active: puzzles
       {
         title: "Anne of Green Gables",
         author: "Lucy Maud Montgomery",
+        year: 1908,
         cover_id: 1464104,
         clues: [
           "A red-haired orphan arrives by mistake.",
@@ -1199,6 +1229,7 @@ fopl_nav_active: puzzles
       {
         title: "Dracula",
         author: "Bram Stoker",
+        year: 1897,
         cover_id: 12216503,
         clues: [
           "Letters and diaries tell a gothic horror story.",
@@ -1210,6 +1241,7 @@ fopl_nav_active: puzzles
       {
         title: "Treasure Island",
         author: "Robert Louis Stevenson",
+        year: 1883,
         cover_id: 13859660,
         clues: [
           "A map, a mutiny, and a one-legged sailor set the plot in motion.",
@@ -1221,6 +1253,7 @@ fopl_nav_active: puzzles
       {
         title: "The Call of the Wild",
         author: "Jack London",
+        year: 1903,
         cover_id: 12393037,
         clues: [
           "A dog is pulled from domestic life into the Yukon.",
@@ -1232,6 +1265,7 @@ fopl_nav_active: puzzles
       {
         title: "Emma",
         author: "Jane Austen",
+        year: 1815,
         cover_id: 9278312,
         clues: [
           "A matchmaking heroine is often the least self-aware person in the room.",
@@ -1243,6 +1277,7 @@ fopl_nav_active: puzzles
       {
         title: "The Time Machine",
         author: "H. G. Wells",
+        year: 1895,
         cover_id: 9009316,
         clues: [
           "A Victorian inventor travels far into the future.",
@@ -1254,6 +1289,7 @@ fopl_nav_active: puzzles
       {
         title: "The Wonderful Wizard of Oz",
         author: "L. Frank Baum",
+        year: 1900,
         cover_id: 552443,
         clues: [
           "A girl from Kansas follows a yellow brick road.",
@@ -1265,6 +1301,7 @@ fopl_nav_active: puzzles
       {
         title: "The Count of Monte Cristo",
         author: "Alexandre Dumas",
+        year: 1844,
         cover_id: 8851690,
         clues: [
           "An unjust prison sentence leads to a famous escape.",
@@ -1276,6 +1313,7 @@ fopl_nav_active: puzzles
       {
         title: "The Wind in the Willows",
         author: "Kenneth Grahame",
+        year: 1908,
         cover_id: 13335427,
         clues: [
           "Riverbank adventures feature Mole, Rat, Badger, and Toad.",
@@ -1295,6 +1333,7 @@ fopl_nav_active: puzzles
         revealStep: 4,
         revealPenalty: 400,
         cluePenalty: 600,
+        yearPenalty: 90,
         timerBonus: 0.4
       },
       hard: {
@@ -1303,6 +1342,7 @@ fopl_nav_active: puzzles
         revealStep: 3,
         revealPenalty: 500,
         cluePenalty: 700,
+        yearPenalty: 110,
         timerBonus: 0.45
       },
       expert: {
@@ -1311,6 +1351,7 @@ fopl_nav_active: puzzles
         revealStep: 2,
         revealPenalty: 650,
         cluePenalty: 850,
+        yearPenalty: 130,
         timerBonus: 0.5
       }
     };
@@ -1333,7 +1374,9 @@ fopl_nav_active: puzzles
       clueList: document.getElementById("clue-list"),
       clueBtn: document.getElementById("clue-btn"),
       revealBtn: document.getElementById("reveal-btn"),
-      choiceGrid: document.getElementById("choice-grid"),
+      guessYear: document.getElementById("guess-year"),
+      guessYearValue: document.getElementById("guess-year-value"),
+      guessBtn: document.getElementById("guess-btn"),
       feedback: document.getElementById("feedback"),
       roundPotentialPill: document.getElementById("round-potential-pill"),
       restartBtn: document.getElementById("restart-btn"),
@@ -1369,7 +1412,7 @@ fopl_nav_active: puzzles
       currentBlur: MODES.classic.startBlur,
       answered: false,
       gameActive: false,
-      selectedChoice: null,
+      guessYear: 1950,
       timerLeft: TIMER_SECONDS,
       timerId: null,
       leaderboard: [],
@@ -1404,6 +1447,10 @@ fopl_nav_active: puzzles
 
     function getDisplayScore() {
       return state.score;
+    }
+
+    function getGuessYear() {
+      return Number(els.guessYear?.value || state.guessYear || 1950);
     }
 
     async function fetchGoogleCoverCandidate(book) {
@@ -1507,7 +1554,7 @@ fopl_nav_active: puzzles
         : "";
       const modeName = mode.label;
       els.roundSubline.textContent = state.gameActive
-        ? `Mode: ${modeName}${state.timerMode ? " with timer" : ""}${timerTag}. Reveal the cover, read the clues, and lock in the title.`
+        ? `Mode: ${modeName}${state.timerMode ? " with timer" : ""}${timerTag}. Reveal the cover, read the clues, and place your year pin.`
         : "Start a new game to play five rounds with fresh covers and clues.";
     }
 
@@ -1532,21 +1579,13 @@ fopl_nav_active: puzzles
       els.clueBtn.disabled = !state.currentBook || state.answered || state.clueIndex >= (state.currentBook?.clues.length || 0) || state.clueIndex >= 3;
     }
 
-    function renderChoices() {
-      els.choiceGrid.innerHTML = "";
-      if (!state.currentBook) {
+    function renderGuessControl() {
+      if (!els.guessYear) {
         return;
       }
-
-      for (const title of state.currentBook.choices) {
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = "choice-btn";
-        button.textContent = title;
-        button.dataset.title = title;
-        button.addEventListener("click", () => chooseAnswer(title, button));
-        els.choiceGrid.appendChild(button);
-      }
+      els.guessYear.value = String(state.guessYear);
+      els.guessYearValue.textContent = String(state.guessYear);
+      els.guessBtn.disabled = !state.currentBook || state.answered;
     }
 
     function renderLeaderboard() {
@@ -1619,7 +1658,7 @@ fopl_nav_active: puzzles
         if (state.timerLeft <= 0) {
           state.timerLeft = 0;
           clearTimer();
-          handleIncorrect(null, true);
+          submitGuess();
           return;
         }
         updateHUD();
@@ -1631,10 +1670,13 @@ fopl_nav_active: puzzles
       state.clueIndex = 0;
       state.revealClicks = 0;
       state.answered = false;
-      state.selectedChoice = null;
       state.roundPotential = 5000;
       state.currentBlur = getMode().startBlur;
       state.gameActive = true;
+      state.guessYear = 1950;
+      if (els.guessYear) {
+        els.guessYear.value = String(state.guessYear);
+      }
       state.coverRequestKey = `${state.roundIndex}:${state.currentBook.title}:${Date.now()}`;
 
       els.coverImage.classList.remove("ready", "revealed");
@@ -1661,21 +1703,18 @@ fopl_nav_active: puzzles
       els.endCard.classList.remove("show");
       els.roundResult.className = "round-result";
       renderClues();
-      renderChoices();
+      renderGuessControl();
       updateCover();
       updateHUD();
-      setFeedback("info", `Round ${state.roundIndex + 1} of ${TOTAL_ROUNDS}`, `Guess the title from the blurred cover and up to three clues.`);
+      setFeedback("info", `Round ${state.roundIndex + 1} of ${TOTAL_ROUNDS}`, `Place the year as close as you can to the hidden publication year.`);
       els.coverNote.textContent = state.timerMode
         ? `Timer mode is active. Every second counts toward a stronger score multiplier.`
         : `Each reveal click reduces your final score, so guess early if you are confident.`;
       startTimer();
     }
 
-    function resetRoundButtons() {
-      for (const button of els.choiceGrid.querySelectorAll("button")) {
-        button.disabled = false;
-        button.classList.remove("correct", "wrong", "neutral");
-      }
+    function resetGuessControl() {
+      renderGuessControl();
     }
 
     function revealMore() {
@@ -1718,22 +1757,6 @@ fopl_nav_active: puzzles
       setFeedback("info", "A clue appeared.", `Text clues cost ${formatScore(getMode().cluePenalty)} points each.`);
     }
 
-    function lockButtons(correctTitle, selectedTitle) {
-      for (const button of els.choiceGrid.querySelectorAll("button")) {
-        const title = button.dataset.title;
-        button.disabled = true;
-        button.classList.remove("neutral");
-        if (title === correctTitle) {
-          button.classList.add("correct");
-        } else {
-          button.classList.add("wrong");
-        }
-        if (selectedTitle && title === selectedTitle && selectedTitle !== correctTitle) {
-          button.classList.add("wrong");
-        }
-      }
-    }
-
     function finishRound(correct, earnedScore = 0, title = "", body = "", delta = 0) {
       state.answered = true;
       clearTimer();
@@ -1748,48 +1771,31 @@ fopl_nav_active: puzzles
       }
       updateHUD();
 
-      lockButtons(state.currentBook.title, state.selectedChoice);
       setFeedback(correct ? "good" : "bad", title, body);
 
       els.roundResult.className = `round-result show ${correct ? "good" : "bad"}`;
       els.resultKicker.textContent = `Round ${state.roundIndex + 1} Result`;
       els.resultTitle.textContent = title;
       els.resultDelta.textContent = `${delta >= 0 ? "+" : "-"}${formatScore(Math.abs(delta))}`;
-      els.resultAnswer.textContent = `Correct answer: ${state.currentBook.title} by ${state.currentBook.author}`;
+      els.resultAnswer.textContent = `The answer was ${state.currentBook.title} by ${state.currentBook.author} (${state.currentBook.year}).`;
       els.resultNextBtn.textContent = state.roundIndex >= TOTAL_ROUNDS - 1 ? "See Final Score" : "Next Round";
     }
 
-    function handleIncorrect(selectedTitle, fromTimer = false) {
-      if (state.answered || !state.currentBook) {
-        return;
-      }
-      state.selectedChoice = selectedTitle;
-      state.score = Math.max(0, state.score - 800);
-      state.roundPotential = 0;
-      updateHUD();
-      if (fromTimer) {
-        finishRound(false, 0, "Time is up.", `The correct title was ${state.currentBook.title}. Timer misses cost ${formatScore(800)} points.`, -800);
-        return;
-      }
-      finishRound(false, 0, "Not this time.", `The answer was ${state.currentBook.title}.`, -800);
-    }
-
-    function chooseAnswer(title) {
+    function submitGuess() {
       if (!state.currentBook || state.answered) {
         return;
       }
 
-      state.selectedChoice = title;
-      const correct = title === state.currentBook.title;
-      if (correct) {
-        const mode = getMode();
-        const multiplier = state.timerMode ? (1 + (state.timerLeft / TIMER_SECONDS) * mode.timerBonus) : 1;
-        const earnedScore = Math.max(200, Math.round(state.roundPotential * multiplier));
-        state.roundPotential = earnedScore;
-        finishRound(true, earnedScore, "Correct.", `You earned ${formatScore(earnedScore)} points this round.`, earnedScore);
-      } else {
-        handleIncorrect(title, false);
-      }
+      const guessedYear = getGuessYear();
+      const actualYear = Number(state.currentBook.year || 0);
+      const yearDistance = Math.abs(guessedYear - actualYear);
+      const mode = getMode();
+      const distancePenalty = Math.min(4800, yearDistance * mode.yearPenalty);
+      const timerMultiplier = state.timerMode ? (1 + (state.timerLeft / TIMER_SECONDS) * mode.timerBonus) : 1;
+      const earnedScore = Math.max(200, Math.round(Math.max(200, state.roundPotential - distancePenalty) * timerMultiplier));
+      const delta = earnedScore - state.roundPotential;
+      state.roundPotential = earnedScore;
+      finishRound(true, earnedScore, "Guess locked.", `You guessed ${guessedYear}. The actual year was ${actualYear}.`, delta);
     }
 
     function nextRound() {
@@ -1804,7 +1810,7 @@ fopl_nav_active: puzzles
       els.feedback.className = "feedback info";
       els.roundResult.className = "round-result";
       loadRound();
-      resetRoundButtons();
+      resetGuessControl();
       updateHUD();
     }
 
@@ -1827,7 +1833,7 @@ fopl_nav_active: puzzles
     function buildShareText() {
       const mode = getMode().label;
       const timerText = state.timerMode ? " with Timer" : "";
-      return `Cover Guessr: ${formatScore(state.score)} points\nMode: ${mode}${timerText}\nFriends of the Poway Library`;
+      return `Book Year Guessr: ${formatScore(state.score)} points\nMode: ${mode}${timerText}\nFriends of the Poway Library`;
     }
 
     async function shareScore() {
@@ -1847,7 +1853,6 @@ fopl_nav_active: puzzles
       state.roundBooks = shuffle(BOOKS).slice(0, TOTAL_ROUNDS);
       state.answered = false;
       state.currentBook = null;
-      state.selectedChoice = null;
       state.timerLeft = TIMER_SECONDS;
       els.roundResult.className = "round-result";
       els.endCard.classList.remove("show");
@@ -1856,6 +1861,12 @@ fopl_nav_active: puzzles
       updateHUD();
       renderLeaderboard();
     }
+
+    els.guessYear.addEventListener("input", () => {
+      state.guessYear = Number(els.guessYear.value);
+      els.guessYearValue.textContent = String(state.guessYear);
+    });
+    els.guessBtn.addEventListener("click", submitGuess);
 
     function applyMode(modeName) {
       state.mode = modeName;
