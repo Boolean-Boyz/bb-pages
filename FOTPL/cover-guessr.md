@@ -1374,7 +1374,8 @@ fopl_nav_active: puzzles
       timerId: null,
       leaderboard: [],
       coverCandidates: [],
-      coverCandidateIndex: 0
+      coverCandidateIndex: 0,
+      coverRequestKey: ""
     };
 
     function shuffle(list) {
@@ -1405,7 +1406,26 @@ fopl_nav_active: puzzles
       return state.score;
     }
 
-    function buildCoverCandidates(coverId) {
+    async function fetchGoogleCoverCandidate(book) {
+      const title = encodeURIComponent(book.title || "");
+      const author = encodeURIComponent(book.author || "");
+      const url = `https://www.googleapis.com/books/v1/volumes?q=intitle:${title}+inauthor:${author}&maxResults=1`;
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          return null;
+        }
+        const payload = await response.json();
+        const item = payload?.items?.[0];
+        const imageLinks = item?.volumeInfo?.imageLinks;
+        const candidate = imageLinks?.thumbnail || imageLinks?.smallThumbnail || null;
+        return candidate ? candidate.replace(/^http:/, "https:") : null;
+      } catch (error) {
+        return null;
+      }
+    }
+
+    function buildOpenLibraryCandidates(coverId) {
       const id = String(coverId || "").trim();
       if (!id) {
         return [];
@@ -1426,6 +1446,7 @@ fopl_nav_active: puzzles
     function tryNextCoverCandidate() {
       state.coverCandidateIndex += 1;
       if (state.coverCandidateIndex < state.coverCandidates.length) {
+        showCoverFallback("Loading cover...", "Trying another related image.");
         els.coverImage.src = state.coverCandidates[state.coverCandidateIndex];
         return;
       }
@@ -1433,6 +1454,30 @@ fopl_nav_active: puzzles
         `Could not load ${state.currentBook.title}`,
         "This cover is unavailable right now, but you can still play the round with clues and choices."
       );
+    }
+
+    async function resolveCoverArt(book, requestKey) {
+      const googleCandidate = await fetchGoogleCoverCandidate(book);
+      if (state.coverRequestKey !== requestKey) {
+        return;
+      }
+
+      const openLibraryCandidates = buildOpenLibraryCandidates(book.cover_id);
+      state.coverCandidates = [
+        ...(googleCandidate ? [googleCandidate] : []),
+        ...openLibraryCandidates.filter((candidate) => candidate !== googleCandidate)
+      ];
+      state.coverCandidateIndex = 0;
+
+      if (state.coverCandidates.length) {
+        showCoverFallback("Loading related art...", "Fetching an image tied to the book.");
+        els.coverImage.src = state.coverCandidates[0];
+      } else {
+        showCoverFallback(
+          `No image available for ${book.title}`,
+          "This round still works with clues and title choices."
+        );
+      }
     }
 
     function updateModeButtons() {
@@ -1590,6 +1635,7 @@ fopl_nav_active: puzzles
       state.roundPotential = 5000;
       state.currentBlur = getMode().startBlur;
       state.gameActive = true;
+      state.coverRequestKey = `${state.roundIndex}:${state.currentBook.title}:${Date.now()}`;
 
       els.coverImage.classList.remove("ready", "revealed");
       els.coverImage.style.opacity = 0;
@@ -1605,16 +1651,9 @@ fopl_nav_active: puzzles
         tryNextCoverCandidate();
       };
 
-      state.coverCandidates = buildCoverCandidates(state.currentBook.cover_id);
+      state.coverCandidates = [];
       state.coverCandidateIndex = 0;
-      if (state.coverCandidates.length) {
-        els.coverImage.src = state.coverCandidates[0];
-      } else {
-        showCoverFallback(
-          `No cover id for ${state.currentBook.title}`,
-          "This round is still playable with clues and multiple-choice answers."
-        );
-      }
+      resolveCoverArt(state.currentBook, state.coverRequestKey);
 
       els.clueBtn.disabled = false;
       els.revealBtn.disabled = false;
