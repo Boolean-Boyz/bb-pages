@@ -27,6 +27,7 @@ fopl_nav_active: puzzles
       --radius: 12px;
     }
 
+
     * { box-sizing: border-box; }
     html, body { height: 100%; }
     body {
