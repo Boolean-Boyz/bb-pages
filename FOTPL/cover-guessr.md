@@ -7,24 +7,24 @@ fopl_nav_active: puzzles
 ---
 
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Manrope:wght@400;500;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Cabin:wght@400;600;700&display=swap');
 
     :root {
-      --bg: #f3efe7;
-      --bg-2: #e7dfd0;
-      --panel: rgba(255, 255, 255, 0.82);
+      --bg: #f4f8f4;
+      --bg-2: #edf5ed;
+      --panel: #ffffff;
       --panel-strong: #fff;
-      --ink: #1f2d23;
-      --muted: #5e6b61;
-      --line: rgba(38, 52, 42, 0.12);
-      --green: #1f6335;
+      --ink: #213526;
+      --muted: #587258;
+      --line: rgba(2, 59, 15, 0.14);
+      --green: #023b0f;
       --green-soft: #dff0e6;
       --red: #9d2c2c;
       --red-soft: #f6dddb;
-      --gold: #b9812d;
-      --gold-soft: #f3e4be;
-      --shadow: 0 18px 60px rgba(31, 45, 35, 0.12);
-      --radius: 22px;
+      --gold: #9b7429;
+      --gold-soft: #f2e8cf;
+      --shadow: 0 4px 16px rgba(2, 59, 15, 0.08);
+      --radius: 12px;
     }
 
     * { box-sizing: border-box; }
@@ -32,24 +32,12 @@ fopl_nav_active: puzzles
     body {
       margin: 0;
       color: var(--ink);
-      font-family: "Manrope", sans-serif;
-      background:
-        radial-gradient(circle at top left, rgba(185, 129, 45, 0.12), transparent 34%),
-        radial-gradient(circle at 85% 18%, rgba(31, 99, 53, 0.10), transparent 28%),
-        linear-gradient(180deg, #faf7f1 0%, var(--bg) 42%, #efe7d9 100%);
+      font-family: "Cabin", sans-serif;
+      background: var(--bg);
     }
 
     body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      opacity: 0.14;
-      background-image:
-        linear-gradient(45deg, rgba(31, 45, 35, 0.03) 25%, transparent 25%, transparent 50%, rgba(31, 45, 35, 0.03) 50%, rgba(31, 45, 35, 0.03) 75%, transparent 75%, transparent),
-        linear-gradient(-45deg, rgba(31, 45, 35, 0.03) 25%, transparent 25%, transparent 50%, rgba(31, 45, 35, 0.03) 50%, rgba(31, 45, 35, 0.03) 75%, transparent 75%, transparent);
-      background-size: 24px 24px;
-      mix-blend-mode: multiply;
+      display: none;
     }
 
     a { color: inherit; }
@@ -82,15 +70,16 @@ fopl_nav_active: puzzles
     .brand-mark {
       width: 44px;
       height: 44px;
-      border-radius: 14px;
+      border-radius: 8px;
       display: grid;
       place-items: center;
-      background: linear-gradient(135deg, #1f6335, #2d8450);
+      background: #023b0f;
       color: #fff;
-      font-family: "Cormorant Garamond", serif;
-      font-size: 1.35rem;
+      font-family: "Cabin", sans-serif;
+      font-size: 1.05rem;
+      letter-spacing: 0.08em;
       font-weight: 700;
-      box-shadow: 0 10px 24px rgba(31, 99, 53, 0.22);
+      box-shadow: 0 6px 16px rgba(2, 59, 15, 0.16);
       flex: 0 0 auto;
     }
 
@@ -98,10 +87,12 @@ fopl_nav_active: puzzles
 
     .brand-copy strong {
       display: block;
-      font-family: "Cormorant Garamond", serif;
-      font-size: 1.65rem;
-      line-height: 1;
-      letter-spacing: 0.02em;
+      font-family: "Cabin", sans-serif;
+      font-size: 1.25rem;
+      line-height: 1.1;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #023b0f;
     }
 
     .brand-copy span {
@@ -115,12 +106,12 @@ fopl_nav_active: puzzles
       padding: 10px 14px;
       text-decoration: none;
       border-radius: 999px;
-      border: 1px solid rgba(31, 45, 35, 0.14);
-      background: rgba(255, 255, 255, 0.6);
+      border: 1px solid #cad8cc;
+      background: #eff6f0;
       color: var(--green);
-      font-size: 0.84rem;
+      font-size: 0.78rem;
       font-weight: 800;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
       white-space: nowrap;
     }
@@ -134,16 +125,16 @@ fopl_nav_active: puzzles
 
     .panel {
       background: var(--panel);
-      border: 1px solid rgba(31, 45, 35, 0.09);
+      border: 1px solid #d7e4d7;
       box-shadow: var(--shadow);
       border-radius: var(--radius);
-      backdrop-filter: blur(14px);
     }
 
     .hero-copy {
       padding: 28px 28px 24px;
       position: relative;
       overflow: hidden;
+      border-top: 4px solid #023b0f;
     }
 
     .hero-copy::after {
@@ -153,7 +144,7 @@ fopl_nav_active: puzzles
       width: 220px;
       height: 220px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(185, 129, 45, 0.18), transparent 68%);
+      background: radial-gradient(circle, rgba(2, 59, 15, 0.12), transparent 68%);
       pointer-events: none;
     }
 
@@ -174,10 +165,12 @@ fopl_nav_active: puzzles
 
     .hero-copy h1 {
       margin: 12px 0 10px;
-      font-family: "Cormorant Garamond", serif;
-      font-size: clamp(2.4rem, 5vw, 4.15rem);
-      line-height: 0.96;
-      letter-spacing: -0.02em;
+      font-family: "Cabin", sans-serif;
+      font-size: clamp(1.8rem, 4.5vw, 3rem);
+      line-height: 1.05;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: #023b0f;
     }
 
     .hero-copy p {
@@ -235,10 +228,10 @@ fopl_nav_active: puzzles
 
     .seg-btn:hover { transform: translateY(-1px); }
     .seg-btn.active {
-      background: linear-gradient(135deg, rgba(31, 99, 53, 0.96), rgba(47, 129, 68, 0.96));
+      background: #023b0f;
       color: #fff;
       border-color: transparent;
-      box-shadow: 0 10px 20px rgba(31, 99, 53, 0.16);
+      box-shadow: 0 6px 14px rgba(2, 59, 15, 0.15);
     }
 
     .toggle-row {
@@ -302,7 +295,7 @@ fopl_nav_active: puzzles
     }
 
     .switch input:checked + .switch-ui {
-      background: linear-gradient(135deg, #1f6335, #2d8450);
+      background: #023b0f;
     }
 
     .switch input:checked + .switch-ui::after {
@@ -328,15 +321,15 @@ fopl_nav_active: puzzles
     }
 
     .primary-btn {
-      background: linear-gradient(135deg, #1f6335, #2d8450);
+      background: #023b0f;
       color: #fff;
-      box-shadow: 0 12px 20px rgba(31, 99, 53, 0.18);
+      box-shadow: 0 8px 16px rgba(2, 59, 15, 0.16);
     }
 
     .secondary-btn {
-      background: #fff;
-      color: var(--ink);
-      border: 1px solid rgba(31, 45, 35, 0.12);
+      background: #f6faf6;
+      color: #1f3d22;
+      border: 1px solid #c7d6c8;
     }
 
     .primary-btn:hover,
@@ -394,10 +387,11 @@ fopl_nav_active: puzzles
     }
 
     .hud-center {
-      font-family: "Cormorant Garamond", serif;
-      font-size: 1.8rem;
+      font-family: "Cabin", sans-serif;
+      font-size: 1.35rem;
       font-weight: 700;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
       text-align: center;
       color: var(--green);
     }
@@ -651,8 +645,8 @@ fopl_nav_active: puzzles
       padding: 12px 14px;
     }
     .year-readout strong {
-      font-family: "Cormorant Garamond", serif;
-      font-size: 2rem;
+      font-family: "Cabin", sans-serif;
+      font-size: 1.7rem;
       line-height: 1;
       color: var(--green);
     }
@@ -790,9 +784,12 @@ fopl_nav_active: puzzles
 
     .end-head h2 {
       margin: 0 0 8px;
-      font-family: "Cormorant Garamond", serif;
-      font-size: clamp(2rem, 4vw, 3rem);
-      line-height: 0.95;
+      font-family: "Cabin", sans-serif;
+      font-size: clamp(1.3rem, 3vw, 2rem);
+      line-height: 1.05;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #023b0f;
     }
 
     .score-badge {
@@ -922,11 +919,11 @@ fopl_nav_active: puzzles
     <section class="hero">
       <div class="panel hero-copy">
         <span class="eyebrow">Blur, clue, guess</span>
-        <h1>Identify the book before the cover fully appears.</h1>
+        <h1>Place your year pin before the cover gets too clear.</h1>
         <p>
-          Each round starts with a heavily blurred cover from Open Library. Reveal more of the image,
-          unlock clue pills one by one, and choose the correct title from four options. The earlier you guess,
-          the higher your score. Finish all five rounds and compare your result on the local leaderboard.
+          Each round starts with a heavily blurred image related to the book. Reveal more of the image,
+          unlock clue pills one by one, and pin the publication year as close as possible.
+          The less help you use and the closer your year guess, the higher your score.
         </p>
       </div>
 
