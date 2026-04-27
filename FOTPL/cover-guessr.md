@@ -1946,7 +1946,6 @@ fopl_nav_active: puzzles
       const earnedScore = Math.max(200, Math.round(Math.max(200, state.roundPotential - distancePenalty) * timerMultiplier));
       const delta = earnedScore - state.roundPotential;
       state.roundPotential = earnedScore;
-      setPlayStep(4);
       finishRound(true, earnedScore, "Guess locked.", `You guessed ${guessedYear}. The actual year was ${actualYear}.`, delta);
     }
 
