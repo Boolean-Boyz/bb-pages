@@ -7,177 +7,210 @@ fopl_nav_active: volunteer
 ---
 
 <style>
-  body { background: #f4f8f4; }
+  body { 
+    background: #0f1a12;
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='5' result='noise' /%3E%3CfeColorMatrix in='noise' type='saturate' values='0' /%3E%3CfeBlend in='SourceGraphic' in2='noise' mode='screen' /%3E%3C/filter%3E%3C/defs%3E%3Crect width='100' height='100' fill='%230f1a12' opacity='0.96' filter='url(%23noise)' /%3E%3C/svg%3E");
+  }
 
   /* ── Hero ── */
   .fopl-hero {
-    background: #023b0f; color: #fff; text-align: center; padding: 56px 24px 48px;
+    background: linear-gradient(135deg, rgba(15, 26, 18, 0.95) 0%, rgba(50, 60, 45, 0.85) 100%);
+    backdrop-filter: blur(10px);
+    color: #fff; text-align: center; padding: 64px 24px 52px;
+    border-bottom: 1px solid rgba(212, 168, 83, 0.15);
   }
   .fopl-hero h1 {
-    font-family: 'Cabin', sans-serif; font-size: 2.2rem; font-weight: 700;
-    margin: 0 0 10px; color: #fff; border: none; text-transform: uppercase; letter-spacing: 0.04em;
+    font-family: 'Libre Baskerville', serif; font-size: 3rem; font-weight: 700;
+    margin: 0 0 12px; color: #d4a853; border: none; text-transform: capitalize;
+    letter-spacing: 0.01em; text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   }
-  .fopl-hero p { font-size: 1.05rem; opacity: 0.85; margin: 0 auto; max-width: 600px; line-height: 1.7; }
+  .fopl-hero p { font-size: 1.05rem; color: rgba(224, 189, 112, 0.85); margin: 0 auto; max-width: 600px; line-height: 1.7; }
 
   /* ── Page wrapper ── */
   .vol-content {
-    max-width: 1000px; margin: 0 auto; padding: 48px 40px;
+    max-width: 1100px; margin: 0 auto; padding: 52px 40px;
   }
 
   /* ── Section label ── */
   .vol-section-label {
     font-family: 'Cabin', sans-serif; font-size: 0.75rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.12em; color: #023b0f;
-    border-bottom: 2px solid #023b0f; padding-bottom: 6px; margin: 0 0 24px;
+    text-transform: uppercase; letter-spacing: 0.12em; color: #d4a853;
+    border-bottom: 2px solid #d4a853; padding-bottom: 8px; margin: 0 0 28px;
     display: block;
   }
 
   /* ── Why volunteer cards ── */
   .vol-why-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 48px;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 56px;
   }
   .vol-why-card {
-    background: #fff; border-radius: 8px;
-    box-shadow: 0 2px 12px rgba(2,59,15,0.08);
-    border-top: 4px solid #023b0f;
-    padding: 24px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(212, 168, 83, 0.2);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    padding: 28px 24px;
+    transition: all 0.3s ease;
+  }
+  .vol-why-card:hover {
+    border-color: rgba(212, 168, 83, 0.4);
+    box-shadow: 0 12px 48px rgba(212, 168, 83, 0.15);
   }
   .vol-why-card h3 {
-    font-family: 'Cabin', sans-serif; font-size: 0.95rem; font-weight: 700;
-    color: #023b0f; text-transform: uppercase; letter-spacing: 0.05em;
-    margin: 0 0 10px; border: none;
+    font-family: 'Libre Baskerville', serif; font-size: 1.1rem; font-weight: 700;
+    color: #e0bd70; text-transform: capitalize; letter-spacing: 0.01em;
+    margin: 0 0 12px; border: none;
   }
   .vol-why-card p {
-    font-size: 0.92rem; color: #444; line-height: 1.65; margin: 0;
+    font-size: 0.92rem; color: rgba(224, 189, 112, 0.85); line-height: 1.7; margin: 0;
   }
 
   /* ── Roles section ── */
   .vol-roles-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 48px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 56px;
   }
   .vol-role-card {
-    background: #fff; border-radius: 8px;
-    box-shadow: 0 2px 12px rgba(2,59,15,0.08);
-    border-left: 4px solid #023b0f;
-    padding: 22px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(212, 168, 83, 0.2);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    padding: 28px 24px;
+    transition: all 0.3s ease;
+  }
+  .vol-role-card:hover {
+    border-color: rgba(212, 168, 83, 0.4);
+    box-shadow: 0 12px 48px rgba(212, 168, 83, 0.15);
   }
   .vol-role-card h3 {
-    font-family: 'Cabin', sans-serif; font-size: 0.95rem; font-weight: 700;
-    color: #023b0f; text-transform: uppercase; letter-spacing: 0.05em;
+    font-family: 'Libre Baskerville', serif; font-size: 1.1rem; font-weight: 700;
+    color: #e0bd70; text-transform: capitalize; letter-spacing: 0.01em;
     margin: 0 0 8px; border: none;
   }
   .vol-role-card p {
-    font-size: 0.9rem; color: #444; line-height: 1.65; margin: 0;
+    font-size: 0.9rem; color: rgba(224, 189, 112, 0.85); line-height: 1.7; margin: 0;
   }
   .vol-role-tag {
     display: inline-block; font-size: 0.7rem; font-weight: 700;
     text-transform: uppercase; letter-spacing: 0.07em;
-    padding: 2px 8px; background: #e8f5e9; border: 1px solid #a5d6a7;
-    border-radius: 3px; color: #1b5e20; margin-top: 10px;
+    padding: 4px 10px; background: rgba(212, 168, 83, 0.15); border: 1px solid rgba(212, 168, 83, 0.3);
+    border-radius: 12px; color: #d4a853; margin-top: 12px;
   }
 
   /* ── Steps ── */
   .vol-steps {
-    display: flex; flex-direction: column; gap: 0; margin-bottom: 48px;
-    background: #fff; border-radius: 8px;
-    box-shadow: 0 2px 12px rgba(2,59,15,0.08);
+    display: flex; flex-direction: column; gap: 0; margin-bottom: 56px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(212, 168, 83, 0.2);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
     overflow: hidden;
+    backdrop-filter: blur(10px);
   }
   .vol-step {
-    display: flex; align-items: flex-start; gap: 20px;
-    padding: 22px 24px; border-bottom: 1px solid #eef2ee;
+    display: flex; align-items: flex-start; gap: 24px;
+    padding: 28px 28px; border-bottom: 1px solid rgba(212, 168, 83, 0.1);
   }
   .vol-step:last-child { border-bottom: none; }
   .vol-step-num {
-    flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%;
-    background: #023b0f; color: #fff;
-    font-family: 'Cabin', sans-serif; font-size: 1rem; font-weight: 700;
+    flex-shrink: 0; width: 44px; height: 44px; border-radius: 50%;
+    background: #d4a853; color: #0f1a12;
+    font-family: 'Cabin', sans-serif; font-size: 1.1rem; font-weight: 700;
     display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 12px rgba(212, 168, 83, 0.3);
   }
   .vol-step-body h4 {
-    font-family: 'Cabin', sans-serif; font-size: 0.95rem; font-weight: 700;
-    color: #023b0f; text-transform: uppercase; letter-spacing: 0.05em;
-    margin: 0 0 4px; border: none;
+    font-family: 'Libre Baskerville', serif; font-size: 1rem; font-weight: 700;
+    color: #e0bd70; text-transform: capitalize; letter-spacing: 0.01em;
+    margin: 0 0 6px; border: none;
   }
   .vol-step-body p {
-    font-size: 0.9rem; color: #444; line-height: 1.6; margin: 0;
+    font-size: 0.9rem; color: rgba(224, 189, 112, 0.85); line-height: 1.7; margin: 0;
   }
 
   /* ── Application section ── */
   .vol-apply-wrap {
-    background: #fff; border-radius: 8px;
-    box-shadow: 0 2px 12px rgba(2,59,15,0.08);
-    border-top: 4px solid #023b0f;
-    padding: 32px 28px; margin-bottom: 48px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(212, 168, 83, 0.2);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    padding: 36px 32px; margin-bottom: 56px;
+    backdrop-filter: blur(10px);
   }
   .vol-apply-intro {
-    font-size: 0.97rem; color: #444; line-height: 1.7; margin: 0 0 28px;
+    font-size: 0.97rem; color: rgba(224, 189, 112, 0.9); line-height: 1.8; margin: 0 0 32px;
   }
 
   /* ── Form layout ── */
   .vol-form { display: flex; flex-direction: column; gap: 0; }
   .vol-form-section-title {
     font-family: 'Cabin', sans-serif; font-size: 0.72rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.12em; color: #023b0f;
-    border-bottom: 1px solid #d0e8d0; padding-bottom: 6px;
-    margin: 28px 0 18px;
+    text-transform: uppercase; letter-spacing: 0.12em; color: #d4a853;
+    border-bottom: 1px solid rgba(212, 168, 83, 0.2); padding-bottom: 8px;
+    margin: 32px 0 20px;
   }
   .vol-form-section-title:first-child { margin-top: 0; }
   .vol-form-row {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 18px;
   }
   .vol-form-row.full { grid-template-columns: 1fr; }
-  .vol-form-field { display: flex; flex-direction: column; gap: 5px; }
+  .vol-form-field { display: flex; flex-direction: column; gap: 6px; }
   .vol-form-field label {
-    font-size: 0.8rem; font-weight: 700; color: #1b3d1e;
+    font-size: 0.8rem; font-weight: 700; color: #d4a853;
     font-family: 'Cabin', sans-serif; text-transform: uppercase; letter-spacing: 0.05em;
   }
   .vol-form-field label .opt {
-    font-weight: 400; color: #999; text-transform: none; letter-spacing: 0; font-size: 0.78rem;
+    font-weight: 400; color: rgba(212, 168, 83, 0.6); text-transform: none; letter-spacing: 0; font-size: 0.78rem;
   }
   .vol-form-field input,
   .vol-form-field select,
   .vol-form-field textarea {
-    border: 1.5px solid #c8dcc8; border-radius: 4px;
-    padding: 10px 12px; font-size: 0.9rem; color: #222;
+    border: 1.5px solid rgba(212, 168, 83, 0.3); border-radius: 6px;
+    padding: 12px 14px; font-size: 0.9rem; color: #d4a853;
     font-family: 'Lato', sans-serif;
-    background: #f9fdf9; transition: border-color 0.15s, box-shadow 0.15s;
+    background: rgba(255, 255, 255, 0.05); transition: all 0.15s;
     outline: none;
+  }
+  .vol-form-field input::placeholder,
+  .vol-form-field select::placeholder,
+  .vol-form-field textarea::placeholder {
+    color: rgba(212, 168, 83, 0.4);
   }
   .vol-form-field input:focus,
   .vol-form-field select:focus,
   .vol-form-field textarea:focus {
-    border-color: #023b0f; box-shadow: 0 0 0 3px rgba(2,59,15,0.08);
+    border-color: #d4a853; background: rgba(212, 168, 83, 0.1);
+    box-shadow: 0 0 0 3px rgba(212, 168, 83, 0.15);
   }
-  .vol-form-field textarea { resize: vertical; min-height: 90px; }
+  .vol-form-field textarea { resize: vertical; min-height: 110px; }
 
   /* ── Checkbox group ── */
-  .vol-check-group { display: flex; flex-direction: column; gap: 8px; }
+  .vol-check-group { display: flex; flex-direction: column; gap: 10px; }
   .vol-check-item {
-    display: flex; align-items: center; gap: 10px;
-    font-size: 0.9rem; color: #333; cursor: pointer;
+    display: flex; align-items: center; gap: 12px;
+    font-size: 0.9rem; color: rgba(224, 189, 112, 0.9); cursor: pointer;
   }
   .vol-check-item input[type="checkbox"] {
-    width: 16px; height: 16px; accent-color: #023b0f;
+    width: 18px; height: 18px; accent-color: #d4a853;
     flex-shrink: 0; cursor: pointer;
     padding: 0; border: none; background: none;
   }
 
   /* ── Submit ── */
   .vol-form-submit {
-    margin-top: 28px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+    margin-top: 32px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
   }
   .vol-apply-btn {
-    display: inline-block; padding: 13px 36px; background: #023b0f; color: #fff;
-    border-radius: 4px; font-family: 'Cabin', sans-serif; font-weight: 700;
+    display: inline-block; padding: 13px 40px; background: #d4a853; color: #0f1a12;
+    border-radius: 6px; font-family: 'Cabin', sans-serif; font-weight: 700;
     font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.06em;
-    border: none; cursor: pointer; transition: background 0.2s;
+    border: none; cursor: pointer; transition: all 0.2s;
   }
-  .vol-apply-btn:hover { background: #045218; }
+  .vol-apply-btn:hover { background: #e0bd70; transform: translateY(-2px); }
   .vol-form-status {
-    font-size: 0.88rem; color: #2e7d32; font-weight: 600; display: none;
+    font-size: 0.88rem; color: #81c784; font-weight: 600; display: none;
   }
-  .vol-form-status.error { color: #b71c1c; }
+  .vol-form-status.error { color: #ef5350; }
 
   @media (max-width: 580px) {
     .vol-form-row { grid-template-columns: 1fr; }
@@ -185,21 +218,23 @@ fopl_nav_active: volunteer
 
   /* ── Testimonial ── */
   .vol-quote {
-    background: #e8f5e9; border-left: 4px solid #023b0f;
-    border-radius: 0 8px 8px 0; padding: 20px 24px; margin-bottom: 48px;
+    background: rgba(212, 168, 83, 0.1); border-left: 4px solid #d4a853;
+    border-radius: 0 8px 8px 0; padding: 24px 28px; margin-bottom: 56px;
+    border: 1px solid rgba(212, 168, 83, 0.2);
   }
   .vol-quote p {
-    font-size: 1rem; color: #1b3d1e; line-height: 1.75; font-style: italic; margin: 0 0 8px;
+    font-size: 1rem; color: rgba(224, 189, 112, 0.9); line-height: 1.8; font-style: italic; margin: 0 0 10px;
   }
   .vol-quote cite {
-    font-size: 0.82rem; color: #2e7d32; font-style: normal; font-weight: 700;
+    font-size: 0.82rem; color: #d4a853; font-style: normal; font-weight: 700;
     text-transform: uppercase; letter-spacing: 0.06em;
   }
 
   @media (max-width: 700px) {
-    .vol-content { padding: 32px 18px; }
+    .vol-content { padding: 36px 18px; }
     .vol-why-grid { grid-template-columns: 1fr; }
     .vol-roles-grid { grid-template-columns: 1fr; }
+    .fopl-hero h1 { font-size: 2.2rem; }
   }
 </style>
 
