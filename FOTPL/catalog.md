@@ -118,7 +118,7 @@ fopl_nav_active: catalog
   .filter-btn.active .filter-count { background: rgba(15, 26, 18, 0.3); opacity: 1; }
 
   /* ── Main ── */
-  .catalog-main { flex: 1; padding: 28px; overflow: hidden; background: rgba(255, 255, 255, 0.02); }
+  .catalog-main { flex: 1; padding: 28px; overflow: visible; background: rgba(255, 255, 255, 0.02); }
   .catalog-toolbar {
     display: flex; align-items: center; justify-content: space-between;
     margin-bottom: 24px; flex-wrap: wrap; gap: 12px;
@@ -141,7 +141,7 @@ fopl_nav_active: catalog
   .catalog-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px; max-height: 70vh; overflow-y: auto;
+    gap: 20px;
   }
   .book-card {
     background: rgba(255, 255, 255, 0.06);
