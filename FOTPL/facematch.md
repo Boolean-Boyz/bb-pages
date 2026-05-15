@@ -409,10 +409,10 @@ fopl_nav_active: puzzles
 
 <script>
 (function() {
-  let stream = null;
-  let scanning = false;
-  let scanRAF = null;
-  let capturedFrame = null; // base64 JPEG captured at scan start
+  let stream        = null;
+  let scanning      = false;
+  let scanRAF       = null;
+  let capturedFrame = null;
 
   const video   = document.getElementById('fm-video');
   const canvas  = document.getElementById('fm-canvas-overlay');
@@ -424,11 +424,12 @@ fopl_nav_active: puzzles
   // ── Camera ────────────────────────────────────────────────────────────────
   async function initCamera() {
     try {
-      stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
+      stream = await navigator.mediaDevices.getUserMedia({ video: { width: { ideal: 640 }, height: { ideal: 480 }, facingMode: 'user' }, audio: false });
       video.srcObject = stream;
       video.onloadedmetadata = function() {
         canvas.width  = video.videoWidth  || 640;
         canvas.height = video.videoHeight || 480;
+        video.play();
         scanBtn.disabled = false;
         status.textContent = 'Camera ready — click Scan My Face';
         noCam.style.display = 'none';
@@ -443,29 +444,26 @@ fopl_nav_active: puzzles
   }
 
   function stopCamera() {
-    if (stream) {
-      stream.getTracks().forEach(t => t.stop());
-      stream = null;
-    }
+    if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
   }
 
-  // Capture the current video frame as a base64 JPEG string (resized to 480px wide max)
-  function captureFrame() {
-    const srcW = video.videoWidth  || canvas.width  || 640;
-    const srcH = video.videoHeight || canvas.height || 480;
-    const maxW = 480;
-    const scale = Math.min(1, maxW / srcW);
-    const w = Math.max(4, Math.round(srcW * scale));
-    const h = Math.max(4, Math.round(srcH * scale));
+  // Capture the current video frame as a base64 JPEG (max 480px wide, un-mirrored)
+  function doCapture() {
+    if (!video.videoWidth || !video.videoHeight || video.readyState < 2) {
+      throw new Error('Video not ready (readyState=' + video.readyState + ', w=' + video.videoWidth + ')');
+    }
+    const scale = Math.min(1, 480 / video.videoWidth);
+    const w = Math.max(4, Math.round(video.videoWidth  * scale));
+    const h = Math.max(4, Math.round(video.videoHeight * scale));
     const tmp = document.createElement('canvas');
     tmp.width = w; tmp.height = h;
     const tc = tmp.getContext('2d');
-    // Un-mirror for the AI (video is CSS-mirrored)
-    tc.translate(w, 0);
-    tc.scale(-1, 1);
+    // Video is CSS-mirrored; draw un-mirrored for the AI
+    tc.translate(w, 0); tc.scale(-1, 1);
     tc.drawImage(video, 0, 0, w, h);
-    const dataUrl = tmp.toDataURL('image/jpeg', 0.80);
-    return dataUrl.split(',')[1];
+    const b64 = tmp.toDataURL('image/jpeg', 0.82).split(',')[1];
+    if (!b64) throw new Error('toDataURL returned empty string');
+    return b64;
   }
 
   // ── Scan points ───────────────────────────────────────────────────────────
@@ -505,8 +503,11 @@ fopl_nav_active: puzzles
 
     const scanPoints = makeScanPoints(canvas.width, canvas.height);
 
-    // Capture the frame immediately so we have it ready for the API call
-    try { capturedFrame = captureFrame(); } catch(e) { capturedFrame = null; }
+    // Capture frame immediately (face confirmed by detection loop)
+    try { capturedFrame = doCapture(); } catch(e) {
+      console.error('[FaceMatch] doCapture failed:', e.message);
+      capturedFrame = null;
+    }
 
     const steps = [
       { at: 0,   msg: 'Detecting face geometry...' },
@@ -702,8 +703,10 @@ fopl_nav_active: puzzles
     document.getElementById('fm-result-overlay').classList.remove('show');
     document.getElementById('fm-match-bar').style.width = '0';
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    status.textContent = 'Camera loading...';
+    scanning = false;
+    faceDetected = false;
     scanBtn.disabled = true;
+    status.textContent = 'Camera loading...';
     initCamera();
   };
 

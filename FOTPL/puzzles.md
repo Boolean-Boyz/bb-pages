@@ -266,6 +266,19 @@ fopl_nav_active: puzzles
   </div>
 
   <div class="game-card">
+    <div class="game-card-icon">COV</div>
+    <span class="game-card-badge">New</span>
+    <h2>Cover Guessr</h2>
+    <p>Blurred book covers, rotating clues, and a score that rewards bold guesses before the cover is fully revealed.</p>
+    <div class="game-meta">
+      <span class="game-chip">Books</span>
+      <span class="game-chip">Puzzle</span>
+      <span class="game-chip">Covers</span>
+    </div>
+    <a class="play-btn" href="/cover-guessr">Play Now</a>
+  </div>
+
+  <div class="game-card">
     <div class="game-card-icon">SCR</div>
     <span class="game-card-badge">Live</span>
     <h2>Word Scramble</h2>
