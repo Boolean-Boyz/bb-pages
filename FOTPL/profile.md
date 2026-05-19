@@ -16,10 +16,10 @@ fopl_nav_active: profile
   /* ── Layout ── */
   .profile-page { max-width: 1100px; margin: 0 auto; padding: 0 0 80px; }
 
-  /* ── Profile Hero Banner ── */
+  /* ── Profile Hero Banner — full viewport width ── */
   .profile-banner {
     position: relative; height: 220px; overflow: hidden;
-    background: #182218;
+    width: 100%; background: #182218;
     border-bottom: 1px solid rgba(212,168,83,0.2);
   }
   .profile-banner-bg {
@@ -400,18 +400,18 @@ fopl_nav_active: profile
   </div>
 </div>
 
-<div class="profile-page">
+<!-- Hero Banner — full width, outside max-width container -->
+<div class="profile-banner">
+  <div class="profile-banner-bg"></div>
+  <div class="profile-banner-particles" id="banner-particles"></div>
+  <button class="profile-banner-change-btn" onclick="openAvatarModal()">Change Avatar</button>
+</div>
 
-  <!-- Hero Banner -->
-  <div class="profile-banner">
-    <div class="profile-banner-bg"></div>
-    <div class="profile-banner-particles" id="banner-particles"></div>
-    <button class="profile-banner-change-btn" id="open-avatar-modal">Change Banner / Avatar</button>
-  </div>
+<div class="profile-page">
 
   <!-- Identity row -->
   <div class="profile-identity">
-    <div class="profile-avatar-wrap" id="open-avatar-from-pic">
+    <div class="profile-avatar-wrap" onclick="openAvatarModal()">
       <div class="profile-avatar" id="profile-avatar-el">?</div>
       <div class="avatar-edit-overlay">Edit<br>Photo</div>
     </div>
@@ -601,11 +601,11 @@ fopl_nav_active: profile
   }
 
   // ─── Avatar Modal ────────────────────────────────────────────────────────────
-  function openAvatarModal() {
+  window.openAvatarModal = function() {
     pendingAvatarValue = getAvatar();
     renderPresetGrid();
     document.getElementById('avatar-modal').classList.add('open');
-  }
+  };
   function closeAvatarModal() {
     pendingAvatarValue = null;
     document.getElementById('avatar-modal').classList.remove('open');
@@ -625,8 +625,6 @@ fopl_nav_active: profile
     renderPresetGrid();
   };
 
-  document.getElementById('open-avatar-modal').addEventListener('click', openAvatarModal);
-  document.getElementById('open-avatar-from-pic').addEventListener('click', openAvatarModal);
   document.getElementById('avatar-modal-close').addEventListener('click', closeAvatarModal);
   document.getElementById('avatar-modal').addEventListener('click', e => {
     if (e.target === document.getElementById('avatar-modal')) closeAvatarModal();
@@ -850,9 +848,9 @@ fopl_nav_active: profile
     });
 
     // Row 2 — Your preferred genres
-    genres.slice(0,3).forEach(g => {
+    genres.forEach(g => {
       const picks = books.filter(b => (b.genre||'').toLowerCase().includes(g.toLowerCase()) && !savedIds.has(b.id));
-      if (picks.length >= 3) {
+      if (picks.length >= 1) {
         rows.push({
           title: `Picks in ${g}`,
           reason: `Matching your genre preference`,
