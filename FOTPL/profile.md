@@ -19,13 +19,12 @@ fopl_nav_active: profile
   /* ── Profile Hero Banner ── */
   .profile-banner {
     position: relative; height: 220px; overflow: hidden;
-    background: linear-gradient(135deg, #1a2e1a 0%, #2a3e2a 40%, #1a2810 100%);
+    background: #182218;
     border-bottom: 1px solid rgba(212,168,83,0.2);
   }
   .profile-banner-bg {
     position: absolute; inset: 0;
-    background: radial-gradient(ellipse at 30% 50%, rgba(212,168,83,0.12) 0%, transparent 70%),
-                radial-gradient(ellipse at 80% 20%, rgba(100,140,100,0.1) 0%, transparent 60%);
+    background: none;
   }
   .profile-banner-particles {
     position: absolute; inset: 0; pointer-events: none; overflow: hidden;
@@ -57,7 +56,7 @@ fopl_nav_active: profile
   .profile-avatar {
     width: 104px; height: 104px; border-radius: 50%;
     border: 4px solid #0f1a12;
-    background: linear-gradient(135deg, #2a4a2a, #d4a853);
+    background: #1e3320;
     display: flex; align-items: center; justify-content: center;
     font-family: 'Libre Baskerville', serif; font-size: 2.4rem; font-weight: 700;
     color: #fff; overflow: hidden; transition: opacity 0.2s;
@@ -126,7 +125,7 @@ fopl_nav_active: profile
   }
   .avatar-modal-overlay.open { display: flex; }
   .avatar-modal {
-    background: linear-gradient(135deg, rgba(25,38,28,0.98), rgba(40,55,42,0.96));
+    background: #182218;
     border: 1px solid rgba(212,168,83,0.25); border-radius: 16px;
     width: 90%; max-width: 560px; max-height: 88vh; overflow-y: auto; padding: 32px;
     box-shadow: 0 24px 60px rgba(0,0,0,0.5);
@@ -544,18 +543,18 @@ fopl_nav_active: profile
 
   // ─── Preset avatars ─────────────────────────────────────────────────────────
   const PRESETS = [
-    { bg:'linear-gradient(135deg,#2a4a2a,#d4a853)', emoji:'📚' },
-    { bg:'linear-gradient(135deg,#1a3a5c,#6ab4f5)', emoji:'🌊' },
-    { bg:'linear-gradient(135deg,#5c2a2a,#e08060)', emoji:'🔥' },
-    { bg:'linear-gradient(135deg,#3a1a5c,#b07adc)', emoji:'✨' },
-    { bg:'linear-gradient(135deg,#1a4a3a,#70c8a0)', emoji:'🌿' },
-    { bg:'linear-gradient(135deg,#4a3a1a,#e0c060)', emoji:'☀️' },
-    { bg:'linear-gradient(135deg,#2a1a4a,#8060c0)', emoji:'🌙' },
-    { bg:'linear-gradient(135deg,#1a1a1a,#888888)', emoji:'🎩' },
-    { bg:'linear-gradient(135deg,#4a1a1a,#c04060)', emoji:'🌹' },
-    { bg:'linear-gradient(135deg,#1a4a4a,#40c0c0)', emoji:'🔮' },
-    { bg:'linear-gradient(135deg,#3a3a1a,#a0a040)', emoji:'🍂' },
-    { bg:'linear-gradient(135deg,#1a2a4a,#4080d0)', emoji:'🦋' },
+    { bg:'#1e3320', emoji:'📚' },
+    { bg:'#1a2e40', emoji:'🌊' },
+    { bg:'#3a1a1a', emoji:'🔥' },
+    { bg:'#2a1a3a', emoji:'✨' },
+    { bg:'#1a3028', emoji:'🌿' },
+    { bg:'#2e2810', emoji:'☀️' },
+    { bg:'#1a1a2e', emoji:'🌙' },
+    { bg:'#1e1e1e', emoji:'🎩' },
+    { bg:'#2e1420', emoji:'🌹' },
+    { bg:'#0e2828', emoji:'🔮' },
+    { bg:'#1e1e10', emoji:'🍂' },
+    { bg:'#101828', emoji:'🦋' },
   ];
 
   // ─── Banner particles ───────────────────────────────────────────────────────
@@ -580,7 +579,7 @@ fopl_nav_active: profile
 
   function applyAvatarToEl(el, value, initials) {
     if (!value) {
-      el.style.background = 'linear-gradient(135deg,#2a4a2a,#d4a853)';
+      el.style.background = '#1e3320';
       el.innerHTML = `<span style="position:relative;z-index:1;">${initials || '?'}</span>`;
       return;
     }
@@ -713,7 +712,7 @@ fopl_nav_active: profile
   }
 
   // ─── Saved shelf ─────────────────────────────────────────────────────────────
-  const COVER_COLORS = ['#2a4a2a','#1a3a5c','#5c2a2a','#3a1a5c','#1a4a3a','#4a3a1a'];
+  const COVER_COLORS = ['#1e3320','#1a2e40','#3a1a1a','#2a1a3a','#1a3028','#2e2810'];
 
   function coverColor(id) { return COVER_COLORS[Math.abs((id||0)) % COVER_COLORS.length]; }
 
