@@ -500,8 +500,31 @@ fopl_nav_active: profile
 <script>
 {
   const BACKEND = window.FOPL_BACKEND;
-  const foplUser = JSON.parse(localStorage.getItem('fopl_user') || 'null');
-  if (!foplUser) { window.location.replace('/login'); }
+  const DEV_PREVIEW = new URLSearchParams(location.search).has('preview');
+
+  const MOCK_USER = {
+    name: 'Alex Reader', email: 'alex@example.com', role: 'Member',
+    uid: 'dev-preview', created_at: '2024-09-01T00:00:00Z'
+  };
+  const MOCK_BOOKS = [
+    { id:1, title:'The Great Gatsby', author:'F. Scott Fitzgerald', genre:'Fiction', condition:'Good', price:'2.00', isbn:'9780743273565' },
+    { id:2, title:'To Kill a Mockingbird', author:'Harper Lee', genre:'Fiction', condition:'Good', price:'2.50', isbn:'9780061935466' },
+    { id:3, title:'1984', author:'George Orwell', genre:'Science Fiction', condition:'Fair', price:'1.50', isbn:'9780451524935' },
+    { id:4, title:'Dune', author:'Frank Herbert', genre:'Science Fiction', condition:'Good', price:'3.00', isbn:'9780441013593' },
+    { id:5, title:'The Hobbit', author:'J.R.R. Tolkien', genre:'Fantasy', condition:'Good', price:'2.00', isbn:'9780547928227' },
+    { id:6, title:'Sapiens', author:'Yuval Noah Harari', genre:'History', condition:'Good', price:'2.50', isbn:'9780062316110' },
+    { id:7, title:'Educated', author:'Tara Westover', genre:'Biography', condition:'Good', price:'2.00', isbn:'9780399590504' },
+    { id:8, title:'The Alchemist', author:'Paulo Coelho', genre:'Fiction', condition:'Fair', price:'1.00', isbn:'9780062315007' },
+    { id:9, title:'Thinking, Fast and Slow', author:'Daniel Kahneman', genre:'Non-Fiction', condition:'Good', price:'3.00', isbn:'9780374533557' },
+    { id:10, title:'A Brief History of Time', author:'Stephen Hawking', genre:'Science', condition:'Good', price:'2.00', isbn:'9780553380163' },
+    { id:11, title:'The Name of the Wind', author:'Patrick Rothfuss', genre:'Fantasy', condition:'Good', price:'2.50', isbn:'9780756404741' },
+    { id:12, title:'Brave New World', author:'Aldous Huxley', genre:'Science Fiction', condition:'Fair', price:'1.50', isbn:'9780060850524' },
+  ];
+
+  const foplUser = DEV_PREVIEW
+    ? MOCK_USER
+    : JSON.parse(localStorage.getItem('fopl_user') || 'null');
+  if (!foplUser && !DEV_PREVIEW) { window.location.replace('/login'); }
 
   // ─── Storage helpers ────────────────────────────────────────────────────────
   const LS_SAVED   = 'fopl_saved_books';     // {id: bookObj}
@@ -916,22 +939,32 @@ fopl_nav_active: profile
     renderSavedShelf();
 
     // Wordle stats
-    fetch(`${BACKEND}/api/fopl/puzzle/stats?game=wordle`, { credentials: 'include' })
-      .then(r => r.ok ? r.json() : null)
-      .then(fillWordleStats)
-      .catch(() => fillWordleStats(null));
+    if (DEV_PREVIEW) {
+      fillWordleStats({ games_played:14, win_rate:78, streak:3, max_streak:7,
+        guess_dist:{'1':0,'2':1,'3':4,'4':5,'5':2,'6':1} });
+    } else {
+      fetch(`${BACKEND}/api/fopl/puzzle/stats?game=wordle`, { credentials: 'include' })
+        .then(r => r.ok ? r.json() : null)
+        .then(fillWordleStats)
+        .catch(() => fillWordleStats(null));
+    }
 
     // Books for recommendations
-    fetch(`${BACKEND}/api/fopl/books`, { credentials: 'include' })
-      .then(r => r.ok ? r.json() : [])
-      .then(books => {
-        allBooks = Array.isArray(books) ? books : (books.books || []);
-        renderRecommendations(allBooks);
-      })
-      .catch(() => {
-        document.getElementById('rec-section').innerHTML =
-          `<div class="rec-empty">Could not load recommendations. <a href="/catalog">Browse catalog →</a></div>`;
-      });
+    if (DEV_PREVIEW) {
+      allBooks = MOCK_BOOKS;
+      renderRecommendations(allBooks);
+    } else {
+      fetch(`${BACKEND}/api/fopl/books`, { credentials: 'include' })
+        .then(r => r.ok ? r.json() : [])
+        .then(books => {
+          allBooks = Array.isArray(books) ? books : (books.books || []);
+          renderRecommendations(allBooks);
+        })
+        .catch(() => {
+          document.getElementById('rec-section').innerHTML =
+            `<div class="rec-empty">Could not load recommendations. <a href="/catalog">Browse catalog →</a></div>`;
+        });
+    }
   }
 }
 </script>
