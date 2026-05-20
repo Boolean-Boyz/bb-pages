@@ -476,7 +476,7 @@ fopl_nav_active: volunteer
 
 <script>
 (function () {
-  const API = 'https://flask.opencodingsociety.com/volunteer-api';
+  const API = window.FOPL_BACKEND + '/api/fopl/volunteer';
 
   const form   = document.getElementById('vol-application-form');
   const status = document.getElementById('vol-form-status');

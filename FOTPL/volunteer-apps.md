@@ -95,6 +95,7 @@ fopl_nav_active: admin
   .va-card.status-reviewed  { border-left-color: #1565c0; }
   .va-card.status-contacted { border-left-color: #283593; }
   .va-card.status-rejected  { border-left-color: #b71c1c; opacity: 0.65; }
+  .va-card.status-accepted  { border-left-color: #2e7d32; }
 
   .va-card-header {
     display: flex; align-items: center; justify-content: space-between;
@@ -115,6 +116,7 @@ fopl_nav_active: admin
   .va-badge-reviewed { background: #e3f2fd; color: #0d47a1; border: 1px solid #90caf9; }
   .va-badge-contacted{ background: #e8eaf6; color: #283593; border: 1px solid #9fa8da; }
   .va-badge-rejected { background: #ffebee; color: #b71c1c; border: 1px solid #ef9a9a; }
+  .va-badge-accepted { background: #e8f5e9; color: #1b5e20; border: 1px solid #2e7d32; font-weight: 800; }
 
   .va-card-chevron { font-size: 0.75rem; color: #999; transition: transform 0.2s; flex-shrink: 0; }
   .va-card.open .va-card-chevron { transform: rotate(180deg); }
@@ -164,6 +166,23 @@ fopl_nav_active: admin
   .va-action-btn.delete-app     { border-color: #999; color: #999; margin-left: auto; }
   .va-action-btn.delete-app:hover:not(:disabled) { background: #eee; border-color: #666; color: #333; }
 
+  .va-accept-section {
+    margin-top: 16px; padding: 14px 16px;
+    background: #f0faf0; border: 1.5px solid #a5d6a7; border-radius: 6px;
+  }
+  .va-accept-label {
+    font-family: 'Cabin', sans-serif; font-size: 0.68rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.1em; color: #2e7d32; margin-bottom: 10px;
+  }
+  .va-accept-btn {
+    padding: 9px 24px; background: #2e7d32; color: #fff; border: none;
+    border-radius: 4px; font-family: 'Cabin', sans-serif; font-weight: 700;
+    font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.06em;
+    cursor: pointer; transition: background 0.15s;
+  }
+  .va-accept-btn:hover:not(:disabled) { background: #1b5e20; }
+  .va-accept-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
   @media (max-width: 700px) {
     #va-main { padding: 28px 16px 48px; }
     .va-detail-grid { grid-template-columns: 1fr 1fr; }
@@ -178,13 +197,7 @@ fopl_nav_active: admin
   <p>Admin view — submitted applications from the volunteer page.</p>
 </div>
 
-<div id="va-auth-gate">
-  <h2>Admin Access Required</h2>
-  <p>Enter the admin password to view applications.</p>
-  <input type="password" id="va-password" placeholder="Password" autocomplete="current-password">
-  <button id="va-auth-btn">Sign In</button>
-  <div id="va-auth-error">Incorrect password. Please try again.</div>
-</div>
+<div id="va-auth-gate" style="display:none;"></div>
 
 <div id="va-main">
   <div class="va-toolbar">
@@ -195,6 +208,7 @@ fopl_nav_active: admin
       <button class="va-filter-btn" data-filter="reviewed">Reviewed</button>
       <button class="va-filter-btn" data-filter="contacted">Contacted</button>
       <button class="va-filter-btn" data-filter="rejected">Rejected</button>
+      <button class="va-filter-btn" data-filter="accepted">Accepted</button>
     </div>
     <div style="display:flex;gap:8px;">
       <button class="va-icon-btn muted" id="va-refresh">Refresh</button>
@@ -203,7 +217,7 @@ fopl_nav_active: admin
   </div>
 
   <div id="va-loading">Loading applications…</div>
-  <div id="va-error">Failed to load applications. Check your Supabase configuration.</div>
+  <div id="va-error">Failed to load applications. Make sure you are logged in and the backend is running.</div>
   <div id="va-empty">No applications yet. They will appear here once someone submits the volunteer form.</div>
   <div id="va-list"></div>
 </div>
@@ -211,16 +225,12 @@ fopl_nav_active: admin
 <script>
 (function () {
   /* ── Config ── */
-  const API            = 'https://flask.opencodingsociety.com/volunteer-api';
-  const ADMIN_PASSWORD = 'fopl2025';
-  const SESSION_KEY    = 'fopl_va_authed';
+  const API  = window.FOPL_BACKEND + '/api/fopl/volunteer';
+  const user = JSON.parse(localStorage.getItem('fopl_user') || 'null');
 
   /* ── DOM refs ── */
   const gate    = document.getElementById('va-auth-gate');
   const main    = document.getElementById('va-main');
-  const pwdIn   = document.getElementById('va-password');
-  const authBtn = document.getElementById('va-auth-btn');
-  const authErr = document.getElementById('va-auth-error');
   const loading = document.getElementById('va-loading');
   const empty   = document.getElementById('va-empty');
   const errMsg  = document.getElementById('va-error');
@@ -239,6 +249,7 @@ fopl_nav_active: admin
     try {
       const res = await fetch(API + '/applications', {
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
       });
       if (!res.ok) throw new Error(res.status);
       allApps = await res.json();
@@ -256,6 +267,7 @@ fopl_nav_active: admin
       const res = await fetch(API + '/applications/' + id, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ status }),
       });
       if (!res.ok) throw new Error(res.status);
@@ -274,6 +286,7 @@ fopl_nav_active: admin
       const res = await fetch(API + '/applications/' + id, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
       });
       if (!res.ok) throw new Error(res.status);
       allApps = allApps.filter(a => a.id !== id);
@@ -302,7 +315,8 @@ fopl_nav_active: admin
   }
   function badgeClass(s) {
     return ({ new: 'va-badge-new', reviewed: 'va-badge-reviewed',
-              contacted: 'va-badge-contacted', rejected: 'va-badge-rejected' })[s] || 'va-badge-new';
+              contacted: 'va-badge-contacted', rejected: 'va-badge-rejected',
+              accepted: 'va-badge-accepted' })[s] || 'va-badge-new';
   }
 
   function renderList() {
@@ -341,6 +355,10 @@ fopl_nav_active: admin
           (app.experience ? '<div class="va-detail-full"><label>Experience</label><p>' + app.experience + '</p></div>' : '') +
           '<div class="va-detail-full"><label>Why they want to volunteer</label><p>' + fmt(app.why) + '</p></div>' +
           (app.other ? '<div class="va-detail-full"><label>Additional notes</label><p>' + app.other + '</p></div>' : '') +
+          '<div class="va-accept-section">' +
+            '<div class="va-accept-label">Accept &amp; Mark for Contact</div>' +
+            '<button class="va-accept-btn" data-status="accepted">Accept Applicant</button>' +
+          '</div>' +
           '<div class="va-card-actions">' +
             '<button class="va-action-btn mark-reviewed"  data-status="reviewed">Mark Reviewed</button>' +
             '<button class="va-action-btn mark-contacted" data-status="contacted">Mark Contacted</button>' +
@@ -354,7 +372,7 @@ fopl_nav_active: admin
         card.classList.toggle('open');
       });
 
-      card.querySelectorAll('.va-action-btn[data-status]').forEach(function (btn) {
+      card.querySelectorAll('[data-status]').forEach(function (btn) {
         btn.addEventListener('click', function (e) {
           e.stopPropagation();
           updateStatus(app.id, btn.dataset.status, card);
@@ -381,30 +399,24 @@ fopl_nav_active: admin
   });
 
   /* ── Auth ── */
-  function showMain() {
+  if (!user || user.role !== 'Admin') {
+    gate.innerHTML =
+      '<h2>Admin Access Required</h2>' +
+      '<p>Sign in as an FOPL Admin to view volunteer applications.</p>' +
+      '<a href="/login" style="display:inline-block;margin-top:8px;padding:10px 28px;' +
+      'background:#023b0f;color:#fff;border-radius:4px;font-family:Cabin,sans-serif;' +
+      'font-weight:700;font-size:0.88rem;text-transform:uppercase;letter-spacing:0.06em;' +
+      'text-decoration:none;">Sign In</a>';
+    gate.style.display = 'block';
+  } else {
     gate.style.display = 'none';
     main.style.display = 'block';
     fetchApps();
   }
 
-  if (sessionStorage.getItem(SESSION_KEY) === '1') showMain();
-
-  authBtn.addEventListener('click', function () {
-    if (pwdIn.value === ADMIN_PASSWORD) {
-      sessionStorage.setItem(SESSION_KEY, '1');
-      authErr.style.display = 'none';
-      showMain();
-    } else {
-      authErr.style.display = 'block';
-      pwdIn.value = '';
-      pwdIn.focus();
-    }
-  });
-  pwdIn.addEventListener('keydown', function (e) { if (e.key === 'Enter') authBtn.click(); });
-
   document.getElementById('va-logout').addEventListener('click', function () {
-    sessionStorage.removeItem(SESSION_KEY);
-    location.reload();
+    localStorage.removeItem('fopl_user');
+    window.location.href = '/login';
   });
 
   document.getElementById('va-refresh').addEventListener('click', fetchApps);

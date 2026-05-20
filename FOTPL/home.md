@@ -708,7 +708,7 @@ fopl_nav_active: home
     </p>
     <div class="fopl-hero-btns fopl-reveal">
       <a class="fopl-hero-btn primary" href="/bookstore">Visit Our Bookstore</a>
-      <a class="fopl-hero-btn outline" href="/contact">Get Involved</a>
+      <a class="fopl-hero-btn outline" href="/volunteer">Get Involved</a>
       <a class="fopl-hero-btn games" href="/puzzles">Play Games</a>
     </div>
   </div>
