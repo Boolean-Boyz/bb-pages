@@ -1,967 +1,502 @@
 ---
 layout: fopl
-title: My Profile — Friends of the Poway Library
+title: My Profile - Friends of the Poway Library
 permalink: /profile
 description: Your Friends of the Poway Library account profile.
 fopl_nav_active: profile
 ---
 
-<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
-  body {
-    background: #0f1a12;
-    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='5'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeBlend in='SourceGraphic' mode='screen'/%3E%3C/filter%3E%3C/defs%3E%3Crect width='100' height='100' fill='%230f1a12' opacity='.96' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
+body { background: #023b0f; }
 
-  /* ── Layout ── */
-  .profile-page { max-width: 1100px; margin: 0 auto; padding: 0 0 80px; }
+/* ===== HERO ===== */
+.profile-hero {
+  background: rgba(0,0,0,0.28);
+  padding: 40px 48px 36px;
+  display: flex; align-items: center; gap: 28px;
+  position: relative; flex-wrap: wrap;
+}
 
-  /* ── Profile Hero Banner — full viewport width ── */
-  .profile-banner {
-    position: relative; height: 220px; overflow: hidden;
-    width: 100%; background: #182218;
-    border-bottom: 1px solid rgba(212,168,83,0.2);
-  }
-  .profile-banner-bg {
-    position: absolute; inset: 0;
-    background: none;
-  }
-  .profile-banner-particles {
-    position: absolute; inset: 0; pointer-events: none; overflow: hidden;
-  }
-  .banner-glyph {
-    position: absolute; font-family: 'Libre Baskerville', serif; font-size: 2.5rem;
-    color: rgba(212,168,83,0.06); animation: glyph-float 18s infinite ease-in-out;
-  }
-  @keyframes glyph-float {
-    0%,100% { transform: translateY(0) rotate(0deg); }
-    50% { transform: translateY(-20px) rotate(8deg); }
-  }
-  .profile-banner-change-btn {
-    position: absolute; bottom: 14px; right: 20px;
-    background: rgba(0,0,0,0.45); border: 1px solid rgba(212,168,83,0.3);
-    color: #d4a853; padding: 7px 18px; border-radius: 20px;
-    font-family: 'Cabin', sans-serif; font-size: 0.75rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.06em; cursor: pointer;
-    transition: all 0.2s; backdrop-filter: blur(6px);
-  }
-  .profile-banner-change-btn:hover { background: rgba(212,168,83,0.2); border-color: rgba(212,168,83,0.6); }
+.hero-avatar-wrap { position: relative; flex-shrink: 0; }
 
-  /* ── Avatar area ── */
-  .profile-identity {
-    display: flex; align-items: flex-end; gap: 28px;
-    padding: 0 40px; margin-top: -52px; position: relative; z-index: 2;
-  }
-  .profile-avatar-wrap { position: relative; flex-shrink: 0; cursor: pointer; }
-  .profile-avatar {
-    width: 104px; height: 104px; border-radius: 50%;
-    border: 4px solid #0f1a12;
-    background: #1e3320;
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Libre Baskerville', serif; font-size: 2.4rem; font-weight: 700;
-    color: #fff; overflow: hidden; transition: opacity 0.2s;
-    box-shadow: 0 8px 28px rgba(0,0,0,0.4);
-  }
-  .profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
-  .avatar-edit-overlay {
-    position: absolute; inset: 0; border-radius: 50%;
-    background: rgba(0,0,0,0.55); display: flex; align-items: center; justify-content: center;
-    opacity: 0; transition: opacity 0.2s;
-    font-size: 0.7rem; font-weight: 700; color: #d4a853; font-family: 'Cabin', sans-serif;
-    text-transform: uppercase; letter-spacing: 0.05em; text-align: center;
-  }
-  .profile-avatar-wrap:hover .avatar-edit-overlay { opacity: 1; }
+.hero-avatar-img,
+.hero-avatar-init {
+  width: 96px; height: 96px; border-radius: 50%;
+  border: 3px solid #c9a84c;
+}
+.hero-avatar-img {
+  object-fit: cover; display: none; background: #062b0c;
+}
+.hero-avatar-init {
+  background: #062b0c; color: #c9a84c;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Cabin', sans-serif; font-size: 2rem; font-weight: 700;
+}
 
-  .profile-identity-text { padding-bottom: 10px; }
-  .profile-name {
-    font-family: 'Libre Baskerville', serif; font-size: 1.9rem; font-weight: 700;
-    color: #e0bd70; margin: 0 0 6px; line-height: 1;
-  }
-  .profile-role-badge {
-    display: inline-block; font-size: 0.72rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.07em;
-    padding: 4px 12px; border-radius: 20px;
-    background: rgba(212,168,83,0.18); border: 1px solid rgba(212,168,83,0.35); color: #d4a853;
-  }
-  .profile-role-badge.admin { background: #d4a853; color: #0f1a12; }
-  .profile-meta { margin-left: auto; padding-bottom: 12px; display: flex; gap: 12px; align-items: flex-end; }
-  .signout-btn {
-    padding: 10px 24px; background: transparent; border: 1px solid rgba(212,168,83,0.4);
-    color: #d4a853; border-radius: 6px; font-family: 'Cabin', sans-serif;
-    font-weight: 700; font-size: 0.82rem; text-transform: uppercase;
-    letter-spacing: 0.05em; cursor: pointer; transition: all 0.2s;
-  }
-  .signout-btn:hover { background: rgba(212,168,83,0.15); border-color: #d4a853; }
+.avatar-edit-btn {
+  position: absolute; bottom: 2px; right: 2px;
+  width: 26px; height: 26px; border-radius: 50%;
+  background: #c9a84c; border: 2px solid #023b0f; cursor: pointer;
+  font-size: 0.68rem; color: #1a1a1a; line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s;
+}
+.avatar-edit-btn:hover { background: #e8c76a; }
 
-  /* ── Main content grid ── */
-  .profile-body { display: grid; grid-template-columns: 320px 1fr; gap: 28px; padding: 32px 40px 0; }
+#avatar-input { display: none; }
 
-  /* ── Glass card ── */
-  .p-card {
-    background: rgba(255,255,255,0.05); backdrop-filter: blur(12px);
-    border: 1px solid rgba(212,168,83,0.18); border-radius: 12px;
-    padding: 28px; margin-bottom: 24px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
-  }
-  .p-card-title {
-    font-family: 'Cabin', sans-serif; font-size: 0.72rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.1em; color: #d4a853;
-    margin: 0 0 20px; border-bottom: 1px solid rgba(212,168,83,0.15); padding-bottom: 10px;
-  }
+.hero-info { flex: 1; min-width: 0; }
+.hero-name {
+  font-family: 'Cabin', sans-serif; font-size: 1.85rem; font-weight: 700;
+  color: #fff; margin: 0 0 7px; line-height: 1.2;
+}
+.hero-role-badge {
+  display: inline-block; font-size: 0.7rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.07em;
+  padding: 3px 12px; border-radius: 20px;
+  border: 1.5px solid #c9a84c; color: #c9a84c; margin-bottom: 10px;
+}
+.hero-role-badge.admin-badge { background: #c9a84c; color: #1a1a1a; }
+.hero-meta { font-size: 0.88rem; color: rgba(255,255,255,0.58); margin-bottom: 3px; }
+.hero-stats-line { font-size: 0.78rem; color: rgba(255,255,255,0.35); margin-top: 8px; letter-spacing: 0.01em; }
 
-  /* ── Info fields ── */
-  .profile-fields { display: flex; flex-direction: column; gap: 16px; }
-  .profile-field label {
-    display: block; font-size: 0.7rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.08em; color: rgba(212,168,83,0.6); margin-bottom: 3px;
-  }
-  .profile-field span { font-size: 0.95rem; color: rgba(224,189,112,0.95); }
+.hero-actions {
+  position: absolute; top: 24px; right: 40px;
+  display: flex; gap: 10px; align-items: center;
+}
+.hero-signout {
+  padding: 9px 22px; background: none;
+  border: 1.5px solid rgba(255,255,255,0.28); color: rgba(255,255,255,0.62);
+  border-radius: 6px; font-family: 'Cabin', sans-serif; font-weight: 700;
+  font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em;
+  cursor: pointer; transition: border-color 0.2s, color 0.2s;
+}
+.hero-signout:hover { border-color: #c9a84c; color: #c9a84c; }
+.hero-admin-link {
+  padding: 9px 18px; background: rgba(201,168,76,0.15);
+  border: 1.5px solid #c9a84c; color: #c9a84c;
+  border-radius: 6px; font-family: 'Cabin', sans-serif; font-weight: 700;
+  font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em;
+  text-decoration: none; transition: background 0.2s;
+}
+.hero-admin-link:hover { background: rgba(201,168,76,0.28); }
 
-  /* ── Avatar picker modal ── */
-  .avatar-modal-overlay {
-    display: none; position: fixed; inset: 0;
-    background: rgba(0,0,0,0.75); z-index: 600;
-    align-items: center; justify-content: center; backdrop-filter: blur(4px);
-  }
-  .avatar-modal-overlay.open { display: flex; }
-  .avatar-modal {
-    background: #182218;
-    border: 1px solid rgba(212,168,83,0.25); border-radius: 16px;
-    width: 90%; max-width: 560px; max-height: 88vh; overflow-y: auto; padding: 32px;
-    box-shadow: 0 24px 60px rgba(0,0,0,0.5);
-  }
-  .avatar-modal h2 {
-    font-family: 'Libre Baskerville', serif; font-size: 1.3rem; font-weight: 700;
-    color: #e0bd70; margin: 0 0 8px; border: none;
-  }
-  .avatar-modal-sub { font-size: 0.88rem; color: rgba(212,168,83,0.7); margin: 0 0 24px; }
-  .avatar-modal-close {
-    position: absolute; top: 16px; right: 20px;
-    background: rgba(212,168,83,0.2); border: none; border-radius: 50%;
-    width: 34px; height: 34px; color: #d4a853; font-size: 1.1rem;
-    cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center;
-  }
-  .avatar-modal-close:hover { background: #d4a853; color: #0f1a12; }
-  .avatar-modal { position: relative; }
+/* ===== CONTENT WRAPPER ===== */
+.profile-content {
+  max-width: 1100px; margin: 0 auto; padding: 32px 40px 64px;
+}
 
-  /* Upload section */
-  .avatar-upload-zone {
-    border: 2px dashed rgba(212,168,83,0.3); border-radius: 10px;
-    padding: 28px; text-align: center; margin-bottom: 24px; cursor: pointer;
-    transition: all 0.2s; background: rgba(212,168,83,0.04);
-  }
-  .avatar-upload-zone:hover, .avatar-upload-zone.drag-over {
-    border-color: #d4a853; background: rgba(212,168,83,0.1);
-  }
-  .avatar-upload-zone p { color: rgba(212,168,83,0.75); font-size: 0.88rem; margin: 8px 0 0; }
-  .avatar-upload-icon { font-size: 2rem; line-height: 1; }
-  .avatar-upload-btn {
-    display: inline-block; margin-top: 12px; padding: 8px 20px;
-    background: #d4a853; color: #0f1a12; border: none; border-radius: 6px;
-    font-family: 'Cabin', sans-serif; font-weight: 700; font-size: 0.82rem;
-    text-transform: uppercase; cursor: pointer; transition: all 0.2s;
-  }
-  .avatar-upload-btn:hover { background: #e0bd70; }
+/* ===== SECTION LABEL ===== */
+.section-label {
+  font-family: 'Cabin', sans-serif; font-size: 0.7rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.12em; color: #c9a84c;
+  margin-bottom: 12px;
+}
 
-  /* Preset grid */
-  .avatar-presets-title {
-    font-family: 'Cabin', sans-serif; font-size: 0.72rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.08em; color: #d4a853;
-    margin: 0 0 14px;
-  }
-  .avatar-presets-grid {
-    display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px;
-  }
-  .avatar-preset {
-    width: 100%; aspect-ratio: 1; border-radius: 50%; cursor: pointer;
-    border: 3px solid transparent; transition: all 0.2s;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.5rem; overflow: hidden;
-  }
-  .avatar-preset:hover, .avatar-preset.selected { border-color: #d4a853; transform: scale(1.08); }
-  .avatar-preset img { width: 100%; height: 100%; object-fit: cover; }
+/* ===== ACHIEVEMENT BADGES ===== */
+.badges-row {
+  display: flex; gap: 10px; overflow-x: auto; padding-bottom: 8px;
+  scrollbar-width: none; margin-bottom: 36px;
+}
+.badges-row::-webkit-scrollbar { display: none; }
 
-  .avatar-save-btn {
-    margin-top: 20px; width: 100%; padding: 13px;
-    background: #d4a853; color: #0f1a12; border: none; border-radius: 6px;
-    font-family: 'Cabin', sans-serif; font-weight: 700; font-size: 0.9rem;
-    text-transform: uppercase; cursor: pointer; transition: all 0.2s;
-  }
-  .avatar-save-btn:hover { background: #e0bd70; transform: translateY(-1px); }
+.badge-card {
+  flex-shrink: 0; min-width: 112px;
+  background: #0a2e10; border-radius: 10px;
+  padding: 16px 12px 14px; text-align: center;
+  border: 1.5px solid rgba(201,168,76,0.18);
+  transition: transform 0.15s;
+}
+.badge-card.earned { border-color: rgba(201,168,76,0.55); }
+.badge-card.locked { opacity: 0.36; }
+.badge-card.earned:hover { transform: translateY(-2px); }
+.badge-icon { margin: 0 auto 9px; width: 28px; height: 28px; }
+.badge-icon svg { width: 28px; height: 28px; display: block; }
+.badge-card.earned .badge-icon svg { stroke: #c9a84c; }
+.badge-card.locked .badge-icon svg { stroke: rgba(255,255,255,0.32); }
+.badge-name {
+  font-family: 'Cabin', sans-serif; font-size: 0.7rem; font-weight: 700;
+  color: #c9a84c; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px;
+}
+.badge-card.locked .badge-name { color: rgba(255,255,255,0.42); }
+.badge-desc { font-size: 0.66rem; color: rgba(255,255,255,0.42); line-height: 1.35; }
 
-  /* ── Wordle Stats ── */
-  .stats-grid {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px;
-  }
-  .stat-box {
-    background: rgba(212,168,83,0.08); border: 1px solid rgba(212,168,83,0.15);
-    border-radius: 8px; text-align: center; padding: 14px 8px;
-  }
-  .stat-num {
-    font-family: 'Cabin', sans-serif; font-size: 1.8rem; font-weight: 700;
-    color: #d4a853; line-height: 1;
-  }
-  .stat-lbl { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: rgba(212,168,83,0.6); margin-top: 4px; }
-  .dist-title {
-    font-family: 'Cabin', sans-serif; font-size: 0.75rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.06em; color: rgba(212,168,83,0.7); margin-bottom: 10px;
-  }
-  .dist-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; font-size: 0.85rem; }
-  .dist-num { font-weight: 700; min-width: 14px; color: #d4a853; }
-  .dist-bar-wrap { flex: 1; background: rgba(212,168,83,0.1); border-radius: 3px; height: 22px; }
-  .dist-bar {
-    height: 100%; min-width: 28px; background: #d4a853; border-radius: 3px;
-    display: flex; align-items: center; justify-content: flex-end;
-    padding-right: 8px; font-size: 0.8rem; font-weight: 700; color: #0f1a12;
-    transition: width 0.8s ease;
-  }
-  .no-stats { font-size: 0.92rem; color: rgba(212,168,83,0.5); margin: 0; }
-  .no-stats a { color: #d4a853; font-weight: 700; }
+/* ===== TWO-COLUMN GRID ===== */
+.profile-grid {
+  display: grid; grid-template-columns: 1fr 1.1fr; gap: 20px; align-items: start;
+}
+.profile-col { display: flex; flex-direction: column; gap: 20px; }
 
-  /* ── Saved Books shelf ── */
-  .saved-shelf { }
-  .saved-shelf-empty { color: rgba(212,168,83,0.5); font-size: 0.9rem; }
-  .saved-shelf-empty a { color: #d4a853; font-weight: 700; }
-  .shelf-row {
-    display: flex; gap: 14px; overflow-x: auto; padding-bottom: 8px;
-  }
-  .shelf-row::-webkit-scrollbar { height: 5px; }
-  .shelf-row::-webkit-scrollbar-track { background: rgba(212,168,83,0.05); }
-  .shelf-row::-webkit-scrollbar-thumb { background: rgba(212,168,83,0.3); border-radius: 10px; }
-  .shelf-book {
-    flex-shrink: 0; width: 90px; cursor: pointer;
-    transition: transform 0.2s;
-  }
-  .shelf-book:hover { transform: translateY(-4px); }
-  .shelf-cover {
-    width: 90px; height: 130px; border-radius: 6px; overflow: hidden;
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Libre Baskerville', serif; font-size: 1.1rem; font-weight: 700;
-    color: #fff; position: relative;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.4);
-    border: 1px solid rgba(212,168,83,0.15);
-  }
-  .shelf-cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  .shelf-cover-letters { position: relative; z-index: 1; text-shadow: 0 2px 6px rgba(0,0,0,0.5); }
-  .shelf-title { font-size: 0.75rem; color: rgba(224,189,112,0.9); margin-top: 8px; line-height: 1.3; text-align: center; font-weight: 600; }
-  .shelf-remove-btn {
-    display: block; width: 100%; margin-top: 4px; padding: 4px;
-    background: rgba(212,168,83,0.08); border: 1px solid rgba(212,168,83,0.2);
-    border-radius: 4px; color: rgba(212,168,83,0.6); font-size: 0.65rem;
-    font-family: 'Cabin', sans-serif; font-weight: 700; text-transform: uppercase;
-    cursor: pointer; transition: all 0.2s; text-align: center;
-  }
-  .shelf-remove-btn:hover { background: rgba(220,53,69,0.2); border-color: rgba(220,53,69,0.4); color: #ef5350; }
+/* ===== CARDS ===== */
+.pcard {
+  background: #0a2e10; border-radius: 10px; padding: 24px 26px;
+  border-top: 3px solid #c9a84c;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.28);
+}
+.pcard-title {
+  font-family: 'Cabin', sans-serif; font-size: 0.72rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.1em; color: #c9a84c;
+  margin: 0 0 18px;
+}
 
-  /* ── Netflix-style Recommendations ── */
-  .rec-section { padding: 0 40px; margin-top: 8px; }
-  .rec-row { margin-bottom: 40px; }
-  .rec-row-header {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 16px;
-  }
-  .rec-row-title {
-    font-family: 'Libre Baskerville', serif; font-size: 1.15rem; font-weight: 700;
-    color: #e0bd70;
-  }
-  .rec-row-reason {
-    font-size: 0.78rem; color: rgba(212,168,83,0.6);
-    font-style: italic; margin-top: 2px;
-  }
-  .rec-track {
-    display: flex; gap: 16px; overflow-x: auto; padding-bottom: 12px;
-  }
-  .rec-track::-webkit-scrollbar { height: 5px; }
-  .rec-track::-webkit-scrollbar-track { background: rgba(212,168,83,0.05); }
-  .rec-track::-webkit-scrollbar-thumb { background: rgba(212,168,83,0.25); border-radius: 10px; }
-  .rec-card {
-    flex-shrink: 0; width: 150px; cursor: pointer;
-    transition: transform 0.25s, box-shadow 0.25s;
-    position: relative;
-  }
-  .rec-card:hover { transform: scale(1.05); z-index: 2; }
-  .rec-cover {
-    width: 150px; height: 220px; border-radius: 8px; overflow: hidden;
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Libre Baskerville', serif; font-size: 1.3rem; font-weight: 700;
-    color: #fff; position: relative;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-    border: 1px solid rgba(212,168,83,0.15);
-  }
-  .rec-cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  .rec-cover-letters { position: relative; z-index: 1; text-shadow: 0 2px 8px rgba(0,0,0,0.6); padding: 8px; text-align: center; }
-  .rec-badge {
-    position: absolute; top: 8px; right: 8px; z-index: 3;
-    background: #d4a853; color: #0f1a12; font-family: 'Cabin', sans-serif;
-    font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
-    padding: 3px 7px; border-radius: 4px; white-space: nowrap;
-  }
-  .rec-info { padding: 10px 2px 0; }
-  .rec-title {
-    font-family: 'Libre Baskerville', serif; font-size: 0.82rem; font-weight: 700;
-    color: #e0bd70; line-height: 1.3; margin-bottom: 3px;
-  }
-  .rec-author { font-size: 0.73rem; color: rgba(212,168,83,0.65); }
-  .rec-price { font-size: 0.78rem; font-weight: 700; color: #d4a853; margin-top: 4px; }
-  .rec-save-btn {
-    margin-top: 7px; width: 100%; padding: 6px;
-    background: rgba(212,168,83,0.12); border: 1px solid rgba(212,168,83,0.25);
-    border-radius: 5px; color: #d4a853; font-size: 0.7rem;
-    font-family: 'Cabin', sans-serif; font-weight: 700; text-transform: uppercase;
-    cursor: pointer; transition: all 0.2s; text-align: center;
-  }
-  .rec-save-btn:hover { background: #d4a853; color: #0f1a12; }
-  .rec-save-btn.saved { background: rgba(76,175,80,0.2); border-color: rgba(76,175,80,0.4); color: #81c784; }
+/* Account fields */
+.afield { margin-bottom: 14px; }
+.afield:last-child { margin-bottom: 0; }
+.afield-label {
+  font-size: 0.67rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; color: rgba(255,255,255,0.32); margin-bottom: 4px;
+}
+.afield-val { font-size: 0.92rem; color: #e8f5e9; font-family: 'Lato', sans-serif; }
 
-  .rec-skeleton {
-    flex-shrink: 0; width: 150px;
-    background: rgba(255,255,255,0.04); border-radius: 8px;
-    height: 220px; animation: shimmer 1.5s infinite;
-  }
-  @keyframes shimmer {
-    0%,100% { opacity: 0.5; } 50% { opacity: 1; }
-  }
+/* Genre pills */
+.genre-wrap { display: flex; flex-wrap: wrap; gap: 7px; }
+.gpill {
+  padding: 6px 13px; border-radius: 20px;
+  border: 1.5px solid rgba(255,255,255,0.17);
+  background: transparent; color: rgba(255,255,255,0.48);
+  font-family: 'Lato', sans-serif; font-size: 0.78rem;
+  cursor: pointer; transition: all 0.13s; user-select: none; line-height: 1;
+}
+.gpill:hover { border-color: #c9a84c; color: #c9a84c; }
+.gpill.on { background: #c9a84c; border-color: #c9a84c; color: #1a1a1a; font-weight: 700; }
+.genre-hint { font-size: 0.68rem; color: rgba(255,255,255,0.26); margin-top: 12px; }
 
-  .rec-empty {
-    color: rgba(212,168,83,0.5); font-size: 0.9rem; padding: 20px 0;
-    font-style: italic;
-  }
-  .rec-empty a { color: #d4a853; font-weight: 700; font-style: normal; }
+/* Saved books */
+.sbook {
+  padding: 11px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.sbook:last-child { border-bottom: none; padding-bottom: 0; }
+.sbook-title {
+  font-family: 'Cabin', sans-serif; font-size: 0.88rem; font-weight: 700;
+  color: #e8f5e9; margin-bottom: 2px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.sbook-author { font-size: 0.78rem; color: rgba(255,255,255,0.46); }
+.sbook-genre {
+  display: inline-block; margin-top: 4px;
+  font-size: 0.66rem; font-weight: 700; text-transform: uppercase;
+  padding: 2px 7px; border-radius: 3px;
+  background: rgba(201,168,76,0.12); color: #c9a84c;
+}
+.no-items { font-size: 0.88rem; color: rgba(255,255,255,0.36); margin: 0; }
+.no-items a { color: #c9a84c; font-weight: 700; text-decoration: none; }
+.no-items a:hover { text-decoration: underline; }
 
-  /* ── Genre tag chips ── */
-  .genre-prefs { display: flex; flex-wrap: wrap; gap: 8px; }
-  .genre-chip {
-    padding: 6px 14px; border-radius: 20px; cursor: pointer; font-size: 0.78rem;
-    font-family: 'Cabin', sans-serif; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 0.04em; border: 1px solid rgba(212,168,83,0.25);
-    background: rgba(212,168,83,0.07); color: rgba(212,168,83,0.75);
-    transition: all 0.2s; user-select: none;
-  }
-  .genre-chip.active { background: #d4a853; color: #0f1a12; border-color: #d4a853; }
-
-  /* ── Divider ── */
-  .profile-section-divider {
-    margin: 36px 40px 0;
-    border: none; border-top: 1px solid rgba(212,168,83,0.1);
-  }
-  .profile-section-header {
-    padding: 28px 40px 0;
-    display: flex; align-items: center; gap: 16px;
-  }
-  .profile-section-header h2 {
-    font-family: 'Libre Baskerville', serif; font-size: 1.3rem; color: #e0bd70;
-    font-weight: 700; margin: 0; border: none;
-  }
-  .profile-section-header .section-sub {
-    font-size: 0.82rem; color: rgba(212,168,83,0.6); margin-left: auto;
-  }
-
-  @media (max-width: 900px) {
-    .profile-body { grid-template-columns: 1fr; }
-    .profile-identity { padding: 0 20px; gap: 18px; }
-    .rec-section { padding: 0 20px; }
-    .profile-section-header { padding: 20px 20px 0; }
-    .profile-section-divider { margin: 28px 20px 0; }
-  }
-  @media (max-width: 600px) {
-    .profile-banner { height: 160px; }
-    .profile-avatar { width: 80px; height: 80px; font-size: 1.8rem; }
-    .profile-name { font-size: 1.4rem; }
-    .stats-grid { grid-template-columns: repeat(2, 1fr); }
-    .profile-body { padding: 24px 16px 0; }
-    .rec-cover { width: 120px; height: 176px; }
-    .rec-card { width: 120px; }
-    .avatar-presets-grid { grid-template-columns: repeat(4, 1fr); }
-  }
+/* ===== RESPONSIVE ===== */
+@media (max-width: 820px) {
+  .profile-hero { padding: 28px 24px 24px; }
+  .hero-actions { position: static; margin-top: 16px; width: 100%; flex-direction: column; }
+  .hero-signout, .hero-admin-link { width: 100%; text-align: center; box-sizing: border-box; }
+  .profile-content { padding: 24px 20px 40px; }
+  .profile-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+  .hero-name { font-size: 1.4rem; }
+  .hero-avatar-img, .hero-avatar-init { width: 76px; height: 76px; font-size: 1.6rem; }
+}
 </style>
 
-<!-- Avatar Picker Modal -->
-<div class="avatar-modal-overlay" id="avatar-modal">
-  <div class="avatar-modal">
-    <button class="avatar-modal-close" id="avatar-modal-close">✕</button>
-    <h2>Customize Your Avatar</h2>
-    <p class="avatar-modal-sub">Upload your own image or choose a preset.</p>
+<input type="file" id="avatar-input" accept="image/*">
 
-    <!-- Upload zone -->
-    <div class="avatar-upload-zone" id="avatar-upload-zone">
-      <div class="avatar-upload-icon">📷</div>
-      <p>Drag & drop an image here</p>
-      <button class="avatar-upload-btn" id="avatar-upload-trigger">Browse File</button>
-      <input type="file" id="avatar-file-input" accept="image/*" style="display:none">
-    </div>
-
-    <!-- Preset selection -->
-    <div class="avatar-presets-title">— or choose a preset —</div>
-    <div class="avatar-presets-grid" id="avatar-presets-grid">
-      <!-- presets rendered by JS -->
-    </div>
-
-    <button class="avatar-save-btn" id="avatar-save-btn">Save Avatar</button>
+<!-- HERO -->
+<div class="profile-hero">
+  <div class="hero-avatar-wrap">
+    <div class="hero-avatar-init" id="avatar-init">?</div>
+    <img class="hero-avatar-img" id="avatar-img" alt="Profile photo">
+    <button class="avatar-edit-btn" id="avatar-edit-btn" title="Change avatar">&#9998;</button>
+  </div>
+  <div class="hero-info">
+    <div class="hero-name" id="hero-name">Loading</div>
+    <span class="hero-role-badge" id="hero-role-badge">Member</span>
+    <div class="hero-meta" id="hero-email"></div>
+    <div class="hero-meta" id="hero-since"></div>
+    <div class="hero-stats-line" id="hero-stats"></div>
+  </div>
+  <div class="hero-actions" id="hero-actions">
+    <button class="hero-signout" onclick="doSignOut()">Sign Out</button>
   </div>
 </div>
 
-<!-- Hero Banner — full width, outside max-width container -->
-<div class="profile-banner">
-  <div class="profile-banner-bg"></div>
-  <div class="profile-banner-particles" id="banner-particles"></div>
-  <button class="profile-banner-change-btn" onclick="openAvatarModal()">Change Avatar</button>
+<!-- CONTENT -->
+<div class="profile-content">
+
+  <!-- Achievement Badges -->
+  <div class="section-label">Achievements</div>
+  <div class="badges-row" id="badges-row"></div>
+
+  <!-- Two-column grid -->
+  <div class="profile-grid">
+    <!-- Left: Account Info + Genre Prefs -->
+    <div class="profile-col">
+      <div class="pcard">
+        <div class="pcard-title">Account Info</div>
+        <div class="afield">
+          <div class="afield-label">Email</div>
+          <div class="afield-val" id="acct-email">-</div>
+        </div>
+        <div class="afield">
+          <div class="afield-label">Member Since</div>
+          <div class="afield-val" id="acct-since">-</div>
+        </div>
+        <div class="afield">
+          <div class="afield-label">Role</div>
+          <div class="afield-val" id="acct-role">-</div>
+        </div>
+      </div>
+      <div class="pcard">
+        <div class="pcard-title">Genre Preferences</div>
+        <div class="genre-wrap" id="genre-wrap"></div>
+        <div class="genre-hint">Tap genres to toggle. Saved automatically.</div>
+      </div>
+    </div>
+    <!-- Right: Saved Books -->
+    <div class="profile-col">
+      <div class="pcard">
+        <div class="pcard-title">My Saved Books</div>
+        <div id="saved-books-list"><p class="no-items">Loading...</p></div>
+      </div>
+    </div>
+  </div>
+
 </div>
-
-<div class="profile-page">
-
-  <!-- Identity row -->
-  <div class="profile-identity">
-    <div class="profile-avatar-wrap" onclick="openAvatarModal()">
-      <div class="profile-avatar" id="profile-avatar-el">?</div>
-      <div class="avatar-edit-overlay">Edit<br>Photo</div>
-    </div>
-    <div class="profile-identity-text">
-      <div class="profile-name" id="profile-name">—</div>
-      <span class="profile-role-badge" id="profile-role">Member</span>
-    </div>
-    <div class="profile-meta">
-      <button class="signout-btn" onclick="doSignOut()">Sign Out</button>
-    </div>
-  </div>
-
-  <!-- Main body: left sidebar + right content -->
-  <div class="profile-body">
-
-    <!-- LEFT SIDEBAR -->
-    <div class="profile-sidebar">
-
-      <!-- Account Info -->
-      <div class="p-card">
-        <div class="p-card-title">Account</div>
-        <div class="profile-fields">
-          <div class="profile-field">
-            <label>Email</label>
-            <span id="profile-email">—</span>
-          </div>
-          <div class="profile-field">
-            <label>Member Since</label>
-            <span id="profile-since">—</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Genre Preferences -->
-      <div class="p-card">
-        <div class="p-card-title">My Genre Preferences</div>
-        <div class="genre-prefs" id="genre-prefs"></div>
-        <p style="font-size:0.78rem;color:rgba(212,168,83,0.5);margin:12px 0 0;">Select genres to personalize your recommendations.</p>
-      </div>
-
-      <!-- Wordle Stats -->
-      <div class="p-card">
-        <div class="p-card-title">🟩 Wordle Stats</div>
-        <div id="wordle-stats-content"><p class="no-stats">Loading…</p></div>
-      </div>
-
-    </div><!-- /sidebar -->
-
-    <!-- RIGHT CONTENT -->
-    <div class="profile-main">
-
-      <!-- Saved Books shelf -->
-      <div class="p-card saved-shelf">
-        <div class="p-card-title">My Saved Books</div>
-        <div id="saved-books-shelf">
-          <p class="saved-shelf-empty">No saved books yet. <a href="/catalog">Browse the catalog →</a></p>
-        </div>
-      </div>
-
-    </div><!-- /main -->
-  </div><!-- /profile-body -->
-
-  <!-- ─── Recommendations ─── -->
-  <hr class="profile-section-divider">
-  <div class="profile-section-header">
-    <h2>Recommended for You</h2>
-    <span class="section-sub">Based on your saves and preferences</span>
-  </div>
-  <div class="rec-section" id="rec-section">
-    <!-- rows rendered by JS -->
-    <div class="rec-row">
-      <div class="rec-track">
-        <div class="rec-skeleton"></div>
-        <div class="rec-skeleton"></div>
-        <div class="rec-skeleton"></div>
-        <div class="rec-skeleton"></div>
-        <div class="rec-skeleton"></div>
-        <div class="rec-skeleton"></div>
-      </div>
-    </div>
-  </div>
-
-</div><!-- /profile-page -->
 
 <script>
 {
   const BACKEND = window.FOPL_BACKEND;
-  const DEV_PREVIEW = new URLSearchParams(location.search).has('preview');
+  var foplUser = JSON.parse(localStorage.getItem('fopl_user') || 'null');
+  if (!foplUser) { window.location.replace('/login'); }
 
-  const MOCK_USER = {
-    name: 'Alex Reader', email: 'alex@example.com', role: 'Member',
-    uid: 'dev-preview', created_at: '2024-09-01T00:00:00Z'
+  var SVG = {
+    member:   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
+    reader:   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>',
+    trophy:   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="14.5 17 14 21 12 22 10 21 9.5 17"/><path d="M5 5V3h14v2"/><path d="M5 5a7 7 0 0 0 7 7 7 7 0 0 0 7-7"/><line x1="8" y1="21" x2="16" y2="21"/><path d="M5 5H3a2 2 0 0 0 0 4h2"/><path d="M19 5h2a2 2 0 0 1 0 4h-2"/></svg>',
+    bolt:     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>',
+    bookmark: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>',
+    compass:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>',
+    lock:     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'
   };
-  const MOCK_BOOKS = [
-    { id:1, title:'The Great Gatsby', author:'F. Scott Fitzgerald', genre:'Fiction', condition:'Good', price:'2.00', isbn:'9780743273565' },
-    { id:2, title:'To Kill a Mockingbird', author:'Harper Lee', genre:'Fiction', condition:'Good', price:'2.50', isbn:'9780061935466' },
-    { id:3, title:'1984', author:'George Orwell', genre:'Science Fiction', condition:'Fair', price:'1.50', isbn:'9780451524935' },
-    { id:4, title:'Dune', author:'Frank Herbert', genre:'Science Fiction', condition:'Good', price:'3.00', isbn:'9780441013593' },
-    { id:5, title:'The Hobbit', author:'J.R.R. Tolkien', genre:'Fantasy', condition:'Good', price:'2.00', isbn:'9780547928227' },
-    { id:6, title:'Sapiens', author:'Yuval Noah Harari', genre:'History', condition:'Good', price:'2.50', isbn:'9780062316110' },
-    { id:7, title:'Educated', author:'Tara Westover', genre:'Biography', condition:'Good', price:'2.00', isbn:'9780399590504' },
-    { id:8, title:'The Alchemist', author:'Paulo Coelho', genre:'Fiction', condition:'Fair', price:'1.00', isbn:'9780062315007' },
-    { id:9, title:'Thinking, Fast and Slow', author:'Daniel Kahneman', genre:'Non-Fiction', condition:'Good', price:'3.00', isbn:'9780374533557' },
-    { id:10, title:'A Brief History of Time', author:'Stephen Hawking', genre:'Science', condition:'Good', price:'2.00', isbn:'9780553380163' },
-    { id:11, title:'The Name of the Wind', author:'Patrick Rothfuss', genre:'Fantasy', condition:'Good', price:'2.50', isbn:'9780756404741' },
-    { id:12, title:'Brave New World', author:'Aldous Huxley', genre:'Science Fiction', condition:'Fair', price:'1.50', isbn:'9780060850524' },
+
+  const ALL_GENRES = [
+    'Fiction','Non-Fiction','Mystery','Science Fiction','Fantasy',
+    'Biography','History','Children','Romance','Thriller',
+    'Horror','Young Adult','New Adult','Graphic Novel','Poetry',
+    'Cooking','Self-Help'
   ];
-
-  const foplUser = DEV_PREVIEW
-    ? MOCK_USER
-    : JSON.parse(localStorage.getItem('fopl_user') || 'null');
-  if (!foplUser && !DEV_PREVIEW) { window.location.replace('/login'); }
-
-  // ─── Storage helpers ────────────────────────────────────────────────────────
-  const LS_SAVED   = 'fopl_saved_books';     // {id: bookObj}
-  const LS_VIEWED  = 'fopl_viewed_books';    // [id, id, ...] most-recent first
-  const LS_GENRES  = 'fopl_pref_genres';     // [genre, genre]
-  const LS_AVATAR  = 'fopl_avatar';          // base64 string or 'preset:N'
-
-  const getSaved  = () => JSON.parse(localStorage.getItem(LS_SAVED)  || '{}');
-  const getViewed = () => JSON.parse(localStorage.getItem(LS_VIEWED) || '[]');
-  const getGenres = () => JSON.parse(localStorage.getItem(LS_GENRES) || '[]');
-  const getAvatar = () => localStorage.getItem(LS_AVATAR) || null;
-
-  const saveSaved  = v => localStorage.setItem(LS_SAVED,  JSON.stringify(v));
-  const saveViewed = v => localStorage.setItem(LS_VIEWED, JSON.stringify(v));
-  const saveGenres = v => localStorage.setItem(LS_GENRES, JSON.stringify(v));
-  const saveAvatar = v => localStorage.setItem(LS_AVATAR, v);
-
-  // ─── Preset avatars ─────────────────────────────────────────────────────────
-  const PRESETS = [
-    { bg:'#1e3320', emoji:'📚' },
-    { bg:'#1a2e40', emoji:'🌊' },
-    { bg:'#3a1a1a', emoji:'🔥' },
-    { bg:'#2a1a3a', emoji:'✨' },
-    { bg:'#1a3028', emoji:'🌿' },
-    { bg:'#2e2810', emoji:'☀️' },
-    { bg:'#1a1a2e', emoji:'🌙' },
-    { bg:'#1e1e1e', emoji:'🎩' },
-    { bg:'#2e1420', emoji:'🌹' },
-    { bg:'#0e2828', emoji:'🔮' },
-    { bg:'#1e1e10', emoji:'🍂' },
-    { bg:'#101828', emoji:'🦋' },
-  ];
-
-  // ─── Banner particles ───────────────────────────────────────────────────────
-  function initParticles() {
-    const container = document.getElementById('banner-particles');
-    if (!container) return;
-    const glyphs = ['A','B','§','¶','✦','◆','❧','☙','⌘','∞','ℓ','Ω'];
-    for (let i = 0; i < 12; i++) {
-      const el = document.createElement('span');
-      el.className = 'banner-glyph';
-      el.textContent = glyphs[i % glyphs.length];
-      el.style.left  = Math.random() * 100 + '%';
-      el.style.top   = Math.random() * 100 + '%';
-      el.style.animationDelay = Math.random() * 10 + 's';
-      el.style.animationDuration = (14 + Math.random() * 10) + 's';
-      container.appendChild(el);
-    }
-  }
-
-  // ─── Avatar rendering ────────────────────────────────────────────────────────
-  let pendingAvatarValue = null; // staging area before Save
-
-  function applyAvatarToEl(el, value, initials) {
-    if (!value) {
-      el.style.background = '#1e3320';
-      el.innerHTML = `<span style="position:relative;z-index:1;">${initials || '?'}</span>`;
-      return;
-    }
-    if (value.startsWith('preset:')) {
-      const idx = parseInt(value.split(':')[1]);
-      const p = PRESETS[idx] || PRESETS[0];
-      el.style.background = p.bg;
-      el.innerHTML = `<span style="font-size:1.8rem;">${p.emoji}</span>`;
-    } else {
-      el.style.background = '#000';
-      el.innerHTML = `<img src="${value}" alt="avatar">`;
-    }
-  }
-
-  function renderMainAvatar() {
-    if (!foplUser) return;
-    const initials = foplUser.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-    applyAvatarToEl(document.getElementById('profile-avatar-el'), getAvatar(), initials);
-  }
-
-  // ─── Avatar Modal ────────────────────────────────────────────────────────────
-  window.openAvatarModal = function() {
-    pendingAvatarValue = getAvatar();
-    renderPresetGrid();
-    document.getElementById('avatar-modal').classList.add('open');
-  };
-  function closeAvatarModal() {
-    pendingAvatarValue = null;
-    document.getElementById('avatar-modal').classList.remove('open');
-  }
-  function renderPresetGrid() {
-    const grid = document.getElementById('avatar-presets-grid');
-    const cur  = pendingAvatarValue;
-    grid.innerHTML = PRESETS.map((p, i) => {
-      const sel = cur === 'preset:'+i ? 'selected' : '';
-      return `<div class="avatar-preset ${sel}" style="background:${p.bg};" data-preset="${i}" onclick="selectPreset(${i})">
-        <span style="font-size:1.5rem;">${p.emoji}</span>
-      </div>`;
-    }).join('');
-  }
-  window.selectPreset = function(i) {
-    pendingAvatarValue = 'preset:'+i;
-    renderPresetGrid();
-  };
-
-  document.getElementById('avatar-modal-close').addEventListener('click', closeAvatarModal);
-  document.getElementById('avatar-modal').addEventListener('click', e => {
-    if (e.target === document.getElementById('avatar-modal')) closeAvatarModal();
-  });
-
-  // File upload
-  const fileInput = document.getElementById('avatar-file-input');
-  document.getElementById('avatar-upload-trigger').addEventListener('click', () => fileInput.click());
-  const uploadZone = document.getElementById('avatar-upload-zone');
-  uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
-  uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
-  uploadZone.addEventListener('drop', e => {
-    e.preventDefault(); uploadZone.classList.remove('drag-over');
-    const file = e.dataTransfer.files[0];
-    if (file) handleFileUpload(file);
-  });
-  fileInput.addEventListener('change', () => { if (fileInput.files[0]) handleFileUpload(fileInput.files[0]); });
-
-  function handleFileUpload(file) {
-    if (!file.type.startsWith('image/')) return;
-    if (file.size > 4 * 1024 * 1024) { alert('Please choose an image under 4 MB.'); return; }
-    const reader = new FileReader();
-    reader.onload = e => {
-      pendingAvatarValue = e.target.result;
-      // Deselect presets
-      document.querySelectorAll('.avatar-preset').forEach(el => el.classList.remove('selected'));
-      uploadZone.style.borderColor = '#d4a853';
-      uploadZone.querySelector('p').textContent = '✓ Image ready — click Save';
-    };
-    reader.readAsDataURL(file);
-  }
-
-  document.getElementById('avatar-save-btn').addEventListener('click', () => {
-    if (pendingAvatarValue !== null) {
-      saveAvatar(pendingAvatarValue);
-      renderMainAvatar();
-    }
-    closeAvatarModal();
-  });
-
-  // ─── User card ───────────────────────────────────────────────────────────────
-  function fillUser(user) {
-    document.getElementById('profile-name').textContent  = user.name;
-    document.getElementById('profile-email').textContent = user.email;
-    const roleEl = document.getElementById('profile-role');
-    roleEl.textContent = user.role || 'Member';
-    if ((user.role||'').toLowerCase() === 'admin') roleEl.classList.add('admin');
-    if (user.created_at) {
-      const d = new Date(user.created_at);
-      document.getElementById('profile-since').textContent =
-        d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-    }
-    renderMainAvatar();
-  }
-
-  // ─── Wordle Stats ────────────────────────────────────────────────────────────
-  function fillWordleStats(s) {
-    const el = document.getElementById('wordle-stats-content');
-    if (!s || s.games_played === 0) {
-      el.innerHTML = `<p class="no-stats">No Wordle games played yet. <a href="/wordle">Play now →</a></p>`;
-      return;
-    }
-    const dist = s.guess_dist || {};
-    const maxVal = Math.max(...Object.values(dist), 1);
-    let distHtml = '';
-    for (let i = 1; i <= 6; i++) {
-      const val = dist[String(i)] || 0;
-      const w = Math.max(Math.round((val / maxVal) * 100), 8);
-      distHtml += `<div class="dist-row">
-        <div class="dist-num">${i}</div>
-        <div class="dist-bar-wrap">
-          <div class="dist-bar" style="width:${w}%">${val}</div>
-        </div></div>`;
-    }
-    el.innerHTML = `
-      <div class="stats-grid">
-        <div class="stat-box"><div class="stat-num">${s.games_played}</div><div class="stat-lbl">Played</div></div>
-        <div class="stat-box"><div class="stat-num">${s.win_rate}</div><div class="stat-lbl">Win %</div></div>
-        <div class="stat-box"><div class="stat-num">${s.streak}</div><div class="stat-lbl">Streak</div></div>
-        <div class="stat-box"><div class="stat-num">${s.max_streak}</div><div class="stat-lbl">Max Streak</div></div>
-      </div>
-      <div class="dist-title">Guess Distribution</div>${distHtml}`;
-  }
-
-  // ─── Saved shelf ─────────────────────────────────────────────────────────────
-  const COVER_COLORS = ['#1e3320','#1a2e40','#3a1a1a','#2a1a3a','#1a3028','#2e2810'];
-
-  function coverColor(id) { return COVER_COLORS[Math.abs((id||0)) % COVER_COLORS.length]; }
-
-  function renderSavedShelf() {
-    const saved = getSaved();
-    const ids   = Object.keys(saved);
-    const el    = document.getElementById('saved-books-shelf');
-    if (!ids.length) {
-      el.innerHTML = `<p class="saved-shelf-empty">No saved books yet. <a href="/catalog">Browse the catalog →</a></p>`;
-      return;
-    }
-    el.innerHTML = `<div class="shelf-row">${ids.map(id => {
-      const b = saved[id];
-      const coverUrl = b.isbn ? `https://covers.openlibrary.org/b/isbn/${b.isbn}-M.jpg` : '';
-      return `<div class="shelf-book" data-id="${b.id}">
-        <div class="shelf-cover" style="background:${coverColor(b.id)}">
-          ${coverUrl ? `<img src="${coverUrl}" onerror="this.style.display='none'" alt="">` : ''}
-          <span class="shelf-cover-letters">${(b.title||'?').charAt(0)}</span>
-        </div>
-        <div class="shelf-title">${escHtml(b.title||'')}</div>
-        <button class="shelf-remove-btn" onclick="unsaveBook('${b.id}')">Remove</button>
-      </div>`;
-    }).join('')}</div>`;
-  }
-
-  window.unsaveBook = function(id) {
-    const saved = getSaved();
-    delete saved[id];
-    saveSaved(saved);
-    renderSavedShelf();
-    renderRecommendations(allBooks);
-  };
-
-  // ─── Genre preferences chips ─────────────────────────────────────────────────
-  const ALL_GENRES = ['Fiction','Non-Fiction','Mystery','Science Fiction','Fantasy',
-    'Biography','History','Children','Romance','Self-Help','Science','Art'];
-
-  function renderGenreChips() {
-    const active = getGenres();
-    const el = document.getElementById('genre-prefs');
-    el.innerHTML = ALL_GENRES.map(g =>
-      `<span class="genre-chip${active.includes(g)?' active':''}" onclick="toggleGenre('${g}')">${g}</span>`
-    ).join('');
-  }
-
-  window.toggleGenre = function(g) {
-    let genres = getGenres();
-    if (genres.includes(g)) genres = genres.filter(x => x !== g);
-    else genres.push(g);
-    saveGenres(genres);
-    renderGenreChips();
-    renderRecommendations(allBooks);
-  };
-
-  // ─── Recommendations engine ───────────────────────────────────────────────────
-  let allBooks = [];
-
-  function buildBookCard(b, badgeText) {
-    const coverUrl = b.isbn ? `https://covers.openlibrary.org/b/isbn/${b.isbn}-M.jpg` : '';
-    const saved = getSaved();
-    const isSaved = !!saved[b.id];
-    return `<div class="rec-card" onclick="openBookFromProfile(${b.id})">
-      <div class="rec-cover" style="background:${coverColor(b.id)}">
-        ${coverUrl ? `<img src="${coverUrl}" onerror="this.style.display='none'" alt="">` : ''}
-        <span class="rec-cover-letters">${(b.title||'?').charAt(0)}</span>
-        ${badgeText ? `<span class="rec-badge">${escHtml(badgeText)}</span>` : ''}
-      </div>
-      <div class="rec-info">
-        <div class="rec-title">${escHtml(b.title||'')}</div>
-        <div class="rec-author">${escHtml(b.author||'')}</div>
-        <div class="rec-price">$${parseFloat(b.price||0).toFixed(2)}</div>
-        <button class="rec-save-btn${isSaved?' saved':''}" onclick="event.stopPropagation();toggleSaveBook(${JSON.stringify(JSON.stringify(b))},this)">${isSaved?'✓ Saved':'+ Save'}</button>
-      </div>
-    </div>`;
-  }
-
-  window.toggleSaveBook = function(bStr, btn) {
-    const b = JSON.parse(bStr);
-    const saved = getSaved();
-    if (saved[b.id]) {
-      delete saved[b.id];
-      btn.textContent = '+ Save'; btn.classList.remove('saved');
-    } else {
-      saved[b.id] = b;
-      btn.textContent = '✓ Saved'; btn.classList.add('saved');
-    }
-    saveSaved(saved);
-    renderSavedShelf();
-  };
-
-  window.openBookFromProfile = function(id) {
-    // Track view
-    const viewed = getViewed().filter(x => x !== id);
-    viewed.unshift(id);
-    saveViewed(viewed.slice(0, 50));
-    // Navigate to catalog with highlight
-    window.location.href = `/catalog?book=${id}`;
-  };
-
-  function renderRecommendations(books) {
-    if (!books || !books.length) return;
-    const recSection = document.getElementById('rec-section');
-    const saved  = getSaved();
-    const genres = getGenres();
-    const viewed = getViewed();
-    const savedIds  = new Set(Object.keys(saved).map(Number));
-    const viewedSet = new Set(viewed.map(Number));
-    const savedBooks = Object.values(saved);
-
-    // Shuffle helper (Fisher-Yates)
-    const shuffle = arr => {
-      const a = [...arr];
-      for (let i = a.length-1; i > 0; i--) {
-        const j = Math.floor(Math.random()*(i+1));
-        [a[i],a[j]] = [a[j],a[i]];
-      }
-      return a;
-    };
-
-    const rows = [];
-
-    // Row 1 — Because you saved X (per saved book genre)
-    const savedGenres = [...new Set(savedBooks.map(b => b.genre).filter(Boolean))];
-    savedGenres.slice(0,3).forEach(genre => {
-      const trigger = savedBooks.find(b => b.genre === genre);
-      const picks = books.filter(b => b.genre === genre && !savedIds.has(b.id));
-      if (picks.length >= 3) {
-        rows.push({
-          title: `Because you saved "${trigger.title}"`,
-          reason: `More ${genre} books`,
-          books: shuffle(picks).slice(0,12),
-          badge: genre
-        });
-      }
-    });
-
-    // Row 2 — Your preferred genres
-    genres.forEach(g => {
-      const picks = books.filter(b => (b.genre||'').toLowerCase().includes(g.toLowerCase()) && !savedIds.has(b.id));
-      if (picks.length >= 1) {
-        rows.push({
-          title: `Picks in ${g}`,
-          reason: `Matching your genre preference`,
-          books: shuffle(picks).slice(0,12),
-          badge: null
-        });
-      }
-    });
-
-    // Row 3 — Recently viewed
-    const recentlyViewed = viewed.map(id => books.find(b => b.id === id || b.id === String(id))).filter(Boolean);
-    if (recentlyViewed.length >= 2) {
-      rows.push({
-        title: 'Continue Browsing',
-        reason: 'Books you recently viewed',
-        books: recentlyViewed.slice(0,12),
-        badge: null
-      });
-    }
-
-    // Row 4 — New arrivals (good condition, no saves filter)
-    const newArrivals = books.filter(b => (b.condition||'').toLowerCase() === 'good' && !savedIds.has(b.id));
-    if (newArrivals.length >= 3) {
-      rows.push({
-        title: 'Good-Condition Picks',
-        reason: 'Curated quality finds',
-        books: shuffle(newArrivals).slice(0,12),
-        badge: 'Good'
-      });
-    }
-
-    // Row 5 — Affordable reads
-    const affordable = books.filter(b => parseFloat(b.price||99) <= 3 && !savedIds.has(b.id));
-    if (affordable.length >= 3) {
-      rows.push({
-        title: 'Budget-Friendly Reads',
-        reason: 'Under $3.00',
-        books: shuffle(affordable).slice(0,12),
-        badge: null
-      });
-    }
-
-    // Row 6 — Fallback: browse all
-    rows.push({
-      title: 'Explore the Collection',
-      reason: 'All available titles',
-      books: shuffle(books.filter(b => !savedIds.has(b.id))).slice(0,18),
-      badge: null
-    });
-
-    recSection.innerHTML = rows.map(row => `
-      <div class="rec-row">
-        <div class="rec-row-header">
-          <div>
-            <div class="rec-row-title">${escHtml(row.title)}</div>
-            <div class="rec-row-reason">${escHtml(row.reason)}</div>
-          </div>
-        </div>
-        <div class="rec-track">
-          ${row.books.length ? row.books.map(b => buildBookCard(b, row.badge)).join('') :
-            `<div class="rec-empty">No books found. <a href="/catalog">Explore catalog →</a></div>`}
-        </div>
-      </div>`).join('');
-  }
 
   function escHtml(s) {
-    return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    return String(s)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
-  // ─── Sign out ─────────────────────────────────────────────────────────────────
-  async function doSignOut() {
-    await fetch(`${BACKEND}/api/fopl/login`, { method: 'DELETE', credentials: 'include' }).catch(() => {});
+  // --- Avatar ---
+  function applyAvatar(initials) {
+    const stored = localStorage.getItem('fopl_avatar');
+    const img = document.getElementById('avatar-img');
+    const ini = document.getElementById('avatar-init');
+    if (stored) {
+      img.src = stored;
+      img.style.display = 'block';
+      ini.style.display = 'none';
+    } else {
+      ini.textContent = initials || '?';
+      ini.style.display = 'flex';
+      img.style.display = 'none';
+    }
+  }
+
+  document.getElementById('avatar-edit-btn').addEventListener('click', function () {
+    document.getElementById('avatar-input').click();
+  });
+  document.getElementById('avatar-input').addEventListener('change', function () {
+    if (!this.files[0]) return;
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      localStorage.setItem('fopl_avatar', e.target.result);
+      applyAvatar('');
+    };
+    reader.readAsDataURL(this.files[0]);
+  });
+
+  // --- Fill hero + account card ---
+  function fillUser(user) {
+    var initials = (user.name || '').split(' ').map(function(w){ return w[0]; }).join('').slice(0,2).toUpperCase();
+    applyAvatar(initials);
+
+    document.getElementById('hero-name').textContent = user.name;
+    document.getElementById('hero-email').textContent = user.email;
+    document.getElementById('acct-email').textContent = user.email;
+    document.getElementById('acct-role').textContent = user.role || 'Member';
+
+    var badge = document.getElementById('hero-role-badge');
+    badge.textContent = user.role || 'Member';
+    if ((user.role || '').toLowerCase() === 'admin') {
+      badge.classList.add('admin-badge');
+      if (!document.getElementById('hero-vol-link')) {
+        var volLink = document.createElement('a');
+        volLink.id = 'hero-vol-link';
+        volLink.className = 'hero-admin-link';
+        volLink.href = '/volunteer-apps';
+        volLink.textContent = 'Volunteer Apps';
+        document.getElementById('hero-actions').insertBefore(volLink, document.getElementById('hero-actions').firstChild);
+      }
+    }
+
+    if (user.created_at) {
+      var d = new Date(user.created_at);
+      var full = d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+      document.getElementById('hero-since').textContent = 'Member since ' + full;
+      document.getElementById('acct-since').textContent = full;
+    }
+    refreshStatsLine();
+  }
+
+  function refreshStatsLine() {
+    var saved = getSavedBooks();
+    var genres; try { genres = JSON.parse(localStorage.getItem('fopl_genres') || '[]'); } catch(e) { genres = []; }
+    var parts = [];
+    if (saved.length) parts.push(saved.length + ' saved book' + (saved.length !== 1 ? 's' : ''));
+    if (genres.length) parts.push(genres.length + ' genre' + (genres.length !== 1 ? 's' : ''));
+    if (foplUser && foplUser.created_at) {
+      parts.push('joined ' + new Date(foplUser.created_at).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }));
+    }
+    document.getElementById('hero-stats').textContent = parts.join(' · ');
+  }
+
+  // --- Daily streak ---
+  function calcStreak() {
+    var today = new Date().toISOString().slice(0, 10);
+    var last = localStorage.getItem('fopl_last_login');
+    var s = parseInt(localStorage.getItem('fopl_streak') || '0', 10) || 0;
+    if (!last) {
+      s = 1;
+    } else if (last !== today) {
+      var yest = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+      s = (last === yest) ? s + 1 : 1;
+    }
+    localStorage.setItem('fopl_last_login', today);
+    localStorage.setItem('fopl_streak', String(s));
+    return s;
+  }
+
+  // --- Saved books ---
+  function getSavedBooks() {
+    try { return JSON.parse(localStorage.getItem('fopl_saved_books') || '[]'); } catch(e) { return []; }
+  }
+
+  function renderSavedBooks() {
+    var books = getSavedBooks();
+    var el = document.getElementById('saved-books-list');
+    if (!books.length) {
+      el.innerHTML = '<p class="no-items">No saved books yet. Browse the <a href="/catalog">catalog</a> to save some!</p>';
+      return;
+    }
+    el.innerHTML = books.map(function (b) {
+      return '<div class="sbook">'
+        + '<div class="sbook-title">' + escHtml(b.title || 'Unknown Title') + '</div>'
+        + (b.author ? '<div class="sbook-author">' + escHtml(b.author) + '</div>' : '')
+        + (b.genre ? '<span class="sbook-genre">' + escHtml(b.genre) + '</span>' : '')
+        + '</div>';
+    }).join('');
+  }
+
+  // --- Achievement badges ---
+  function renderBadges(user, streak) {
+    var saved = getSavedBooks();
+    var genres; try { genres = JSON.parse(localStorage.getItem('fopl_genres') || '[]'); } catch(e) { genres = []; }
+    var days = user.created_at ? Math.floor((Date.now() - new Date(user.created_at)) / 86400000) : 0;
+    var sinceStr = user.created_at
+      ? new Date(user.created_at).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
+      : '';
+
+    var list = [
+      {
+        icon: SVG.member, name: 'FOPL Member',
+        desc: sinceStr ? 'Since ' + sinceStr : 'Welcome!',
+        earned: true
+      },
+      {
+        icon: SVG.reader, name: 'Loyal Reader',
+        desc: '30+ days with FOPL',
+        earned: days >= 30
+      },
+      {
+        icon: SVG.trophy, name: 'Century Club',
+        desc: '100+ days with FOPL',
+        earned: days >= 100
+      },
+      {
+        icon: SVG.bolt, name: streak + ' Day' + (streak !== 1 ? 's' : '') + ' Streak',
+        desc: streak >= 7 ? 'On fire!' : streak >= 3 ? 'Keep it up!' : 'Log in daily!',
+        earned: streak >= 2
+      },
+      {
+        icon: SVG.bookmark, name: 'Bookworm',
+        desc: saved.length + ' / 5 books saved',
+        earned: saved.length >= 5
+      },
+      {
+        icon: SVG.compass, name: 'Genre Explorer',
+        desc: genres.length + ' / 5 genres',
+        earned: genres.length >= 5
+      }
+    ];
+
+    document.getElementById('badges-row').innerHTML = list.map(function (b) {
+      return '<div class="badge-card ' + (b.earned ? 'earned' : 'locked') + '">'
+        + '<div class="badge-icon">' + (b.earned ? b.icon : SVG.lock) + '</div>'
+        + '<div class="badge-name">' + escHtml(b.name) + '</div>'
+        + '<div class="badge-desc">' + escHtml(b.desc) + '</div>'
+        + '</div>';
+    }).join('');
+  }
+
+  // --- Genre pills ---
+  function renderGenres() {
+    var saved; try { saved = JSON.parse(localStorage.getItem('fopl_genres') || '[]'); } catch(e) { saved = []; }
+    var wrap = document.getElementById('genre-wrap');
+    wrap.innerHTML = ALL_GENRES.map(function (g) {
+      return '<button class="gpill' + (saved.indexOf(g) !== -1 ? ' on' : '') + '" data-g="' + escHtml(g) + '">' + escHtml(g) + '</button>';
+    }).join('');
+    wrap.querySelectorAll('.gpill').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        this.classList.toggle('on');
+        var sel = Array.prototype.slice.call(wrap.querySelectorAll('.gpill.on')).map(function (el) { return el.dataset.g; });
+        localStorage.setItem('fopl_genres', JSON.stringify(sel));
+        refreshStatsLine();
+        try { renderBadges(foplUser, parseInt(localStorage.getItem('fopl_streak') || '1', 10)); } catch(e) {}
+      });
+    });
+  }
+
+  // --- Init ---
+  if (foplUser) {
+    var streak = calcStreak();
+    // First paint from localStorage (instant)
+    fillUser(foplUser);
+    try { renderBadges(foplUser, streak); } catch(e) { console.error('renderBadges:', e); }
+    renderGenres();
+    renderSavedBooks();
+
+    // Fetch accurate user data from server and re-render
+    fetch(BACKEND + '/api/fopl/me', { credentials: 'include' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (fresh) {
+        if (!fresh) return;
+        foplUser = Object.assign({}, foplUser, fresh);
+        localStorage.setItem('fopl_user', JSON.stringify(foplUser));
+        fillUser(foplUser);
+        try { renderBadges(foplUser, parseInt(localStorage.getItem('fopl_streak') || '1', 10)); } catch(e) {}
+      })
+      .catch(function () { /* keep cached data on network failure */ });
+  }
+
+  // --- Sign out ---
+  function doSignOut() {
+    fetch(BACKEND + '/api/fopl/login', { method: 'DELETE', credentials: 'include' }).catch(function(){});
     localStorage.removeItem('fopl_user');
     window.location.href = '/home';
   }
   window.doSignOut = doSignOut;
-
-  // ─── Boot ─────────────────────────────────────────────────────────────────────
-  if (foplUser) {
-    initParticles();
-    fillUser(foplUser);
-    renderGenreChips();
-    renderSavedShelf();
-
-    // Wordle stats
-    if (DEV_PREVIEW) {
-      fillWordleStats({ games_played:14, win_rate:78, streak:3, max_streak:7,
-        guess_dist:{'1':0,'2':1,'3':4,'4':5,'5':2,'6':1} });
-    } else {
-      fetch(`${BACKEND}/api/fopl/puzzle/stats?game=wordle`, { credentials: 'include' })
-        .then(r => r.ok ? r.json() : null)
-        .then(fillWordleStats)
-        .catch(() => fillWordleStats(null));
-    }
-
-    // Books for recommendations
-    if (DEV_PREVIEW) {
-      allBooks = MOCK_BOOKS;
-      renderRecommendations(allBooks);
-    } else {
-      fetch(`${BACKEND}/api/fopl/books`, { credentials: 'include' })
-        .then(r => r.ok ? r.json() : [])
-        .then(books => {
-          allBooks = Array.isArray(books) ? books : (books.books || []);
-          renderRecommendations(allBooks);
-        })
-        .catch(() => {
-          document.getElementById('rec-section').innerHTML =
-            `<div class="rec-empty">Could not load recommendations. <a href="/catalog">Browse catalog →</a></div>`;
-        });
-    }
-  }
 }
 </script>
