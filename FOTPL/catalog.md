@@ -103,8 +103,9 @@ fopl_nav_active: catalog
     transition: all 0.2s ease; margin-bottom: 4px;
   }
   .filter-btn:hover { 
-    background: rgba(212, 168, 83, 0.1);
-    border-color: rgba(212, 168, 83, 0.3);
+    background: rgba(212, 168, 83, 0.18);
+    border-color: rgba(212, 168, 83, 0.4);
+    color: #fff;
   }
   .filter-btn.active { 
     background: #d4a853; color: #0f1a12; font-weight: 700; 
@@ -423,10 +424,10 @@ fopl_nav_active: catalog
   <div class="catalog-sidebar" id="sidebar">
     <div class="filter-section">
       <div class="filter-title">Age Group</div>
-      <button class="filter-btn active" data-age="" onclick="setAge(this, '')">All Ages <span class="filter-count" id="count-all"></span></button>
+      <button class="filter-btn" data-age="" onclick="setAge(this, '')">All Ages <span class="filter-count" id="count-all"></span></button>
       <button class="filter-btn" data-age="Kids" onclick="setAge(this, 'Kids')">Kids (4–10) <span class="filter-count" id="count-kids"></span></button>
       <button class="filter-btn" data-age="Middle Grade" onclick="setAge(this, 'Middle Grade')">Middle Grade <span class="filter-count" id="count-mg"></span></button>
-      <button class="filter-btn" data-age="YA" onclick="setAge(this, 'YA')">Young Adult <span class="filter-count" id="count-ya"></span></button>
+      <button class="filter-btn active" data-age="YA" onclick="setAge(this, 'YA')">Young Adult <span class="filter-count" id="count-ya"></span></button>
     </div>
     <div class="filter-section">
       <div class="filter-title">Condition</div>
@@ -554,7 +555,7 @@ const BACKEND = window.FOPL_BACKEND;
 let allBooks     = [];
 let allInventory = [];   // full unfiltered list for similarity fallback
 let filtered     = [];
-let activeAge    = '';
+let activeAge    = 'YA';
 let activeCond   = '';
 let searchQ      = '';
 
