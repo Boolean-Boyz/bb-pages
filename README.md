@@ -13,100 +13,104 @@ The live site is available at: [fopl.opencodingsociety.com/home](https://fopl.op
 All FOPL pages live in the `FOTPL/` folder. The following features were built specifically for the Friends of the Poway Library:
 
 - **Home & Homepage** — Landing pages for the FOPL site
-- - **Volunteer Apps** — Form and listing page for library volunteer applications
-  - - **Book Scanner** — Frontend for scanning and looking up books
-    - - **Book Catalog** — Browse the library's book collection
-      - - **Book Trivia** — A trivia game using library books
-        - - **Calendar** — View upcoming FOPL events
-          - - **Face Match** — AI-powered face matching feature
-            - - **Cover Guesser** — Guess a book from its cover art
-              - - **Library Dodge / Library Shelf Run** — Interactive library mini-games
-                - - **Word Scramble / Puzzles / Network Stack Game / OSI Layers RPG** — Educational games with a library twist
-                  - - **Newsletters** — Display FOPL newsletters
-                    - - **Profile** — User profile page
-                      - - **History & Timeline** — FOPL history and milestones
-                        - - **Contact** — Contact page for the library
-                          - - **FOPL Admin & Login** — Admin dashboard and login for library staff
-                            - - **Review Blog** — Community book reviews
-                             
-                              - ## Project Structure
-                             
-                              - ```
-                                bb-pages/
-                                ├── FOTPL/                  # All FOPL-specific pages
-                                │   ├── Images/             # Images for FOPL pages
-                                │   ├── Notebooks/          # Jupyter notebooks
-                                │   ├── home.md             # FOPL home page
-                                │   ├── volunteer-apps.md   # Volunteer application page
-                                │   ├── book-scan.md        # Book scanner
-                                │   ├── catalog.md          # Book catalog
-                                │   ├── calendar.md         # Events calendar
-                                │   ├── facematch.md        # Face match feature
-                                │   ├── puzzles.md          # Puzzles hub
-                                │   ├── newsletters.md      # Newsletters
-                                │   ├── fopl-admin.md       # Admin panel
-                                │   └── ...                 # More FOPL pages
-                                ├── _posts/                 # General blog posts
-                                ├── _notebooks/             # Jupyter notebook pages
-                                ├── _layouts/               # Page layout templates
-                                ├── _includes/              # Reusable HTML components
-                                ├── _sass/                  # Styling (SASS/CSS)
-                                ├── _config.yml             # Jekyll site configuration
-                                └── Makefile                # Local dev commands
-                                ```
+- **Volunteer Apps** — Form and listing page for library volunteer applications
+- **Book Scanner** — Frontend for scanning and looking up books
+- **Book Catalog** — Browse the library's book collection
+- **Book Trivia** — A trivia game using library books
+- **Calendar** — View upcoming FOPL events
+- **Face Match** — AI-powered face matching feature
+- **Cover Guesser** — Guess a book from its cover art
+- **Library Dodge / Library Shelf Run** — Interactive library mini-games
+- **Word Scramble / Puzzles / Network Stack Game / OSI Layers RPG** — Educational games with a library twist
+- **Newsletters** — Display FOPL newsletters
+- **Profile** — User profile page
+- **History & Timeline** — FOPL history and milestones
+- **Contact** — Contact page for the library
+- **FOPL Admin & Login** — Admin dashboard and login for library staff
+- **Review Blog** — Community book reviews
 
-                                ## Getting Started
+## Project Structure
 
-                                ### Prerequisites
+```
+bb-pages/
+├── FOTPL/                  # All FOPL-specific pages
+│   ├── Images/             # Images for FOPL pages
+│   ├── Notebooks/          # Jupyter notebooks
+│   ├── home.md             # FOPL home page
+│   ├── volunteer-apps.md   # Volunteer application page
+│   ├── book-scan.md        # Book scanner
+│   ├── catalog.md          # Book catalog
+│   ├── calendar.md         # Events calendar
+│   ├── facematch.md        # Face match feature
+│   ├── puzzles.md          # Puzzles hub
+│   ├── newsletters.md      # Newsletters
+│   ├── fopl-admin.md       # Admin panel
+│   └── ...                 # More FOPL pages
+├── _posts/                 # General blog posts
+├── _notebooks/             # Jupyter notebook pages
+├── _layouts/               # Page layout templates
+├── _includes/              # Reusable HTML components
+├── _sass/                  # Styling (SASS/CSS)
+├── _config.yml             # Jekyll site configuration
+└── Makefile                # Local dev commands
+```
 
-                                - Ruby and Bundler (for Jekyll)
-                                - - A terminal (macOS, WSL Ubuntu, or Linux)
-                                 
-                                  - ### Setup
-                                 
-                                  - 1. Clone the repository:
-                                    2.    ```bash
-                                             git clone https://github.com/Boolean-Boyz/bb-pages.git
-                                             cd bb-pages
-                                             ```
+## Getting Started
 
-                                          2. Run the setup script for your OS:
-                                          3.    ```bash
-                                                   # macOS
-                                                   ./scripts/activate_macos.sh
-                                                   # Ubuntu/WSL
-                                                   ./scripts/activate_ubuntu.sh
-                                                   ```
+### Prerequisites
 
-                                                3. Install Ruby dependencies:
-                                                4.    ```bash
-                                                         bundle install
-                                                         ```
+- Ruby and Bundler (for Jekyll)
+- A terminal (macOS, WSL Ubuntu, or Linux)
 
-                                                      4. Start the local dev server:
-                                                      5.    ```bash
-                                                               make
-                                                               ```
-                                                               Then open `http://localhost:4500/bb-pages/` in your browser.
+### Setup
 
-                                                        ### Other Useful Commands
+1. Clone the repository:
 
-                                                  ```bash
-                                                  make stop     # Stop the local server
-                                                  make clean    # Stop and clean all built files
-                                                  make convert  # Test notebook conversions without starting server
-                                                  ```
+   ```bash
+   git clone https://github.com/Boolean-Boyz/bb-pages.git
+   cd bb-pages
+   ```
 
-                                                  ## Contributing
+2. Run the setup script for your OS:
 
-                                            This repo is designed to be picked up by future Boolean Boyz cohorts. FOPL pages go in the `FOTPL/` folder. To contribute:
+   ```bash
+   # macOS
+   ./scripts/activate_macos.sh
+   # Ubuntu/WSL
+   ./scripts/activate_ubuntu.sh
+   ```
 
-                                      1. Branch off `main` for your feature
-                                      2. 2. Add or edit pages in `FOTPL/`
-                                         3. 3. Open a pull request with a clear description of what you added or changed
-                                           
-                                            4. Use the existing pages as a style reference, and make sure your pages connect to the correct bb-flask API endpoints.
-                                           
-                                            5. ## License
-                                           
-                                            6. MIT License — see [LICENSE](LICENSE) for details.
+3. Install Ruby dependencies:
+
+   ```bash
+   bundle install
+   ```
+
+4. Start the local dev server:
+
+   ```bash
+   make
+   ```
+
+   Then open `http://localhost:4500/bb-pages/` in your browser.
+
+### Other Useful Commands
+
+```bash
+make stop     # Stop the local server
+make clean    # Stop and clean all built files
+make convert  # Test notebook conversions without starting server
+```
+
+## Contributing
+
+This repo is designed to be picked up by future Boolean Boyz cohorts. FOPL pages go in the `FOTPL/` folder. To contribute:
+
+1. Branch off `main` for your feature
+2. Add or edit pages in `FOTPL/`
+3. Open a pull request with a clear description of what you added or changed
+4. Use the existing pages as a style reference, and make sure your pages connect to the correct bb-flask API endpoints.
+
+## License
+
+MIT License — see [LICENSE](LICENSE) for details.
